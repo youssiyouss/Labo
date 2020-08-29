@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Projet;
+use Auth;
 use App\User;
 use Carbon\carbon;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,10 @@ use Illuminate\Http\File;
 
 class ProjetController extends Controller
 {
-
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
   public function index(){
         $liste = DB::table('projets')
             ->join('users', 'users.id', '=', 'projets.ID_chercheur')
@@ -38,7 +42,7 @@ class ProjetController extends Controller
      $soumission = new Projet();
      $soumission->nom = $request->input('nom');
      $soumission->ID_rfp = $request->input('ID_rfp');
-     $soumission->ID_chercheur = 1; //Auth::user()->id;
+     $soumission->ID_chercheur =Auth::user()->id;
      $soumission->plateForme = $request->input('plateForme');
      $soumission->reponse = $request->input('reponse');
      $soumission->lancement =  Carbon::createFromFormat('m/d/Y', $request->lancement)->format('Y-m-d');

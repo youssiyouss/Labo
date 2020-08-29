@@ -24,7 +24,7 @@
           {{ csrf_field() }}
 
           <div class="form-group">
-            <label>Nom du maitre d'ouvrage</label>
+            <label>Nom du maitre d'ouvrage*</label>
             <input type="text" class="form-control @error('ets') is-invalid @enderror" placeholder="Nom"
              name="ets" value="{{ $client->ets }}" required autocomplete="ets" autofocus>
              @error('ets')
@@ -35,7 +35,7 @@
           </div>
 
           <div class="form-group">
-            <label>Adresse email</label>
+            <label>Adresse email*</label>
             <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email"
              name="email" value="{{ $client->email }}" required autocomplete="email">
              @error('email')
@@ -55,7 +55,7 @@
              @enderror
           </div>
           <div class="form-group">
-            <label>Adresse</label>
+            <label>Adresse*</label>
             <input type="adresse" class="form-control @error('adresse') is-invalid @enderror" placeholder="adresse de l'etablissement"
              name="adresse" value="{{ $client->adresse }}" required autocomplete="adresse">
              @error('adresse')
@@ -65,7 +65,7 @@
              @enderror
           </div>
           <div class="form-group">
-            <label>Site web</label>
+            <label>Site web*</label>
             <input type="url" class="form-control @error('site') is-invalid @enderror" placeholder="https://"
              name="site" value="{{ $client->site }}" required autocomplete="site">
              @error('site')

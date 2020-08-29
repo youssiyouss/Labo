@@ -1,13 +1,11 @@
 <nav class="sidebar">
   <div class="sidebar-header">
     <div class="dropdown-header d-flex align-items-center justify-content-between">
-
     <a href="/" class="sidebar-brand">
       LRI <span>T</span>
       <img src="\assets\images\logo_dark.png" alt="" height="55" width="59">
     </a>
   </div>
-
     <div class="sidebar-toggler not-active">
       <span></span>
       <span></span>
@@ -24,12 +22,15 @@
       </li>
 
       <li class="nav-item nav-category">Avant projet</li>
+      @can('Acces',Auth::user())
+
       <li class="nav-item {{ active_class(['auth/*']) }}" id="auth">
         <a href="{{ url('chercheurs') }}" class="nav-link">
           <i class="link-icon" data-feather="users"></i>
           <span class="link-title">Chercheurs</span>
         </a>
       </li>
+      @endcan
       <li class="nav-item {{ active_class(['apps/calendar']) }}">
         <a href="{{ url('clients') }}" class="nav-link">
           <i class="link-icon" data-feather="phone-outgoing"></i>

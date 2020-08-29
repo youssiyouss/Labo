@@ -9,9 +9,12 @@ use App\Client;
 
 class ClientController extends Controller
 {
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
+
   public function index() {
-
-
     $x = DB::table('clients')
           ->leftjoin('rfps', 'clients.id', '=', 'rfps.maitreOuvrage')
           ->leftjoin('projets', 'rfps.id', '=', 'projets.ID_rfp')

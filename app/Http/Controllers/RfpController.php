@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Validator;
 
 class RfpController extends Controller
 {
+      public function __construct()
+      {
+          $this->middleware('auth');
+      }
       public function index(){
           $listeM = DB::table('rfps')
                 ->join('clients', 'clients.id', '=', 'rfps.maitreOuvrage')

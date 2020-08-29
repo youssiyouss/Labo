@@ -65,7 +65,7 @@
                 {{ $ch->name}} {{ $ch->prenom}}
                 </td>
                 <td>
-                  {{ $ch->grade}}
+                  {{$ch->grade}}
                 </td>
                 <td>
                   <p>{{ $ch->email}}</p> <p>{{ $ch->tel}}</p>

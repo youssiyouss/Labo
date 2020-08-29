@@ -24,7 +24,7 @@
           {{ csrf_field()}}
 
           <div class="form-group">
-            <label>Titre du projet</label>
+            <label>Titre du projet*</label>
             <input type="text" class="form-control @error('nom') is-invalid @enderror" placeholder="Veuillez indiquer le nom de votre projet"
              name="nom" value="{{ old('nom') }}" required unique autocomplete="nom" autofocus>
              @error('maitreOuvrage')
@@ -34,7 +34,7 @@
              @enderror
           </div>
           <div class="form-group">
-            <label>RFP concerné</label>
+            <label>RFP concerné*</label>
             <div class="input-group col-xs-12">
               <select class="form-control  @error('ID_rfp') is-invalid @enderror"  name="ID_rfp" required>
                 <option value="">---------Selectionner l'RFP pour ce projet---------</option>
@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Endroit de soumission</label>
+            <label>Endroit de soumission*</label>
             <div class="input-group">
               <input type="string" name="plateForme" class="form-control @error('plateForme') is-invalid @enderror" placeholder="Veuillez entrez le lien de la plateforme /l'adresse.. du maitre d'ouvrage" name="plateForme" value="{{old('plateForme')}}" autocomplete="plateForme" required/>
               @error('plateForme')
@@ -60,7 +60,7 @@
           </div>
           <div class="form-group">
             <span class="input-group-addon"><i data-feather="file"></i></span>
-            <label> Veuillez télécharger le fichier de votre présentation</label>
+            <label> Veuillez télécharger le fichier de votre présentation*</label>
             <div class="input-group">
               <input type="file" accept=".doc,.docx,application/msword,application/pdf,text/plain,application/vnd.ms-powerpoint,text/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="fichierDoffre" class="form-group  @error('fichierDoffre') is-invalid @enderror" id="myDropify"  value="{{old('fichierDoffre')}}" required class="border" unique/>
               @error('fichierDoffre')

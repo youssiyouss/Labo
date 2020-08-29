@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NobleUI Laravel Admin Dashboard Template</title>
+  <title>LRIT Dashboard </title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <!-- CSRF Token -->
   <meta name="_token" content="{{ csrf_token() }}">
-  
-  <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
+
+  <link rel="shortcut icon" href="{{ asset('/favicon_dark.ico') }}">
 
   <!-- plugin css -->
+  <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
   <link href="{{ asset('assets/fonts/feather-font/css/iconfont.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" />
   <!-- end plugin css -->

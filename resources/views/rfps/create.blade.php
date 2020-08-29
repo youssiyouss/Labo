@@ -31,7 +31,7 @@
           {{ csrf_field()}}
 
           <div class="form-group">
-            <label>Maitre d'ouvrage</label>
+            <label>Maitre d'ouvrage*</label>
             <div class="input-group col-xs-12">
               <select class="form-control  @error('maitreOuvrage') is-invalid @enderror"  name="maitreOuvrage" required>
                 <option value="">---------Selectionner le maitre d'ouvrage---------</option>
@@ -52,7 +52,7 @@
 
           </div>
           <div class="form-group">
-            <label>Titre de projet</label>
+            <label>Titre de projet*</label>
             <input type="text" maxlength="150" id="defaultconfig-2" class="form-control @error('titre') is-invalid @enderror" placeholder="le titre de l'RFP"
             name="titre" value="{{ old('titre') }}" required unique autocomplete="titre">
              @error('titre')
@@ -62,7 +62,7 @@
              @enderror
           </div>
           <div class="form-group">
-            <label>Nature de projet</label>
+            <label>Nature de projet*</label>
             <select class="form-control  @error('type') is-invalid @enderror"  name="type" value="{{old('type')}}" required>
               <option value="">---------Selectionner le nature du projet---------</option>
               <option value="PRFU"  {{ old('type') == 'PRFU' ? 'selected' : '' }}>Projet de Recherches pour la Formation Universitaire</option>
@@ -76,7 +76,7 @@
             @enderror
           </div>
           <div class="form-group">
-            <label>À propos</label>
+            <label>À propos*</label>
             <textarea class="form-control  @error('resumer') is-invalid @enderror" id="maxlength-textarea"  maxlength="600" rows="7" name="resumer" placeholder="Description du projet .." unique required>{{old('resumer')}}</textarea>
             @error('resumer')
                 <span class="invalid-feedback" role="alert">
@@ -88,7 +88,7 @@
 
         <div class="form-group row">
               <div class="col">
-                <label>Date l'apparition de l'appel</label>
+                <label>Date l'apparition de l'appel*</label>
                 <div class="input-group date datepicker" >
                 <input type="date" name="dateAppel" value="{{old('dateAppel')}}" class="form-control @error('dateAppel') is-invalid @enderror" required>
                 </div>
@@ -114,7 +114,7 @@
        </div>
        <div class="form-group row">
              <div class="col">
-               <label>Date de l'écheance</label>
+               <label>Date de l'écheance*</label>
                <div class="input-group date datepicker" >
                <input type="date" name="dateEcheance" value="{{old('dateEcheance')}}" class="form-control @error('dateEcheance') is-invalid @enderror" required>
                </div>
@@ -126,7 +126,7 @@
              </div>
 
              <div class="col-md-6">
-               <label>Heure de l'écheance</label>
+               <label>Heure de l'écheance*</label>
                <div class="input-group date timepicker" data-target-input="nearest">
                  <input type="time" name="heureEcheance" value="{{old('heureEcheance')}}" class="form-control @error('dateEcheance') is-invalid @enderror" required>
                </div>
@@ -138,9 +138,9 @@
            </div>
       </div>
         <div class="form-group">
-          <label>Source de l'appel d'offre</label>
+          <label>Source de l'appel d'offre*</label>
           <div class="input-group">
-            <input type="string" name="sourceAppel" class="form-control @error('sourceAppel') is-invalid @enderror" placeholder="Veuillez entrez le lien/source.. vers l'appel d'offre" name="sourceAppel" value="{{old('sourceAppel')}}" autocomplete="sourceAppel"/>
+            <input type="string" name="sourceAppel" class="form-control @error('sourceAppel') is-invalid @enderror" placeholder="Veuillez entrez le lien/source.. vers l'appel d'offre" name="sourceAppel" value="{{old('sourceAppel')}}" autocomplete="sourceAppel" required/>
             <div class="input-group-append">
               <div class="input-group-text"><i data-feather="link"></i></div>
             </div>
