@@ -63,10 +63,11 @@
       </li>
 
       <li class="nav-item nav-category">Gestion des Projets</li>
+@foreach($projets as $p)
       <li class="nav-item {{ active_class(['forms/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#forms" role="button" aria-expanded="{{ is_active_route(['forms/*']) }}" aria-controls="forms">
           <i class="link-icon" data-feather="trello"></i>
-          <span class="link-title">Project 1 </span>
+          <span class="link-title">{{ $p->nom }}</span>
           <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse {{ show_class(['forms/*']) }}" id="forms">
@@ -95,7 +96,7 @@
           </ul>
         </div>
       </li>
-
+@endforeach
       <li class="nav-item nav-category">web apps</li>
       <li class="nav-item {{ active_class(['email/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#email" role="button" aria-expanded="{{ is_active_route(['email/*']) }}" aria-controls="email">

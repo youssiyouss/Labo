@@ -10,9 +10,21 @@
 |
 */
 
+//Authentification :
 Auth::routes(['register' => false]);
 
- Route::get('/home','Controller@home');
+//Route::get('/home','Controller@home');
+
+Route::any('/home',function(){
+  $p = DB::table('projets')
+      ->join('users', 'users.id', '=', 'projets.ID_chercheur')
+      ->select('projets.nom', 'users.name', 'users.prenom')
+      ->where('projets.ID_chercheur','=',Auth::user()->id)
+      ->get();
+      
+    return view('dashboard')->with(['projets' => $p,]);
+  });
+
 
 Route::get('/', function () {
     return view('auth.login');
@@ -31,6 +43,7 @@ Route::get('projets/dowlaodProjet/{id}','ProjetController@fileDownloader');
 
 //Maitre ouvrages
 Route::resource('clients','ClientController');
+
 
 
 // Route::group(['prefix' => 'email'], function(){
