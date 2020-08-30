@@ -27,7 +27,7 @@
             <label>Titre du projet*</label>
             <input type="text" class="form-control @error('nom') is-invalid @enderror" placeholder="Veuillez indiquer le nom de votre projet"
              name="nom" value="{{ old('nom') }}" required unique autocomplete="nom" autofocus>
-             @error('maitreOuvrage')
+             @error('nom')
                  <span class="invalid-feedback" role="alert">
                      <strong>{{ $message }}</strong>
                  </span>
@@ -46,17 +46,22 @@
                 <a href="{{ url('rfps/create')}}" class="btn btn-outline-info" target="_blank" onsubmit="return confirm('Voulez-vous ajouter un nouveau RFP dans la plate-forme!')"> Ajouter</a>
               </span>
             </div>
+            @error('ID_rfp')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group">
             <label>Endroit de soumission*</label>
             <div class="input-group">
               <input type="string" name="plateForme" class="form-control @error('plateForme') is-invalid @enderror" placeholder="Veuillez entrez le lien de la plateforme /l'adresse.. du maitre d'ouvrage" name="plateForme" value="{{old('plateForme')}}" autocomplete="plateForme" required/>
-              @error('plateForme')
-                  <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
             </div>
+            @error('plateForme')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
           </div>
           <div class="form-group">
             <span class="input-group-addon"><i data-feather="file"></i></span>

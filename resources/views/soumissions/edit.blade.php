@@ -43,9 +43,9 @@
               <select class="form-control  @error('ID_rfp') is-invalid @enderror"  value="{{old('ID_rfp', $soumission->ID_rfp)}}" name="ID_rfp" required>
                 @foreach($rfps as $l)
                 @if (old('ID_rfp')==$l->id)
-                      <option value={{$l->id}} selected>{{$l->id}}-{{ $l->nom }}</option>
+                      <option value={{$l->id}} selected>{{$l->id}}-{{ $l->titre }}      ({{ $l->type }}) </option>
                   @else
-                      <option value={{$l->id}} >{{$l->id}}-{{ $l->titre }}</option>
+                      <option value={{$l->id}} >{{$l->id}}-{{ $l->titre }}      ({{ $l->type }})</option>
                   @endif
                 @endforeach
               </select>

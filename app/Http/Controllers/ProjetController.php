@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProjetRequest;
 use App\Projet;
 use Auth;
 use App\User;
@@ -45,9 +46,13 @@ class ProjetController extends Controller
      $soumission->ID_chercheur =Auth::user()->id;
      $soumission->plateForme = $request->input('plateForme');
      $soumission->reponse = $request->input('reponse');
-     $soumission->lancement =  Carbon::createFromFormat('m/d/Y', $request->lancement)->format('Y-m-d');
+      if($request->input('lancement')){
+        $soumission->lancement =  Carbon::createFromFormat('m/d/Y', $request->lancement)->format('Y-m-d');
+      }
      $soumission->nmbrParticipants = $request->input('nmbrParticipants');
-     $soumission->cloture = Carbon::createFromFormat('m/d/Y', $request->cloture)->format('Y-m-d');
+       if($request->input('cloture')){
+         $soumission->cloture = Carbon::createFromFormat('m/d/Y', $request->cloture)->format('Y-m-d');
+      }
      if($request->hasFile('lettreReponse')){
        $fn= $request->lettreReponse->getClientOriginalName();
        $soumission->lettreReponse = $request->lettreReponse->storeAs('file',$fn);
