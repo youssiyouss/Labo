@@ -36,7 +36,11 @@
                      <li class="list-group-item">Date d'inscription : <span class="pull-right">{{ $chrch->created_at}}</span></li>
                      <li class="list-group-item">About : <span class="pull-right">{{ $chrch->about}}</span></li>
                </ul>
-                <div class="card-footer"> <a href="{{ url('/home') }}" class="btn btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"> Ok</i></a></li></div>
+               @if(Auth::user()->grade == 'Directeur')
+                <div class="card-footer"> <a href="{{ url('/chercheurs') }}" class="btn btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"> Ok</i></a></li></div>
+               @else
+              <div class="card-footer"> <a href="{{ url('/home') }}" class="btn btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"> Ok</i></a></li></div>
+               @endif
             </div>
           </div>
         </div>

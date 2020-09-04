@@ -77,7 +77,7 @@
           </div>
           <div class="form-group">
             <label>À propos*</label>
-            <textarea class="form-control  @error('resumer') is-invalid @enderror" id="maxlength-textarea"  maxlength="600" rows="7" name="resumer" placeholder="Description du projet .." unique required>{{old('resumer')}}</textarea>
+            <textarea class="form-control  @error('resumer') is-invalid @enderror" id="maxlength-textarea"  maxlength="1000" rows="7" name="resumer" placeholder="Description du projet .." unique required>{{old('resumer')}}</textarea>
             @error('resumer')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

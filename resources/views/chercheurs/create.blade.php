@@ -105,7 +105,7 @@
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">À propos</label>
-            <textarea class="form-control  @error('about') is-invalid @enderror" id="exampleFormControlTextarea1"  rows="5" name="about" placeholder="Parlez-nous brièvement de vous">{{old('about')}}</textarea>
+            <textarea value="" class="form-control  @error('about') is-invalid @enderror" id="exampleFormControlTextarea1"  rows="5" name="about" placeholder="Parlez-nous brièvement de vous">{{old('about')}}</textarea>
             @error('about')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

@@ -15,10 +15,6 @@ class UserPolicy
             return true;
         }
 
-    public function Acces(User $user)
-    {
-        return $user->grade === 'Directeur';
-    }
 
 
     /**
@@ -29,7 +25,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return  $user->grade === 'Directeur';
+        return false;
     }
 
     /**
@@ -101,5 +97,9 @@ class UserPolicy
     public function forceDelete(User $user, User $model)
     {
         //
+    }
+    public function Acces(User $user)
+    {
+        return $user->grade === 'Directeur';
     }
 }

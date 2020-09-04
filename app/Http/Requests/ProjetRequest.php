@@ -25,7 +25,7 @@ class ProjetRequest extends FormRequest
      {
          return [
              'ID_rfp' => 'required',
-             'ID_chercheur' => 'required',
+             'chefProjet' => 'required',
              'nom' => 'required','string','max:255','unique:projets',
              'plateForme' => 'required',
              'fichierDoffre' => 'required|file',

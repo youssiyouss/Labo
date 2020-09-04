@@ -54,10 +54,13 @@ class ClientController extends Controller
     $x->adresse = $request->input('adresse');
     $x->site = $request->input('site');
     $x->email = $request->input('email');
+    if ($x->save()) {
+        Session()->flash('success', "le client : ".$x->ets."a été modifié avec succés");
+        } else {
+        Session()->flash('error', 'Modification echouée!!');
+        }
 
-   $x->save();
-  session()->flash('success',"{$x->ets} a été modifié avec succés!");
-  return redirect('clients');
+        return redirect('clients');
   }
 
   public function destroy(Request $request , $id) {

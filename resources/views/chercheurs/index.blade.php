@@ -15,7 +15,7 @@
     </button>
   </div>
   @elseif(session()->has('error'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
    <strong>{{session()->get('error')}} </strong>
    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
      <span aria-hidden="true">&times;</span>
@@ -57,12 +57,27 @@
             <tbody>
               @foreach($chrchr as $ch)
               <tr>
-                <td class="py-1 text-muted">
-                <img src="{{ asset('storage/'.$ch->photo) }}" style=cursor:help; alt="image" data-toggle="tooltip" data-placement="bottom" title="{{$ch->about}}">
-                <p style="font-size:10px">membre {{$ch->created_at->locale('fr')->diffForHumans()}}</p>
-                </td>
                 <td>
+                    <div class="dropdown mb-2">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+                            <form  action="{{ url('chercheurs/'.$ch->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet utilisateur?')">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('chercheurs/'.$ch->id)}}"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                          <!-- <a class="dropdown-item d-flex align-items-center" href="{{ url('chercheurs/'.$ch->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>-->
+                          <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                        </form>
+                        </div>
+                      </div>
+                </td>
+                <td class="py-1">
+                <img src="{{ asset('storage/'.$ch->photo) }}" style=cursor:help; alt="image" data-toggle="tooltip" data-placement="bottom" title="{{$ch->about}}">
                 {{ $ch->name}} {{ $ch->prenom}}
+                <p  class=" text-muted" style="font-size:10px">membre {{$ch->created_at->locale('fr')->diffForHumans()}}</p>
+
                 </td>
                 <td>
                   {{$ch->grade}}
@@ -73,18 +88,9 @@
                 <td>
                 {{ $ch->about}}
                 </td>
-                <td>
-                  <form  action="{{ url('chercheurs/'.$ch->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet utilisateur?')">
-                    {{ csrf_field() }}
-                    {{ method_field('DELETE') }}
-                      <a href="{{ url('chercheurs/'.$ch->id.'/edit')}}" class="btn btn-outline-info"><i data-feather="edit"></i></a>
-                      <button type="submit"  class="btn btn-outline-danger"><i data-feather="trash"></i></button>
+            </tr>
 
-                  </form>
-                </td>
-              </tr>
-
-        @endforeach
+             @endforeach
 
             </tbody>
           </table>

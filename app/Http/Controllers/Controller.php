@@ -15,7 +15,7 @@ class Controller extends BaseController
     {
         $this->middleware('auth');
     }
-
+    
     public function home(){
       return view('dashboard');
     }

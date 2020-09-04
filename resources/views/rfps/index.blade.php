@@ -16,7 +16,7 @@
     </button>
   </div>
  @elseif(session()->has('error'))
- <div class="alert alert-success alert-dismissible fade show" role="alert">
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
    <strong>{{session()->get('error')}} </strong>
    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
      <span aria-hidden="true">&times;</span>
@@ -32,7 +32,7 @@
         <div class="card-body">
             <h4 class="card-title text-warning" align="center">
            <div align="right">
-              <a href="{{ url('rfps/create')}}" type="button" class="btn btn-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau RFP"><i data-feather="plus-circle"></i></a>
+              <a href="{{ url('rfps/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau RFP"><i data-feather="plus-circle"></i></a>
            </div>
             Liste des RFPs
           </h4>
@@ -41,36 +41,38 @@
             <table class="table table-striped table-hover table-bordered">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th></th>
                   <th>Titre d'RFP</th>
                   <th>Nature d'RFP</th>
                   <th>maitre d'ouvrage</th>
                   <th>Date d'écheance</th>
-                  <th>Plus de details</th>
 
                 </tr>
               </thead>
               <tbody>
                 @foreach($appeldoffre as $rfp)
                 <tr>
-                  <td>{{$rfp->id}}</td>
-                  <td>{{$rfp->titre}}<div class="text-muted" align="right">{{$rfp->dateAppel}} a {{$rfp->heureAppel}}</div> </td>
+                  <td>
+                    <div class="dropdown mb-2">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+                            <form  action="{{ url('rfps/'.$rfp->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet RFP?')">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                          <a class="dropdown-item d-flex align-items-center" href="#" title="Voir plus de details" data-toggle="modal" data-target="#element-<?php echo $rfp->id;?>" name="button"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('rfps/'.$rfp->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+                          <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                        </form>
+                        </div>
+                      </div>
+                  </td>
+                  <td>{{$rfp->id}}- {{$rfp->titre}}<div class="text-muted" align="right">{{$rfp->dateAppel}} a {{$rfp->heureAppel}}</div> </td>
                   <td>{{$rfp->type}}</td>
                   <td>{{$rfp->ets}}</td>
                   <td><span class="bg-danger">{{$rfp->dateEcheance}} a {{$rfp->heureEcheance}}</span></td>
-                  <td colspan="3">
-                    <div class="btn-toolbar">
-                    <div class="btn-group">
-                     <form  action="{{ url('rfps/'.$rfp->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet RFP?')">
-                       {{ csrf_field() }}
-                       {{ method_field('DELETE') }}
-                       <button type="button" class="btn btn-light" title="Voir plus de details" data-toggle="modal" data-target="#element-<?php echo $rfp->id;?>" name="button"><i data-feather="download" ></i></button>
-                       <a href="{{ url('rfps/'.$rfp->id.'/edit')}}" type="button" class="btn btn-info"  data-toggle="tooltip" data-placement="bottom" title="Modifier RFP" ><i  data-feather="edit"></i></a>
-                       <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer RFP"><i data-feather="trash"></i></button>
-                    </form>
-                    </div>
-                    </div>
-                  </td>
+
                 </tr>
                 <div class="modal fade" id="element-<?php echo $rfp->id;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">

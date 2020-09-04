@@ -25,14 +25,15 @@ class UserController extends Controller
 
 
       public function index() {
-        $this->authorize('viewAny');
-          $x = User::all();
+
+        $this->authorize('viewAny', User::class);
+          $x = User::all()->unique('email');
           return view('chercheurs.index',['chrchr'=>$x]);
         }
 
 
       public function create() {
-          $this->authorize('create');
+          $this->authorize('create', User::class);
           return view('chercheurs.create');
       }
 

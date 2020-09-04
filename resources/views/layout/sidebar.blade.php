@@ -1,3 +1,10 @@
+@php
+  $projets=DB::table('projets')
+       ->join('users', 'users.projetGere', '=', 'projets.id')
+       ->select('projets.nom', 'projets.id','users.name', 'users.prenom')
+       ->where('users.id','=',Auth::user()->id)
+       ->get();
+@endphp
 <nav class="sidebar">
   <div class="sidebar-header">
     <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -22,8 +29,8 @@
       </li>
 
       <li class="nav-item nav-category">Avant projet</li>
-      @can('Acces',Auth::user())
 
+      @can('Acces',Auth::user())
       <li class="nav-item {{ active_class(['auth/*']) }}" id="auth">
         <a href="{{ url('chercheurs') }}" class="nav-link">
           <i class="link-icon" data-feather="users"></i>
@@ -31,6 +38,7 @@
         </a>
       </li>
       @endcan
+
       <li class="nav-item {{ active_class(['apps/calendar']) }}">
         <a href="{{ url('clients') }}" class="nav-link">
           <i class="link-icon" data-feather="phone-outgoing"></i>
@@ -63,40 +71,20 @@
       </li>
 
       <li class="nav-item nav-category">Gestion des Projets</li>
-@foreach($projets as $p)
-      <li class="nav-item {{ active_class(['forms/*']) }}">
-        <a class="nav-link" data-toggle="collapse" href="#forms" role="button" aria-expanded="{{ is_active_route(['forms/*']) }}" aria-controls="forms">
-          <i class="link-icon" data-feather="trello"></i>
-          <span class="link-title">{{ $p->nom }}</span>
-          <i class="link-arrow" data-feather="chevron-down"></i>
+ @if(count($projets)>0)
+      @foreach ($projets as $p)
+      <li class="nav-item">
+        <a href="{{ url('taches/MesTaches/'.$p->id) }}" class="nav-link {{ active_class(['forms/basic-elements']) }}">
+            <span class="link-title" name="monspan">#{{$p->id}} - {{$p->nom}} </span>
         </a>
-        <div class="collapse {{ show_class(['forms/*']) }}" id="forms">
-          <ul class="nav sub-menu">
-            <li class="nav-item">
-              <a href="{{ url('/forms/basic-elements') }}" class="nav-link {{ active_class(['forms/basic-elements']) }}">Mes taches </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ url('/forms/advanced-elements') }}" class="nav-link {{ active_class(['forms/advanced-elements']) }}">Mes delivrables</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/forms/basic-elements') }}" class="nav-link {{ active_class(['forms/basic-elements']) }}">Tous les taches </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('/forms/advanced-elements') }}" class="nav-link {{ active_class(['forms/advanced-elements']) }}">Tous les delivrables</a>
-              </li>
-            <li class="nav-item">
-              <a href="{{ url('/general/timeline') }}" class="nav-link {{ active_class(['general/timeline']) }}">Timeline</a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ url('/forms/editors') }}" class="nav-link {{ active_class(['forms/editors']) }}">About</a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ url('/forms/wizard') }}" class="nav-link {{ active_class(['forms/wizard']) }}">Generer rapport final</a>
-            </li>
-          </ul>
-        </div>
       </li>
-@endforeach
+      @endforeach
+ @elseif(count($projets)==0)
+       <li class="nav-item">
+          <p class="text-muted">Aucun projet active</p>
+       </li>
+ @endif
+
       <li class="nav-item nav-category">web apps</li>
       <li class="nav-item {{ active_class(['email/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#email" role="button" aria-expanded="{{ is_active_route(['email/*']) }}" aria-controls="email">

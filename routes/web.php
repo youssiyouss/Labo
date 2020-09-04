@@ -13,22 +13,11 @@
 //Authentification :
 Auth::routes(['register' => false]);
 
-//Route::get('/home','Controller@home');
-
-Route::any('/home',function(){
-  $p = DB::table('projets')
-      ->join('users', 'users.id', '=', 'projets.ID_chercheur')
-      ->select('projets.nom', 'users.name', 'users.prenom')
-      ->where('projets.ID_chercheur','=',Auth::user()->id)
-      ->get();
-      
-    return view('dashboard')->with(['projets' => $p,]);
-  });
-
-
 Route::get('/', function () {
     return view('auth.login');
 });
+
+Route::get('/home','Controller@home');
 
 //chercheurs
 Route::resource('chercheurs','UserController');
@@ -44,6 +33,27 @@ Route::get('projets/dowlaodProjet/{id}','ProjetController@fileDownloader');
 //Maitre ouvrages
 Route::resource('clients','ClientController');
 
+//Taches
+Route::get('taches/{id}','TacheController@show');
+Route::get('taches/{id}/show','TacheController@show');
+Route::get('taches','TacheController@index');
+Route::get('taches/create/{id}','TacheController@create');
+Route::post('taches/{id}','TacheController@store');
+Route::get('taches/{id}/edit','TacheController@edit');
+Route::put('taches/{id}','TacheController@update');
+Route::delete('taches/{id}','TacheController@destroy');
+
+//Route::resource('taches','TacheController');
+
+Route::get('taches/downloadTache/{id}','TacheController@fileDownloader');
+
+Route::get('taches/tousLesTaches/{id}','TacheController@tousLesTaches');
+Route::get('taches/MesTaches/{id}','TacheController@mesTaches');
+
+
+Route::resource('delivrables','DelivrableController');
+
+Route::get('delivrables/create/{id}','DelivrableController@create');
 
 
 // Route::group(['prefix' => 'email'], function(){

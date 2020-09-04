@@ -28,7 +28,7 @@ class RfpRequest extends FormRequest
           'maitreOuvrage' =>'required | distinct',
           'titre' =>'required','string','max:150', \Illuminate\Validation\Rule::unique('rfps')->ignore($this->id),
           'type' =>'required',
-          'resumer' =>'required', 'max:600',
+          'resumer' =>'required', 'max:1000',
           'dateAppel' =>'required | date',
           'dateEcheance' =>'required | date |after : '.$dateDebut,
           'heureEcheance' =>'required',

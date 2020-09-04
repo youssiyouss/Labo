@@ -82,9 +82,8 @@ class RfpController extends Controller
       }
 
       if ($appeldoffre->save()) {
-
         Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été enregistrer avec succées!!");
-    } else {getClientOriginalExtention();
+    } else {
         Session()->flash('error', 'Enregistrement echouée!!');
     }
     return redirect('rfps');
@@ -138,16 +137,16 @@ class RfpController extends Controller
      $file= Rfp::find($id);
      $infoPath = pathinfo($file->fichier);
      $extension = $infoPath['extension'];
-     echo "$extension";
-      $name= "$file->titre".'.'."$extension";
-    return response()->download(storage_path("app/public/{$file->fichier}"),$name );        // Storage::download($file->fichier,$file->titre);
-    if ($appeldoffre->save()) {
-      Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!")->redirect('rfps');
-    } else {
-      Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer")->redirect('rfps');;
-    }
+     $name= "$file->titre".'.'."$extension";
+     if (Storage::disk('local')->exists($file->fichier)){
 
-   }
+        return response()->download(storage_path("app/public/{$file->fichier}"),$name );
+        Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!")->redirect('rfps');
+    } else {
+         Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
+        return redirect('rfps');
+    }
+  }
 
 
 

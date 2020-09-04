@@ -71,7 +71,6 @@
             @enderror
           </div>
           <div class="form-group">
-            <span class="input-group-addon"><i data-feather="file"></i></span>
             <label> Veuillez télécharger le fichier de votre présentation*</label>
             <div class="input-group">
               <input type="file" accept=".doc,.docx,application/msword,application/pdf,text/plain,application/vnd.ms-powerpoint,text/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="fichierDoffre" class="form-group  @error('fichierDoffre') is-invalid @enderror" id="myDropify"  value="{{old('fichierDoffre', $soumission->fichierDoffre)}}" class="border" unique/>

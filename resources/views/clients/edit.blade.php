@@ -18,7 +18,7 @@
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h6 class="card-title">Nouveau maitre d'ouvrage</h6>
+        <h6 class="card-title">Modifier : {{$client->ets}}</h6>
         <form class="form-group" files=true action="{{ url('clients/'.$client->id)}}" method="post" enctype="multipart/form-data">
           <input type="hidden" name="_method" value="PUT">
           {{ csrf_field() }}
