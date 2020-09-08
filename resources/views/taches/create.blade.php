@@ -12,7 +12,7 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/rfps">Taches</a></li>
+    <li class="breadcrumb-item"><a href={{ url('taches/'.$ID_projet)}}>Taches</a></li>
     <li class="breadcrumb-item active" aria-current="page">ajouter</li>
   </ol>
 
@@ -141,7 +141,7 @@
 
 
                       <button class="btn btn-primary" type="submit"> {{__('Ajouter')}} <i data-feather="save"></i></button>
-                      <a href="{{ url('taches') }}" class="btn btn-danger"> Annuler <i data-feather="x-square"></i></a>
+                      <a href="{{ url('taches/'.$ID_projet) }}" class="btn btn-danger"> Annuler <i data-feather="x-square"></i></a>
 
          </form>
        </div>

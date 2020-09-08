@@ -12,7 +12,7 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/rfps">Taches</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('taches/'.$t->ID_projet)}}">Taches</a></li>
     <li class="breadcrumb-item active" aria-current="page">Modifier</li>
   </ol>
 
@@ -25,9 +25,9 @@
     </button>
   </div>
  @elseif(session()->has('error'))
- <div class="alert alert-success alert-dismissible fade show" role="alert">
-   <strong>{{session()->get('error')}} </strong>
-   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>{{session()->get('error')}} </strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
      <span aria-hidden="true">&times;</span>
    </button>
   </div>
@@ -121,7 +121,7 @@
 
            </div>
            <div class="form-group">
-             <label>Date delivration de tache*</label>
+             <label>Date livration de tache*</label>
              <div class="input-group date datepicker" >
              <input type="date" name="dateFin" value="{{old('dateFin', $t->dateFin)}}" class="form-control @error('dateFin') is-invalid @enderror" required>
              </div>

@@ -27,7 +27,7 @@ class ClientRequest extends FormRequest
           'ets' =>'required','string','unique:clients,ets,'.$this->id,
           'email' =>'required' , 'email','unique:clients,email,' . $this->id,
           'tel' =>'nullable','numeric', 'unique:clients,tel,' . $this->id,
-          'adresse' =>'required', 'string','unique:clients,adresse,' . $this->id,
+          'adresse' =>'nullable', 'string','unique:clients,adresse,' . $this->id,
           'site' =>'required',' url','unique:clients,site,' . $this->id,
         ];
     }

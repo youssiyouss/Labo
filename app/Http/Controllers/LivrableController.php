@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 use App\Tache;
 use App\Projet;
-use App\Delivrable;
+use App\Livrable;
 use Illuminate\Support\Facades\DB;
 use auth;
 use Illuminate\Http\Request;
 
-class DelivrableController extends Controller
+class LivrableController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,7 +36,7 @@ class DelivrableController extends Controller
             ->select('taches.ID_projet','taches.id','taches.titreTache')
             ->where('taches.ID_projet','=',$projet)
             ->get();
-            return view('delivrables.create', ['ch' => $chercheurs , 't' => $taches , 'name'=>$p]);
+            return view('livrables.create', ['ch' => $chercheurs , 't' => $taches , 'name'=>$p]);
     }
 
     /**
@@ -47,7 +47,7 @@ class DelivrableController extends Controller
      */
     public function store(Request $request)
     {
-        $deli = new Delivrable();
+        $deli = new Livrable();
 
         $deli->id_respo  = $request->input('id_respo');
         $deli->id_tache =$request->input('id_tache');
@@ -63,16 +63,16 @@ class DelivrableController extends Controller
         } else {
             Session()->flash('error', 'Enregistrement echouée!!');
         }
-        return redirect('delivrables');
+        return redirect('livrables');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Delivrable  $delivrable
+     * @param  \App\Livrable  $livrable
      * @return \Illuminate\Http\Response
      */
-    public function show(Delivrable $delivrable)
+    public function show(Livrable $livrable)
     {
         //
     }
@@ -80,10 +80,10 @@ class DelivrableController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Delivrable  $delivrable
+     * @param  \App\Livrable  $livrable
      * @return \Illuminate\Http\Response
      */
-    public function edit(Delivrable $delivrable)
+    public function edit(Livrable $livrable)
     {
         //
     }
@@ -92,10 +92,10 @@ class DelivrableController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Delivrable  $delivrable
+     * @param  \App\Livrable  $livrable
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Delivrable $delivrable)
+    public function update(Request $request, Livrable $livrable)
     {
         //
     }
@@ -103,10 +103,10 @@ class DelivrableController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Delivrable  $delivrable
+     * @param  \App\Livrable  $livrable
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Delivrable $delivrable)
+    public function destroy(Livrable $livrable)
     {
         //
     }

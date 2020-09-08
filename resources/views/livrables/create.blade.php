@@ -13,7 +13,7 @@
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/rfps">taches</a></li>
-    <li class="breadcrumb-item active" aria-current="page">soumettre delivrable</li>
+    <li class="breadcrumb-item active" aria-current="page">soumettre livrable</li>
   </ol>
 
 </nav>
@@ -38,7 +38,7 @@
      <div class="card">
        <div class="card-body">
          <h6 class="card-title text-warning">Répondre à la tâche qui se rapporte au projet: <i> <span class="text-muted">{{$name}}</span></i></h6>
-         <form method="POST" action="{{ url('delivrables')}}" enctype="multipart/form-data">
+         <form method="POST" action="{{ url('livrables')}}" enctype="multipart/form-data">
            {{ csrf_field()}}
 
            <div class="form-group">
@@ -117,7 +117,7 @@
            </div>
 
                       <button class="btn btn-primary" type="submit"> {{__('Ajouter')}} <i data-feather="save"></i></button>
-                      <a href="{{ url('delivrables') }}" class="btn btn-danger"> Annuler <i data-feather="x-square"></i></a>
+                      <a href="{{ url('livrables') }}" class="btn btn-danger"> Annuler <i data-feather="x-square"></i></a>
 
          </form>
        </div>

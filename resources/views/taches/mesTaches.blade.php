@@ -1,13 +1,6 @@
 @extends('layout.master')
 
 @section('content')
-<nav class="page-breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/rfps">Projets</a></li>
-    <li class="breadcrumb-item active" aria-current="page">details</li>
-  </ol>
-
-</nav>
   @if(session()->has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>{{session()->get('success')}} </strong>
@@ -26,26 +19,28 @@
 
 <div class="col stretch-card">
     <ul class="nav nav-tabs">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Taches</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item active" href="{{ url('taches/MesTaches/'.$Projectid)}}">Mes taches</a>
-              <a class="dropdown-item" href="{{ url('taches/tousLesTaches/'.$Projectid)}}">Tous les taches</a>
-            </div>
-          </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Délivrables</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Mes délivrables</a>
-             <a class="dropdown-item" href="{{ url('delivrables')}}">Tous les délirvrables</a>
-          </div>
+        <li class="nav-item">
+          <a href="{{ url('taches/MesTaches/'.$Projectid)}}" class="nav-link active" aria-selected="true">Mes taches</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url('taches/'.$Projectid)}}" class="nav-link" aria-selected="false">Tous les taches</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ url('livrables')}}" class="nav-link" aria-selected="false">Mes livrables</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#disabled" class="nav-link" aria-selected="false">Tous les livrables</a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#" class="nav-link" aria-selected="false">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+            <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Génerer le rapport final</a>
-          </li>
       </ul>
 </div>
 <div class="col stretch-card">
@@ -123,7 +118,7 @@
                   </div>
                   @endif
                     <div class="modal-footer">
-                        <a href="{{ url('delivrables/create/'.$t->id)}}" class="btn btn-primary" type='button'  data-toggle='tooltip' data-placement='bottom' title="soumettre pour cette tâche">Délivrer</a>
+                        <a href="{{ url('livrables/create/'.$Projectid)}}" class="btn btn-primary" type='button'  data-toggle='tooltip' data-placement='bottom' title="soumettre pour cette tâche">Délivrer</a>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>

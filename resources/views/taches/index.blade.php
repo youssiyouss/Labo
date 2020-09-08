@@ -1,16 +1,6 @@
 @extends('layout.master')
-@push('plugin-styles')
-<link href="{{ asset('assets/plugins/dropify/css/dropify.min.css') }}" rel="stylesheet" />
-<link href="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
-<link href="{{ asset('assets/plugins/datatables-net/dataTables.bootstrap4.css') }}" rel="stylesheet" />
-@endpush
+
 @section('content')
-<nav class="page-breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/rfps">Taches</a></li>
-    <li class="breadcrumb-item active" aria-current="page">liste</li>
-  </ol>
-</nav>
   @if(session()->has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>{{session()->get('success')}} </strong>
@@ -26,47 +16,50 @@
    </button>
   </div>
  @endif
+
 <div class="col stretch-card">
-    <ul class="nav nav-tabs">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Taches</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Mes taches</a>
-              <a class="dropdown-item active" href="{{ url('taches')}}">Tous les taches</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-          </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Délivrables</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Mes délivrables</a>
-             <a class="dropdown-item" href="{{ url('delivrables')}}">Tous les délirvrables</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a href="{{ url('taches/MesTaches/'.$Projectid)}}" class="nav-link" aria-selected="true">Mes taches</a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ url('taches/'.$Projectid)}}" class="nav-link active" aria-selected="false">Tous les taches</a>
+        </li>
+
+        <li class="nav-item">
+           <a href="{{ url('livrables')}}" class="nav-link" aria-selected="false">Mes livrables</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+            <a href="#disabled" class="nav-link" aria-selected="false">Tous les livrables</a>
+        </li>
+
+        <li class="nav-item">
+              <a href="#" class="nav-link" aria-selected="false">About</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Génerer le rapport final</a>
-          </li>
-      </ul>
+              <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
+        </li>
+    </ul>
+
 </div>
 <div class="col stretch-card">
   <div class="card">
+    <div class="card-header">
+        <span align="right">
+            <a class="navbar-brand" href="/home" style="align-content: right;">
+                <img src="\assets\images\logo_dark.png" width="30" height="30" alt="">
+            </a>
+            Tous les taches du projet
+        </span>
+    </div>
     <div class="card-body">
-      <div class="d-flex justify-content-between align-items-baseline mb-2">
-        <h6 class="card-title mb-0 text-warning">Tous les taches</h6>
-        <div align="right">
-            <a href="{{ url('taches/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter une nouvelle tache"><i data-feather="plus-circle"></i></a>
-        </div>
-
-      </div>
-      <div class="card-header">
-
-      </div>
+            <h4 class="card-title text-warning" align="center">
+           <div align="right">
+                <a href="{{ url('taches/create/'.$Projectid)}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter une nouvelle tache"><i data-feather="plus-circle"></i></a>
+            </div>
+            {{$Projectname}}
+          </h4>
       <div class="card-body table-responsive">
         <table class="table table-hover mb-0">
           <thead>
@@ -77,24 +70,24 @@
               <th class="pt-0">priorite</th>
               <th class="pt-0">date Debut</th>
               <th class="pt-0">Date Fin</th>
-              <th class="pt-0">details</th>
-
-
+              <th class="pt-0">Progrès</th>
             </tr>
           </thead>
           <tbody>
              @foreach($taches as $t)
             <tr>
                 <td>
-
                     <div class="dropdown mb-2">
                         <button class="btn p-0" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
-                          <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
-                          <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
-                          <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></a>
+                        <form  action="{{ url('taches/'.$t->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cette tache définitivement?')">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                          <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#element-<?php echo $t->id;?>"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('taches/'.$t->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+                          <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
                         </div>
                       </div>
 
@@ -117,11 +110,11 @@
                 </td>
               <td>{{$t->dateDebut}}</td>
               <td>{{$t->dateFin}}</td>
-              <td> <i>"{{Str::limit($t->description, 30,'..."')}}   </i> <a href="#" data-toggle="modal" data-target="#element-<?php echo $t->id;?>"> (Voir plus)     </a></td>
+              <td></td> <i><!--"{{Str::limit($t->description, 30,'..."')}}   </i>-->
 
-              <div class="modal fade" id="element-<?php echo $t->id;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
+              <div class="modal fade bd-example-modal-lg" id="element-<?php echo $t->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLongTitle">Description de la tache</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -133,10 +126,11 @@
                   </div>
                   @if( $t->fichierDetail )
                   <div align="center">
-                       <a href="taches/downloadTache/{{$t->id}}" style=cursor:pointer; class='btn btn-outline-light' type='button' data-toggle='tooltip' data-placement='bottom' title='Télécharger ce fichier pour plus de detail!' >Télécharger</a>
+                       <a href="{{ url('taches/downloadTache/'.$t->id)}}" style=cursor:pointer; class='btn btn-outline-light' type='button' data-toggle='tooltip' data-placement='bottom' title='Télécharger ce fichier pour plus de detail!' >Télécharger</a>
                   </div>
                   @endif
                     <div class="modal-footer">
+                      <a href="{{ url('livrables/create/'.$Projectid)}}" class="btn btn-primary" type='button'  data-toggle='tooltip' data-placement='bottom' title="soumettre pour cette tâche">Délivrer</a>
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                   </div>

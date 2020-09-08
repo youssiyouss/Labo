@@ -46,14 +46,13 @@ Route::delete('taches/{id}','TacheController@destroy');
 //Route::resource('taches','TacheController');
 
 Route::get('taches/downloadTache/{id}','TacheController@fileDownloader');
-
-Route::get('taches/tousLesTaches/{id}','TacheController@tousLesTaches');
+Route::get('taches/{id}','TacheController@index');
 Route::get('taches/MesTaches/{id}','TacheController@mesTaches');
 
 
-Route::resource('delivrables','DelivrableController');
+Route::resource('livrables','livrableController');
 
-Route::get('delivrables/create/{id}','DelivrableController@create');
+Route::get('livrables/create/{id}','livrableController@create');
 
 
 // Route::group(['prefix' => 'email'], function(){

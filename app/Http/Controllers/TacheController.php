@@ -6,7 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Tache;
 use App\Projet;
-use App\Delivrable;
+use App\Livrable;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\TacheRequest;
 use Illuminate\Support\Facades\DB;
 use auth;
@@ -20,33 +21,30 @@ class TacheController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /*public function index()
+      public function index($id)
     {
-      $list = DB::table('taches')
-            ->join('projets', 'projets.id', '=', 'taches.ID_projet')
-            ->join('users', 'users.projetGere', '=', 'projets.id')
-            ->select('taches.*', 'projets.nom','users.photo','users.name', 'users.prenom')
-            ->where('users.id','=',Auth::user()->id)
-            ->get();
-         return view('taches.index' , ['taches' => $list]);
+      $id = Projet::find($id)->id;
+      $name = Projet::find($id)->nom;
 
-    }*/
-    public function tousLesTaches($id){
-        $id = Projet::find($id)->id;
-        $name = Projet::find($id)->nom;
-
-        $liste = DB::table('taches')
-        ->join('projets', 'projets.id', '=', 'taches.ID_projet')
-        ->join('users', 'projets.id', '=', 'users.projetGere')
-        ->select('taches.*', 'projets.nom','users.photo','users.name', 'users.prenom')
-        ->where([ ['projets.id','=', $id] , ['users.id',"=",Auth::user()->id]] )
-        ->get();
-      return view('taches.tousLesTaches', ['taches' =>$liste, 'Projectid' =>$id,'Projectname' =>$name ]);
+      $liste = DB::table('delivrables')
+      ->join('users', 'delivrables.id_respo', '=', 'users.id')
+      ->join('taches','delivrables.id_tache','taches.id')
+      ->leftJoin('projets', 'projets.id', '=', 'taches.ID_projet')
+      ->select('taches.*', 'projets.nom','users.photo','users.name', 'users.prenom')
+      ->where('projets.id','=', $id)
+      ->get();
+      if(Gate::allows('showAll', $id)){
+        return view('taches.index', ['taches' =>$liste, 'Projectid' =>$id,'Projectname' =>$name ]);
+      }
+      else{
+        return view('errors.403');
+      }
     }
 
     public function mesTaches($id){
         $id = Projet::find($id)->id;
         $name = Projet::find($id)->nom;
+
 
         $liste = DB::table('delivrables')
         ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
@@ -104,7 +102,7 @@ class TacheController extends Controller
       if ($tache->save()) {
         $respos =  $request->input('ID_chercheur', array());
         foreach ($respos as $key => $ch) {
-            $deli = new Delivrable();
+            $deli = new Livrable();
             $deli->id_respo  =$ch;
             $deli->id_tache =$tache->id;
             $deli->save();
@@ -127,7 +125,9 @@ class TacheController extends Controller
     public function edit($tache)
     {
         $t = Tache::find($tache);
-     	$chercheurs= DB::table('users')
+        $this->authorize('update',$t);
+
+        $chercheurs= DB::table('users')
             ->select('users.id','users.name','users.prenom')
             ->orderby('users.name',"asc")
             ->get();
@@ -175,6 +175,7 @@ class TacheController extends Controller
     public function destroy($tache)
     {
       $tache = Tache::find($tache);
+      $this->authorize('delete',$tache);
       $tache->delete();
       session()->flash('success', 'la tache'.$tache->titreTache. 'a été supprimer définitivement');
       return redirect('taches/tousLesTaches/'.$tache->ID_projet);

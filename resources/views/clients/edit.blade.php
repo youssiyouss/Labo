@@ -55,7 +55,7 @@
              @enderror
           </div>
           <div class="form-group">
-            <label>Adresse*</label>
+            <label>Adresse</label>
             <input type="adresse" class="form-control @error('adresse') is-invalid @enderror" placeholder="adresse de l'etablissement"
              name="adresse" value="{{ $client->adresse }}" required autocomplete="adresse">
              @error('adresse')

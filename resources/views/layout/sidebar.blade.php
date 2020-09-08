@@ -2,7 +2,7 @@
   $projets=DB::table('projets')
        ->join('users', 'users.projetGere', '=', 'projets.id')
        ->select('projets.nom', 'projets.id','users.name', 'users.prenom')
-       ->where('users.id','=',Auth::user()->id)
+       ->where('users.email','=',Auth::user()->email)
        ->get();
 @endphp
 <nav class="sidebar">
