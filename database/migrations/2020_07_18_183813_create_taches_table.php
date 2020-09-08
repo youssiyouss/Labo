@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Carbon\carbon;
 
 class CreateTachesTable extends Migration
 {
@@ -15,10 +16,12 @@ class CreateTachesTable extends Migration
     {
         Schema::create('taches', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('description')->required();
-            $table->Date('dateDebut');
-            $table->Date('dateFin')->nullable();
+            $table->string('titreTache')->required();
+            $table->text('description')->required();
             $table->string('priorite');
+            $table->Date('dateDebut')->default(date("Y-m-d H:i:s"))->nullable();
+            $table->Date('dateFin')->required();
+            $table->string('fichierDetail')->nullable();
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class AddColumnIdProjet extends Migration
     {
         Schema::table('taches', function (Blueprint $table) {
           $table->unsignedBigInteger('ID_projet')->after('id');
-          $table->foreign('ID_projet')->references('id')->on('taches')->onDelete('cascade')->onUpdate('cascade');
+          $table->foreign('ID_projet')->references('id')->on('projets')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

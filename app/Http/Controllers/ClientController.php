@@ -9,9 +9,12 @@ use App\Client;
 
 class ClientController extends Controller
 {
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
+
   public function index() {
-
-
     $x = DB::table('clients')
           ->leftjoin('rfps', 'clients.id', '=', 'rfps.maitreOuvrage')
           ->leftjoin('projets', 'rfps.id', '=', 'projets.ID_rfp')
@@ -51,10 +54,13 @@ class ClientController extends Controller
     $x->adresse = $request->input('adresse');
     $x->site = $request->input('site');
     $x->email = $request->input('email');
+    if ($x->save()) {
+        Session()->flash('success', "le client : ".$x->ets."a été modifié avec succés");
+        } else {
+        Session()->flash('error', 'Modification echouée!!');
+        }
 
-   $x->save();
-  session()->flash('success',"{$x->ets} a été modifié avec succés!");
-  return redirect('clients');
+        return redirect('clients');
   }
 
   public function destroy(Request $request , $id) {

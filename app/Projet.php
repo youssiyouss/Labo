@@ -9,8 +9,8 @@ class Projet extends Model
 {
 
   protected $table = 'projets';
-  protected $fillable = ['ID_rfp', 'ID_chercheur', 'nom', 'fichierDoffre', 'plateForme', 'reponse', 'lettreReponse', 'nmbrParticipants' ,'lancement' , 'cloture','rapportFinal'];
-  protected $dates = ['lancement' , 'cloture'];
+  protected $fillable = ['ID_rfp', 'nom', 'fichierDoffre', 'plateForme', 'reponse', 'lettreReponse', 'nmbrParticipants' ,'lancement' , 'cloture','rapportFinal'];
+  protected $dates = ['lancement' , 'cloture','created_at','updated_at'];
   protected $files = ['fichierDoffre' , 'lettreReponse','rapportFinal'];
 
   public function getLancementAttribute($value){

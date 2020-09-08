@@ -17,9 +17,10 @@ class CreateMaitreOuvrageTable extends Migration
             $table->id();
             $table->string('ets');
             $table->string('email');
-            $table->string('tel');
-            $table->string('adresse');
-            $table->string('site')->nullable();
+            $table->string('tel')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('site');
+            $table->string('pays');
             $table->timestamps();
         });
     }

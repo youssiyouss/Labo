@@ -2102,8 +2102,6 @@ body {
   color: #eef4ff;
   text-align: left;
   background-color: #fff;
-
-}
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -4237,7 +4235,7 @@ pre code {
   display: block;
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: ;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-responsive > .table-bordered {
@@ -8496,7 +8494,6 @@ input[type="button"].btn-block {
 @media (min-width: 576px) {
   .card-deck {
     display: flex;
-    flex-direction: row;
     flex-flow: row wrap;
     margin-right: -15px;
     margin-left: -15px;
@@ -14583,7 +14580,6 @@ div.tagsinput div#tags_addTag input {
 
   body {
     min-width: 992px !important;
-
   }
 
   .container {
@@ -21999,7 +21995,6 @@ input:-webkit-autofill:active {
 body,
 html {
   padding-right: 0 !important;
-
 }
 
 body {
@@ -23311,16 +23306,6 @@ address p {
   padding: 25px;
   margin-top: 60px;
 }
-
-/*.main-wrapper .page-wrapper .page-content{
-     background-image: url('../assets/images/logo_dark.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-origin: border-box;
-    background-position: center center;
-    background-color:#1170DB;
- }*/
-
 
 @media (max-width: 767px) {
   .main-wrapper .page-wrapper .page-content {

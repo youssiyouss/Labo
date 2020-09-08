@@ -18,13 +18,13 @@
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h6 class="card-title">Nouveau maitre d'ouvrage</h6>
+        <h6 class="card-title">Modifier : {{$client->ets}}</h6>
         <form class="form-group" files=true action="{{ url('clients/'.$client->id)}}" method="post" enctype="multipart/form-data">
           <input type="hidden" name="_method" value="PUT">
           {{ csrf_field() }}
 
           <div class="form-group">
-            <label>Nom du maitre d'ouvrage</label>
+            <label>Nom du maitre d'ouvrage*</label>
             <input type="text" class="form-control @error('ets') is-invalid @enderror" placeholder="Nom"
              name="ets" value="{{ $client->ets }}" required autocomplete="ets" autofocus>
              @error('ets')
@@ -35,7 +35,7 @@
           </div>
 
           <div class="form-group">
-            <label>Adresse email</label>
+            <label>Adresse email*</label>
             <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email"
              name="email" value="{{ $client->email }}" required autocomplete="email">
              @error('email')
@@ -65,7 +65,7 @@
              @enderror
           </div>
           <div class="form-group">
-            <label>Site web</label>
+            <label>Site web*</label>
             <input type="url" class="form-control @error('site') is-invalid @enderror" placeholder="https://"
              name="site" value="{{ $client->site }}" required autocomplete="site">
              @error('site')

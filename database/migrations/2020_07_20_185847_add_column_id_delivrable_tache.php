@@ -30,6 +30,7 @@ class AddColumnIdDelivrableTache extends Migration
                       ->on('taches')
                       ->onDelete('cascade')
                       ->onUpdate('cascade');
+
           $table->unique(['id_respo','id_tache']);
           $table->primary(['id_respo','id_tache']);
         });
@@ -44,7 +45,11 @@ class AddColumnIdDelivrableTache extends Migration
     public function down()
     {
         Schema::table('delivrables', function (Blueprint $table) {
-            //
+            $table->dropForeign(['id_respo']);
+            $table->dropForeign(['id_tache']);
+            $table->dropColumn('id_respo')->onDelet('cascade')->onUpdate('cascade');
+            $table->dropColumn('id_tache')->onDelet('cascade')->onUpdate('cascade');
+
         });
     }
 }

@@ -22,7 +22,7 @@
     </button>
   </div>
  @elseif(session()->has('error'))
- <div class="alert alert-success alert-dismissible fade show" role="alert">
+ <div class="alert alert-danger alert-dismissible fade show" role="alert">
    <strong>{{session()->get('error')}} </strong>
    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
      <span aria-hidden="true">&times;</span>
@@ -37,9 +37,9 @@
        <div class="card-body">
            <h4 class="card-title text-warning" align="center">
           <div align="right">
-             <a href="{{ url('projets/create')}}" type="button" class="btn btn-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter une nouvelle soumission"><i data-feather="plus-circle"></i></a>
-          </div>
-           Liste des soumissions</h4>
+             <a href="{{ url('projets/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter une nouvelle soumission"><i data-feather="plus-circle"></i></a>
+          </div>Liste des soumissions
+        </h4>
 
 
          <div class="table-responsive">
@@ -47,17 +47,31 @@
              <thead>
                <tr>
                  <th></th>
+                 <th>Chef de projet</th>
                  <th>Titre du projet</th>
                  <th>RFP du projet</th>
                  <th>Endroit de soumission</th>
                  <th>Fichier de presentation</th>
-
-                 <th></th>
                </tr>
              </thead>
              <tbody>
                @foreach($soumission as $s)
                <tr>
+                <td>
+                    <div class="dropdown mb-2">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+                            <form  action="{{ url('projets/'.$s->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce projet définitivement?')">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('projets/'.$s->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+                          <button type="submit" class="dropdown-item d-flex align-items-center" href="#"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
                  <td class="py-1">
                     <img type="button" data-toggle='popover' title='{{$s->name}} {{ $s->prenom}}' src="{{ asset('storage/'.$s->photo) }}" alt="image">
                 </td>
@@ -87,15 +101,7 @@
                      ?>
                  </td>
 
-                 <td>
-                   <form  action="{{ url('projets/'.$s->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce projet définitivement?')">
-                      {{ csrf_field() }}
-                      {{ method_field('DELETE') }}
-                      <a href="{{ url('projets/'.$s->id.'/edit')}}" type="button" class="btn btn-info"  data-toggle="tooltip" data-placement="bottom" title="soumettre"><i data-feather="edit"></i></a>
-                      <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer projet"><i data-feather="trash"></i></button>
-                   </form>
-                
-                </td>
+
                </tr>
                @endforeach
              </tbody>

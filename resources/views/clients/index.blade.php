@@ -16,7 +16,7 @@
   </button>
 </div>
 @elseif(session()->has('error'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
  <strong>{{session()->get('error')}} </strong>
  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
    <span aria-hidden="true">&times;</span>
@@ -31,17 +31,16 @@
       <div class="card-body">
          <h4 class="card-title text-warning" align="center">
         <div align="right">
-            <a href="{{ url('clients/create')}}" type="button" class="btn btn-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau RFP"><i data-feather="plus-circle"></i></a>
+            <a href="{{ url('clients/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau RFP"><i data-feather="plus-circle"></i></a>
         </div>
          Liste des maitres d'ouvrages
-
        </h4>
          <div class="table-responsive pt-3">
           <table class="table table-striped table-hover table-bordered " style=" font-weight: bold;">
             <thead>
               <tr>
                 <th>
-                  #
+
                 </th>
                 <th>
                   Nom maitre ouvrage
@@ -52,19 +51,30 @@
                 <th>
                 Nombre de projets courants
                 </th>
-                <th>
-                  Plus de details
-                </th>
+
               </tr>
             </thead>
             <tbody>
               @foreach($client as $c)
               <tr>
                 <td>
-                  {{$c->id}}
+                    <div class="dropdown mb-2">
+                        <button class="btn p-0" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+                            <form  action="{{ url('clients/'.$c->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet RFP définitivement?')">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                          <a class="dropdown-item d-flex align-items-center" href="#" title="Contacts" data-toggle="modal" data-target="#element-<?php echo $c->id;?>" title="Voir informations contact" name="button"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('clients/'.$c->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+                          <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                        </form>
+                        </div>
+                      </div>
                 </td>
                 <td>
-                <h6> {{$c->ets}}</h6>
+                <h6>{{$c->id}}- {{$c->ets}}</h6>
                    <footer align="right" class="blockquote-footer"> rejoint le :<cite>{{$c->created_at}}</cite></footer>
                 </td>
                 <td style="font-weight:italic;">
@@ -73,19 +83,7 @@
                 <td>
                    {{$c->NmbrContratActives}}
                 </td>
-                <td colspan="3">
-                  <div class="btn-toolbar">
-                  <div class="btn-group">
-                    <form  action="{{ url('clients/'.$c->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet RFP définitivement?')">
-                     {{ csrf_field() }}
-                     {{ method_field('DELETE') }}
-                   <button  type="button" class="btn btn-light" data-toggle="modal" data-target="#element-<?php echo $c->id;?>" title="Voir informations contact"><i data-feather="phone"></i></button>
-                   <a href="{{ url('clients/'.$c->id.'/edit')}}" type="button" class="btn btn-info"  data-toggle="tooltip" data-placement="bottom" title="Modifier Maitre d'ouvrage"><i data-feather="edit"></i></a>
-                   <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Supprimer Maitre d'ouvrage"><i data-feather="trash"></i></button>
-                  </form>
-                  </div>
-                </div>
-                </td>
+
               </tr>
 
               <div class="modal fade" id="element-<?php echo $c->id;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

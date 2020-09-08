@@ -26,8 +26,8 @@ class ClientRequest extends FormRequest
         return [
           'ets' =>'required','string','unique:clients,ets,'.$this->id,
           'email' =>'required' , 'email','unique:clients,email,' . $this->id,
-          'tel' =>'required','numeric', 'unique:clients,tel,' . $this->id,
-          'adresse' =>'required', 'string','unique:clients,adresse,' . $this->id,
+          'tel' =>'nullable','numeric', 'unique:clients,tel,' . $this->id,
+          'adresse' =>'nullable', 'string','unique:clients,adresse,' . $this->id,
           'site' =>'required',' url','unique:clients,site,' . $this->id,
         ];
     }
@@ -35,11 +35,10 @@ class ClientRequest extends FormRequest
         public function messages()
         {
         return [
-            'ets.required' => "Veuillez indiquer le maitre d'ouvrage !",
-            'email.required' => "Veuillez indiquer le type de cet RFP !",
-            'tel.required' => "Veuillez indiquer la nature de cet RFP !",
-            'adresse.required' => "Veuillez expliquer brièvement en quoi consiste cet RFP !",
-            'site.required' => "Veuillez expliquer brièvement en quoi consiste cet RFP !",
+            'ets.required' => "Veuillez indiquer le nom du maitre d'ouvrage !",
+            'email.required' => "Veuillez indiquer l'email de cete MO' !",
+            'adresse.required' => "Veuillez indiquer l'adresse de cet MO !",
+            'site.required' => "Veuillez indiquer le site web de cet MO !",
             'ets.unique' => "Le nom de ce client existe deja!",
             'email.unique' => "cet adresse mail existe deja!",
             'tel.unique' => "Ce numero exist deja!",

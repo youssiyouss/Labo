@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/chercheurs';
 
     /**
      * Create a new controller instance.
@@ -52,12 +53,6 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'prenom'=> ['required', 'string' , 'max:255'],
-            'tel' => ['required','digits_between:9,10','distinct'],
-            'grade' => ['required','String'],
-            'about' => ['String'],
-            'photo'=> ['mimes:jpeg,bmp,png,jpg','image','filled'],
-
         ]);
     }
 
@@ -69,20 +64,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $x = new User();
-        $x->name= $request->input('name');
-        $x->prenom = $request->input('prenom');
-        $x->tel = $request->input('tel');
-        $x->grade = $request->input('grade');
-        $x->about = $request->input('about');
-        if($request->hasFile('photo')){
-          $x->photo = $request->photo->store('images');
-        }
-        $x->email = $request->input('email');
-        $x->password = Hash::make($request->input('password'));
-
-          $x->save();
-        session()->flash('success',"{$x->name} {$x->prenom} a été ajoutés avec succés!");
-        return redirect('/');
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
     }
 }

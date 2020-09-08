@@ -32,7 +32,7 @@
           {{ csrf_field() }}
 
           <div class="form-group">
-            <label>Maitre d'ouvrage</label>
+            <label>Maitre d'ouvrage*</label>
             <div class="input-group col-xs-12">
               <select class="form-control  @error('maitreOuvrage') is-invalid @enderror"  name="maitreOuvrage" value="{{old('maitreOuvrage', $appeldoffre->maitreOuvrage)}}" required>
                 @foreach($mo as $l)
@@ -61,7 +61,7 @@
             </div>
 
             <div class="form-group">
-              <label>Titre de projet</label>
+              <label>Titre de projet*</label>
               <input type="text" maxlength="150" id="defaultconfig-2" class="form-control @error('titre') is-invalid @enderror" placeholder="..."
               name="titre" value="{{old('titre', $appeldoffre->titre)}}" required unique autocomplete="titre">
                @error('titre')
@@ -72,7 +72,7 @@
             </div>
 
             <div class="form-group">
-              <label>Nature de projet</label>
+              <label>Nature de projet*</label>
               <select class="form-control  @error('type') is-invalid @enderror"  name="type" value="{{old('type', $appeldoffre->type)}}" required>
                   @if (old('type')==$appeldoffre->type)
                       <option value="$appeldoffre->type" selected>{{$appeldoffre->type}}</option>
@@ -89,8 +89,8 @@
               @enderror
             </div>
             <div class="form-group">
-              <label>À propos</label>
-              <textarea class="form-control  @error('resumer') is-invalid @enderror" id="maxlength-textarea"  maxlength="600" rows="7" name="resumer" placeholder="Description du projet .." unique required>{{old('resumer', $appeldoffre->resumer)}}</textarea>
+              <label>À propos*</label>
+              <textarea class="form-control  @error('resumer') is-invalid @enderror" id="maxlength-textarea"  maxlength="1000" rows="7" name="resumer" placeholder="Description du projet .." unique required>{{old('resumer', $appeldoffre->resumer)}}</textarea>
               @error('resumer')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -99,7 +99,7 @@
             </div>
           <div class="form-group row">
                 <div class="col">
-                  <label>Date l'apparition de l'appel</label>
+                  <label>Date l'apparition de l'appel*</label>
                   <div class="input-group" >
                   <input type="date" name="dateAppel" value="{{old('dateAppel', $appeldoffre->dateAppel)}}" class="form-control @error('dateAppel') is-invalid @enderror" required>
                   </div>
@@ -123,7 +123,7 @@
           </div>
           <div class="form-group row">
                     <div class="col">
-                      <label>Date de l'écheance</label>
+                      <label>Date de l'écheance*</label>
                       <div class="input-group" >
                       <input type="date" name="dateEcheance" value="{{old('dateEcheance', $appeldoffre->dateEcheance)}}" class="form-control @error('dateEcheance') is-invalid @enderror" required>
                       @error('dateEcheance')
@@ -139,7 +139,7 @@
                       @enderror
                     </div>
                     <div class="col-md-6">
-                      <label>Heure de l'écheance</label>
+                      <label>Heure de l'écheance*</label>
                       <div class="input-group">
                         <input type="time" name="heureEcheance" value="{{old('heureEcheance', $appeldoffre->heureEcheance)}}" class="form-control @error('heureEcheance') is-invalid @enderror"  required>
                       @error('heureAppel')
@@ -153,10 +153,10 @@
 
 
         <div class="form-group">
-          <label>Source de l'appel d'offre</label>
+          <label>Source de l'appel d'offre*</label>
           <div class="input-group">
             <input type="string" name="sourceAppel" class="form-control @error('sourceAppel') is-invalid @enderror" placeholder="Veuillez entrez le lien/source.. vers l'appel d'offre" name="sourceAppel"
-             value="{{old('sourceAppel', $appeldoffre->sourceAppel)}}" autocomplete="sourceAppel"/><span class="input-group-addon"><i data-feather="link"></i></span>
+             value="{{old('sourceAppel', $appeldoffre->sourceAppel)}}" autocomplete="sourceAppel" required/><span class="input-group-addon"><i data-feather="link"></i></span>
             @error('sourceAppel')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
