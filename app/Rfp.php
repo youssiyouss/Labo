@@ -9,7 +9,7 @@ class Rfp extends Model
 {
     protected $table = 'rfps';
     protected $fillable = ['maitreOuvrage', 'titre', 'type', 'resumer', 'dateAppel', 'echeance', 'sourceAppel', 'fichier'];
-    protected $dates = ['dateAppel' , 'dateEcheance'];
+    protected $dates = ['dateAppel' , 'dateEcheance', 'created_at', 'updated_at'];
     protected $times = ['heureAppel' , 'heureEcheance'];
 
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Tache;
 use App\Projet;
 use App\Livrable;
-use Illuminate\Support\Facades\Gate;
+use App\User;
 use App\Http\Requests\TacheRequest;
 use Illuminate\Support\Facades\DB;
 use auth;
@@ -25,20 +25,21 @@ class TacheController extends Controller
     {
       $id = Projet::find($id)->id;
       $name = Projet::find($id)->nom;
-
-      $liste = DB::table('delivrables')
-      ->join('users', 'delivrables.id_respo', '=', 'users.id')
-      ->join('taches','delivrables.id_tache','taches.id')
-      ->leftJoin('projets', 'projets.id', '=', 'taches.ID_projet')
-      ->select('taches.*', 'projets.nom','users.photo','users.name', 'users.prenom')
+      $chefG=Projet::find($id)->chefDeGroupe;
+      $this->authorize('viewAny',[Tache::class,$chefG]);
+        $livrables = Livrable::all();
+        $respos = User::all();
+      $liste = DB::table('taches')
+      ->join('projets', 'projets.id', '=', 'taches.ID_projet')
+      ->select('taches.*')
       ->where('projets.id','=', $id)
       ->get();
-      if(Gate::allows('showAll', $id)){
-        return view('taches.index', ['taches' =>$liste, 'Projectid' =>$id,'Projectname' =>$name ]);
-      }
-      else{
-        return view('errors.403');
-      }
+
+
+  //      $unique = $liste->unique('delivrables.id_tache');
+//        $unique->values()->all();
+
+        return view('taches.index', ['taches' => $liste, 'respo' => $respos, 'liv' => $livrables, 'Projectid' =>$id,'Projectname' =>$name ]);
     }
 
     public function mesTaches($id){
@@ -50,7 +51,7 @@ class TacheController extends Controller
         ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
         ->join('users', 'users.id', '=', 'delivrables.id_respo')
         ->join('projets', 'projets.id', '=', 'taches.ID_projet')
-        ->select('taches.*', 'projets.nom')
+        ->select('taches.*', 'projets.nom', 'delivrables.avancement')
         ->where([
             ['projets.id', '=', $id],
             ['users.id', '=', Auth::user()->id],
@@ -67,10 +68,9 @@ class TacheController extends Controller
     public function create($id)
     {
       $projet = Projet::find($id)->id;
-      $chercheurs= DB::table('users')
-          ->select('users.id','users.name','users.prenom')
-          ->orderby('users.name',"asc")
-          ->get();
+      $chercheurs= User::all()->unique('email');
+      $chefG=Projet::find($id)->chefDeGroupe;
+      $this->authorize('create',[Tache::class,$chefG]);
           return view('taches.create', ['ch' => $chercheurs , 'ID_projet' => $projet]);
 
     }
@@ -89,29 +89,34 @@ class TacheController extends Controller
       $tache->titreTache  = $request->input('titreTache');
       $tache->description = $request->input('description');
       $tache->priorite = $request->input('priorite');
+      $tache->dateFin = $request->input('dateFin');
       if($request->input('dateDebut') == NULL){
           $tache->dateDebut = Carbon::now();}
       else{
-          $tache->dateDebut = $request->input('dateDebut');}
-      $tache->dateFin = $request->input('dateFin');
+          $tache->dateDebut = $request->input('dateDebut');
+        }
       if($request->hasFile('fichierDetail')){
          $fn= $request->fichierDetail->getClientOriginalName();
       	 $tache->fichierDetail = $request->fichierDetail->storeAs('file',$fn);
       }
 
       if ($tache->save()) {
-        $respos =  $request->input('ID_chercheur', array());
-        foreach ($respos as $key => $ch) {
-            $deli = new Livrable();
-            $deli->id_respo  =$ch;
-            $deli->id_tache =$tache->id;
-            $deli->save();
+          if( $request->input('ID_chercheur', array()))
+          {
+            $respos =  $request->input('ID_chercheur', array());
+            foreach ($respos as $key => $ch) {
+                $deli = new Livrable();
+                $deli->id_respo  =$ch;
+                $deli->id_tache =$tache->id;
+                $deli->avancement ="Non entamé";
+                $deli->save();
+            }
           }
         Session()->flash('success', "la tache : ".$tache->titreTache." a été crée avec succées!!");
     } else {
         Session()->flash('error', 'Enregistrement echouée!!');
     }
-    return redirect('taches/tousLesTaches/'.$tache->ID_projet);
+    return redirect('taches/'.$tache->ID_projet);
 
     }
 
@@ -125,14 +130,15 @@ class TacheController extends Controller
     public function edit($tache)
     {
         $t = Tache::find($tache);
-        $this->authorize('update',$t);
+        $chercheurs =  User::all();
 
-        $chercheurs= DB::table('users')
-            ->select('users.id','users.name','users.prenom')
-            ->orderby('users.name',"asc")
-            ->get();
+        $respo = DB::table('delivrables')
+        ->join('users','users.id','=','delivrables.id_respo')
+        ->select('delivrables.*','users.name','users.prenom','users.id')
+        ->where('delivrables.id_tache', '=', $tache)
+        ->get();
 
-        return view('taches.edit', ['ch' => $chercheurs , 't' => $t]);
+        return view('taches.edit', ['chrch' => $chercheurs ,'respo' => $respo ,'t' => $t]);
 
     }
 
@@ -147,23 +153,51 @@ class TacheController extends Controller
     public function update(Request $request,$id) {
         $tache = Tache::find($id);
         $tache->titreTache  = $request->input('titreTache');
-       //$tache->ID_projet =Session::get('ID_projet');;
         $tache->description = $request->input('description');
         $tache->dateDebut = $request->input('dateDebut');
         $tache->dateFin = $request->input('dateFin');
         $tache->priorite = $request->input('priorite');
-
         if($request->hasFile('fichierDetail')){
          $fn= $request->fichierDetail->getClientOriginalName();
       	 $tache->fichierDetail = $request->fichierDetail->storeAs('file',$fn);
       }
+        if ($tache->save()){
+             $xx=DB::table('delivrables')
+                            ->select('delivrables.*')
+                            ->where('id_tache','=',$tache->id)
+                            ->get(); //le premier responsables de la tache courante
 
-        if ($tache->save()) {
+            $user = $xx->first();
+
+            $xx=count($xx);
+            DB::table('delivrables')->where('id_tache', '=', $tache->id)->delete(); // supprimer tous les livrable pour cette tache
+
+            $respos =  $request->input('ID_chercheur', array());
+
+            foreach ($respos as $key => $ch) { //pour chaque membre sellectionner :
+              if($xx <> 0){
+                    DB::table('delivrables')->insert(                                       //et créer des nouveau
+                        ['id_respo' => $ch,'id_tache' => $tache->id,
+                        'type' => $user->type,'avancement' => $user->avancement,
+                        'commentaire' => $user->commentaire,'contenu' =>$user->contenu
+                        ]);
+              }
+
+
+              else{
+                 $deli = new Livrable();
+                          $deli->id_respo  = $ch;
+                          $deli->id_tache = $tache->id;
+                          $deli->avancement = "Non entamé";
+                          $deli->save();
+              }
+            }
+
         Session()->flash('success', "la tache : '".$tache->titreTache."' a été modifiée avec succées!!");
         } else {
         Session()->flash('error', 'Modification echouée!!');
         }
-        return redirect('taches/tousLesTaches/'.$tache->ID_projet);
+        return redirect('taches/'.$tache->ID_projet);
       }
 
     /**
@@ -175,10 +209,21 @@ class TacheController extends Controller
     public function destroy($tache)
     {
       $tache = Tache::find($tache);
-      $this->authorize('delete',$tache);
       $tache->delete();
       session()->flash('success', 'la tache'.$tache->titreTache. 'a été supprimer définitivement');
-      return redirect('taches/tousLesTaches/'.$tache->ID_projet);
+      return redirect('taches/'.$tache->ID_projet);
+    }
+
+    public function fileViewer($livrable)
+    {
+
+        $file = Tache::find($livrable)->fichierDetail;
+
+        if (Storage::disk('local')->exists($file)) {
+            return response()->file('storage/' . $file);
+        } else {
+            session()->flash('error', "le fichier n'existe pas ");
+        }
     }
 
 
@@ -188,14 +233,14 @@ class TacheController extends Controller
        $infoPath = pathinfo($file->fichierDetail);
        $extension = $infoPath['extension'];
        $name = Str::afterLast($file->fichierDetail, 'file/');
-       print_r($extension);
+    //   print_r($extension);
 
        if (Storage::disk('local')->exists($file->fichierDetail)){
           return response()->download(storage_path("app/public/{$file->fichierDetail}"),$name );
-          Session()->flash('success', "le fichier a été télécharger dans votre ordinateur avec succées!!")->redirect('taches');
+          Session()->flash('success', "le fichier a été télécharger dans votre ordinateur avec succées!!")->redirect('taches/' . $file->ID_projet);
       } else {
         Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
-        return redirect('taches');
+        return redirect('taches/' . $file->ID_projet);
       }
 
      }

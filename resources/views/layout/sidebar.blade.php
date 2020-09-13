@@ -1,8 +1,15 @@
 @php
+  $first = DB::table('projets')
+        ->join('taches', 'taches.ID_projet', '=', 'projets.id')
+        ->join('delivrables',  'taches.id', '=' ,'delivrables.id_tache')
+        ->select('projets.nom', 'projets.id')
+        ->where('delivrables.id_respo','=',Auth::user()->id);
+
   $projets=DB::table('projets')
-       ->join('users', 'users.projetGere', '=', 'projets.id')
-       ->select('projets.nom', 'projets.id','users.name', 'users.prenom')
-       ->where('users.email','=',Auth::user()->email)
+       ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
+       ->select('projets.nom', 'projets.id')
+       ->where('users.id','=',Auth::user()->id)
+       ->union($first)
        ->get();
 @endphp
 <nav class="sidebar">
@@ -73,9 +80,9 @@
       <li class="nav-item nav-category">Gestion des Projets</li>
  @if(count($projets)>0)
       @foreach ($projets as $p)
-      <li class="nav-item">
+      <li class="nav-item ">
         <a href="{{ url('taches/MesTaches/'.$p->id) }}" class="nav-link {{ active_class(['forms/basic-elements']) }}">
-            <span class="link-title" name="monspan">#{{$p->id}} - {{$p->nom}} </span>
+            <span data-toggle="tooltip" data-placement="left" title="#{{$p->id}} -{{$p->nom}}">* {{$p->nom}} </span>
         </a>
       </li>
       @endforeach

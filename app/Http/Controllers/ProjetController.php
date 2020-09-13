@@ -23,7 +23,7 @@ class ProjetController extends Controller
 
      public function index(){
          $liste = DB::table('projets')
-            ->join('users', 'users.projetGere', '=', 'projets.id')
+            ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
             ->select('projets.*', 'users.name', 'users.prenom', 'users.photo')
             ->get();
 	      return view('soumissions.index', ['soumission' =>$liste]);
@@ -66,30 +66,7 @@ class ProjetController extends Controller
      }
 
      if ($soumission->save()) {
-        $chef =User::find(Auth::user()->id);
-
-        if($chef->projetGere==NULL){
-          DB::table('users')
-         ->where('id', Auth::user()->id)
-         ->update(['projetGere' => $soumission->id]);
-        }
-        else{
-         DB::table('users')->insert(
-             [
-             'name' => $chef->name,
-             'prenom'  => $chef->prenom,
-             'tel'  => $chef->tel,
-             'grade'  => $chef->grade,
-             'about'  => $chef->about,
-             'email'  => $chef->email,
-             'password'  => $chef->password,
-             'photo'  => $chef->photo,
-             'projetGere' => $soumission->id,
-             ]
-         );
-        }
-
-     Session()->flash('success', "le projet : ".$soumission->nom." a été ajouté avec succées!!");
+       Session()->flash('success', "le projet : ".$soumission->nom." a été ajouté avec succées!!");
 
     } else {
        session()->flash('error', 'Enregistrement échouée!!');
@@ -157,8 +134,16 @@ class ProjetController extends Controller
   }
  }
 
- public function displayProject($id){
+    public function fileViewer($id)
+    {
+        $file = Projet::find($id)->fichierDoffre;
 
- }
+        if (Storage::disk('local')->exists($file)) {
+            return response()->file('storage/' . $file);
+        } else {
+            session()->flash('error', "le fichier n'existe pas ");
+        }
+    }
+
 
 }

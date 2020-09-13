@@ -18,39 +18,43 @@
  @endif
 
 <div class="col stretch-card">
-    <ul class="nav nav-tabs">
+  <div class="card">
+  <div class="card-header"><ul class="nav nav-tabs">
         <li class="nav-item">
           <a href="{{ url('taches/MesTaches/'.$Projectid)}}" class="nav-link active" aria-selected="true">Mes taches</a>
         </li>
-
+        @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
         <li class="nav-item">
           <a href="{{ url('taches/'.$Projectid)}}" class="nav-link" aria-selected="false">Tous les taches</a>
         </li>
-
+        @endcan
         <li class="nav-item">
-          <a href="{{ url('livrables')}}" class="nav-link" aria-selected="false">Mes livrables</a>
+          <a href="{{ url('livrables/MesLivrables/'.$Projectid)}}" class="nav-link" aria-selected="false">Mes livrables</a>
         </li>
-
+        @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
         <li class="nav-item">
-          <a href="#disabled" class="nav-link" aria-selected="false">Tous les livrables</a>
+          <a href="{{ url('livrables/'.$Projectid)}}" class="nav-link" aria-selected="false">Tous les livrables</a>
         </li>
-
+        @endif
         <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">About</a>
+            <a href="#" class="nav-link" aria-selected="false">À propos du projet</a>
         </li>
+        @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
         <li class="nav-item">
             <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
         </li>
+        @endif
       </ul>
-</div>
-<div class="col stretch-card">
-  <div class="card">
-  <div class="card-header">Mes taches</div>
+    </div>
+  <div class="card-title" align="center">
+            <a class="navbar-brand" href="/home"  data-toggle='tooltip' data-placement='bottom' title="home" style="align-content: right;">
+                <img src="\assets\images\logo_dark.png" width="30" height="30" alt="">
+            </a>
+        {{$Projectname}}
+    </div>
     <div class="card-body">
-        <div class="card-body">
-            <h4 class="card-title text-warning" align="center">
-            {{$Projectname}}
-          </h4>
+        <div class="card-title text-warning"> Mes taches pour le projet
+        </div>
       <div class="card-body table-responsive">
         <table class="table table-hover mb-0">
           <thead>
@@ -97,8 +101,18 @@
                   @endif
                 </td>
               <td>{{$t->dateDebut}}</td>
-              <td>{{$t->dateFin}}</td>
-              <td> </td> <!-- <i>"Str::limit($t->description, 30,'..."')}}   </i> -->
+              <td class="text-danger">{{$t->dateFin}}</td>
+              <td>
+                @if($t->avancement==='Terminée')
+              <span class="badge badge-success">{{$t->avancement}} <i data-feather="check"></i></span></h5>
+            @elseif($t->avancement==='Bientôt disponible')
+              <span class="badge badge-info-muted">{{$t->avancement}}<i data-feather="trending-up"></i></span></h5>
+            @elseif($t->avancement==="J'y travaille")
+              <span class="badge badge-warning">{{$t->avancement}} <i data-feather="loader"></i></span></h5>
+            @elseif($t->avancement==="Non entamé")
+              <span class="badge badge-danger">{{$t->avancement}} <i data-feather="alert-circle"></i></span></h5>
+            @endif
+              </td> <!-- <i>"Str::limit($t->description, 30,'..."')}}   </i> -->
 
               <div class="modal fade bd-example-modal-lg" id="element-<?php echo $t->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -114,12 +128,13 @@
                   </div>
                   @if( $t->fichierDetail )
                   <div align="center">
-                       <a href="{{ url('taches/downloadTache/'.$t->id)}}" style=cursor:pointer; class='btn btn-outline-light' type='button' data-toggle='tooltip' data-placement='bottom' title='Télécharger ce fichier pour plus de detail!' >Télécharger</a>
+                      <a href="{{ url('taches/downloadTache/'.$t->id)}}" style=cursor:pointer; class='btn btn-outline-light' type='button' data-toggle='tooltip' data-placement='bottom' title='Télécharger ce fichier pour plus de detail!' >Télécharger</a>
+                      <a href="{{ url('taches/voir/'.$t->id)}}" style=cursor:pointer; class='btn btn-outline-info' type='button' data-toggle='tooltip' data-placement='bottom' title='Voir le fichier attaché!' >Voir</a>
                   </div>
                   @endif
                     <div class="modal-footer">
-                        <a href="{{ url('livrables/create/'.$Projectid)}}" class="btn btn-primary" type='button'  data-toggle='tooltip' data-placement='bottom' title="soumettre pour cette tâche">Délivrer</a>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="{{ url('livrables/'.$t->id.'/edit/'.$Projectid)}}" class="btn btn-primary" type='button'  data-toggle='tooltip' data-placement='bottom' title="soumettre pour cette tâche">Délivrer</a>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                     </div>
                   </div>
                 </div>

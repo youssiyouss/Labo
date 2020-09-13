@@ -12,8 +12,8 @@
 @section('content')
 <nav class="page-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ url('livrables/'.$projectId)}}">livrable</a></li>
-    <li class="breadcrumb-item active" aria-current="page">soumettre livrable</li>
+    <li class="breadcrumb-item"><a href="{{ url('livrables/MesLivrables/'.$projectId)}}">livrable</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Modifier livrable</li>
   </ol>
 
 </nav>
@@ -36,64 +36,40 @@
  <div class="row">
    <div class="col-md-12 grid-margin stretch-card">
      <div class="card">
+         <div class="card-header text-primary" align="center"> <i>{{$name}}</i></div>
        <div class="card-body">
-         <h6 class="card-title text-warning">Répondre à la tâche qui se rapporte au projet: <i> <span class="text-muted">{{$name}}</span></i></h6>
-         <form method="POST" action="{{ url('livrables')}}" enctype="multipart/form-data">
-           {{ csrf_field()}}
+         <h6 class="card-title text-warning">Livrable de la tâche : <span class="text-muted">{{$tache->titreTache}}</span></h6>
+         @foreach($l as $l)
+         <form class="form-group" files=true action="{{ url('livrables/'.$l->id_tache)}}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="_method" value="PUT">
+          {{ csrf_field() }}
+           @endforeach
 
            <div class="form-group">
-            <label>la tâche concernée*</label>
-             <div class="input-group col-xs-12">
-              <select class="form-control  @error('id_tache') is-invalid @enderror" name="id_tache"  value="{{old('id_tache')}}" required>
-                <option value="">---------Selectionner pour---------</option>
-                @foreach($t as $tache)
-                <option value="{{$tache->id}}"  {{(old('id_tache') ==$tache->id) ? 'selected' : '' }}>{{ $tache->id }}-{{ $tache->titreTache }} </option>
-                @endforeach
-              </select>
-             </div>
-            </div>
-           <div class="form-group">
-             <label>Réalisateur de la tâche*</label>
-             <div class="input-group col-xs-12">
-             <select class="form-control  @error('id_respo') is-invalid @enderror js-example-basic-multiple w-100" multiple="multiple" name="id_respo" value="{{old('id_respo')}}" required>
-                 <option value="">---------Selectionner pour---------</option>
-                 @foreach($ch as $user)
-                 <option value="{{$user->id}}"  {{(old('id_respo') ==$user->id) ? 'selected' : '' }}>{{ $user->id }}-{{ $user->name }} {{ $user->prenom }} </option>
-                 @endforeach
-               </select>
-           </div>
-             @error('id_respo')
-                 <span class="invalid-feedback" role="alert">
-                     <strong>{{ $message }}</strong>
-                 </span>
-             @enderror
-           </div>
            <div class="form-group">
            <label>Type </label>
             <div class="input-group col-xs-12">
-               <input type="string" name="type" class="form-control @error('type') is-invalid @enderror" placeholder="Ex: MCD/ Diagramme de classe/ Diagrame de séquence ..." name="type" value="{{old('type')}}" autocomplete="type" required/>
+               <input type="string" name="type" class="form-control @error('type') is-invalid @enderror" placeholder="Ex: MCD/ Diagramme de classe/ Diagrame de séquence ..." name="type" value="{{old('type', $l->type)}}" autocomplete="type" required/>
             </div>
            </div>
-           
-           <div class="form-group">
              <div class="input-group col-xs-12">
                <label>Progrès</label>
              </div>
 
              <div class="custom-control custom-radio custom-control-inline">
-               <input type="radio" id="customRadioInline1" name="avancement" value="Non entamé" value="{{ old('avancement') }}" class="form-check-input custom-control-input">
+               <input type="radio" id="customRadioInline1" name="avancement" value="Non entamé" @if($l->avancement=='Non entamé') checked @endif class="form-check-input custom-control-input">
                <label class="custom-control-label" for="customRadioInline1">Non entamé </label>
              </div>
              <div class="custom-control custom-radio custom-control-inline">
-               <input type="radio" id="customRadioInline2" name="avancement" value="J'y travaille" value="{{ old('avancement') }}" class="custom-control-input">
+               <input type="radio" id="customRadioInline2" name="avancement" value="J'y travaille" @if($l->avancement=="J'y travaille") checked @endif class="custom-control-input">
                <label class="custom-control-label" for="customRadioInline2">J'y travaille</label>
              </div>
              <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="customRadioInline3" name="avancement" value="Bientôt disponible" value="{{ old('avancement') }}" class="custom-control-input">
+              <input type="radio" id="customRadioInline3" name="avancement" value="Bientôt disponible" @if($l->avancement=='Bientôt disponible') checked @endif class="custom-control-input">
               <label class="custom-control-label" for="customRadioInline3">Bientôt disponible</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="customRadioInline4" name="avancement" value="Terminée" value="{{ old('avancement') }}" class="custom-control-input">
+              <input type="radio" id="customRadioInline4" name="avancement" value="Terminée"  @if($l->avancement=='Terminée') checked @endif class="custom-control-input">
               <label class="custom-control-label" for="customRadioInline4">Terminée</label>
             </div>
 
@@ -106,7 +82,7 @@
 
            <div class="form-group">
              <label>Commentaire</label>
-             <textarea name="commentaire" class="form-control  @error('commentaire') is-invalid @enderror" id="maxlength-textarea"  maxlength="600" rows="8" placeholder="Remarque ou bien indication sur le travail ..">{{old('commentaire')}}</textarea>
+             <textarea name="commentaire" class="form-control  @error('commentaire') is-invalid @enderror" id="maxlength-textarea"  maxlength="600" rows="8" placeholder="Remarque ou bien indication sur le travail ..">{{old('commentaire', $l->commentaire)}}</textarea>
              @error('commentaire')
                  <span class="invalid-feedback" role="alert">
                      <strong>{{ $message }}</strong>
@@ -115,7 +91,7 @@
            </div>
            <div class="form-group">
              <label>Délivrable</label>
-             <input name="contenu" type="file" class="btn btn-outline-warning" id="myDropify" value="{{old('contenu')}}" class="form-group  @error('contenu') is-invalid @enderror"/>
+             <input name="contenu" type="file" class="btn btn-outline-warning" id="myDropify"  value="{{old('contenu', $l->contenu)}}"  class="form-group  @error('contenu') is-invalid @enderror"/>
              @error('contenu')
                  <span class="invalid-feedback" role="alert">
                      <strong>{{ $message }}</strong>
@@ -123,10 +99,11 @@
              @enderror
            </div>
 
-                      <button class="btn btn-primary" type="submit"> {{__('Ajouter')}} <i data-feather="save"></i></button>
-                      <a href="{{ url('livrables/'.$projectId) }}" class="btn btn-danger"> Annuler <i data-feather="x-square"></i></a>
+                      <button class="btn btn-primary" type="submit"> {{__('Modifier')}} <i data-feather="save"></i></button>
+                      <a href="{{ url('livrables/MesLivrables/'.$projectId)}}" class="btn btn-danger"> Annuler <i data-feather="x-square"></i></a>
 
          </form>
+
        </div>
      </div>
    </div>

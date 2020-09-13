@@ -9,7 +9,7 @@ class Projet extends Model
 {
 
   protected $table = 'projets';
-  protected $fillable = ['ID_rfp', 'nom', 'fichierDoffre', 'plateForme', 'reponse', 'lettreReponse', 'nmbrParticipants' ,'lancement' , 'cloture','rapportFinal'];
+  protected $fillable = ['ID_rfp','chefDeGroupe', 'nom', 'fichierDoffre', 'plateForme', 'reponse', 'lettreReponse', 'nmbrParticipants' ,'lancement' , 'cloture','rapportFinal'];
   protected $dates = ['lancement' , 'cloture','created_at','updated_at'];
   protected $files = ['fichierDoffre' , 'lettreReponse','rapportFinal'];
 

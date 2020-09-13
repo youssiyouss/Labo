@@ -2,19 +2,22 @@
 
 namespace App\Policies;
 
+use App\Livrable;
 use App\Tache;
 use App\User;
 use App\Projet;
 use Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TachePolicy
 {
     use HandlesAuthorization;
 
-    public function showAll($projet)
+
+    public function access(User $user ,int $projet)
     {
-        return Auth::user()->projetGere === $projet;
+        return $user->id === $projet;
     }
 
     /**
@@ -23,9 +26,10 @@ class TachePolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user,Tache $tache)
+    public function viewAny(User $user,int $projet)
     {
-       // return $user->projetGere ===$tache->ID_projet;
+        return $user->id === $projet;
+
     }
 
     /**
@@ -35,23 +39,21 @@ class TachePolicy
      * @param  \App\Tache  $tache
      * @return mixed
      */
-    public function view(User $user, Tache $t)
+    public function view(User $user, Livrable $livrables)
     {
-
-
+     //   return $user->id === $livrables->id_respo;
     }
 
     /**
      * Determine whether the user can create models.
      *
      * @param  \App\User  $user
-     * @param  \App\Projet  $projet
      *
      * @return mixed
      */
-    public function create(User $user,Projet $projet)
+    public function create(User $user,int $projet)
     {
-        return $user->projetGere === $projet->id; // je peux ajouter une tache que lorsque le projet courent m'appartient
+        return $user->id === $projet ; // je peux ajouter une tache que lorsque le projet courent m'appartient
     }
 
 
@@ -62,10 +64,11 @@ class TachePolicy
      * @param  \App\Tache  $tache
      * @return mixed
      */
-    public function update(User $user, Tache $tache)
+    public function update(User $user, Projet $projet)
     {
 
-        return $user->projetGere === $tache->ID_projet; // je peux modifier une tache que lorsque cette tache appartient au projet que je gére
+        return $user->id === $projet->chefDegroupe;
+    //    return $user->projetGere === $tache->ID_projet; // je peux modifier une tache que lorsque cette tache appartient au projet que je gére
     }
 
     /**
@@ -75,9 +78,10 @@ class TachePolicy
      * @param  \App\Tache  $tache
      * @return mixed
      */
-    public function delete(User $user, Tache $tache)
+    public function delete(User $user, Projet $projet)
     {
-        return $user->projetGere === $tache->ID_projet; // je peux pas supprimer une tache que lorsque cette tache appartient au projet que je gére
+        return $user->id === $projet->chefDegroupe;
+     //   return $user->projetGere === $tache->ID_projet; // je peux pas supprimer une tache que lorsque cette tache appartient au projet que je gére
 
     }
 

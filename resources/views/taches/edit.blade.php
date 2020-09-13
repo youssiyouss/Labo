@@ -53,24 +53,16 @@
               @enderror
            </div>
            <div class="form-group">
-             <label>Membre responssable*</label>
+             <label>Membre responssable</label>
              <div class="input-group col-xs-12">
-                <select class="form-control  @error('ID_chercheur') is-invalid @enderror"  name="ID_chercheur" value="{{old('ID_chercheur', $t->ID_chercheur)}}" required>
-                    @foreach($ch as $user)
-                      @if (old('ID_chercheur')==$user->id)
-                            <option value={{$user->id}} selected>{{$user->id}}-{{ $user->name }} {{ $user->prenom }}</option>
-                        @else
-                            <option value={{$user->id}} >{{$user->id}}-{{ $user->name }} {{ $user->prenom }}</option>
-                        @endif
-
-                     @error('ID_chercheur')
-                         <span class="invalid-feedback" role="alert">
-                             <strong>{{ $message }}</strong>
-                         </span>
-                     @enderror
-                    @endforeach
+                <select class="form-control  @error('ID_chercheur') is-invalid @enderror js-example-basic-multiple w-100" multiple="multiple" name="ID_chercheur[]" value="{{old('ID_chercheur', $t->ID_chercheur)}}">
+                        @foreach($respo as $r)
+                            <option value="{{$r->id}}" selected >{{ $r->id }}-{{ $r->name }} {{ $r->prenom }} </option>
+                        @endforeach
+                        @foreach($chrch as $user)
+                            <option value="{{$user->id}}" {{(old('ID_chercheur') ==$user->id) ? 'selected' : '' }}>{{ $user->id }}-{{ $user->name }} {{ $user->prenom }} </option>
+                        @endforeach
                   </select>
-
            </div>
              @error('ID_chercheur')
                  <span class="invalid-feedback" role="alert">
@@ -134,8 +126,7 @@
            </div>
            <div class="form-group">
              <label>Description*</label>
-             <textarea name="description" class="form-control  @error('description') is-invalid @enderror" id="maxlength-textarea"  maxlength="800" rows="8" placeholder="Description de la tache .." required>
-                {{old('description',$t->description)}}</textarea>
+             <textarea name="description" class="form-control  @error('description') is-invalid @enderror" id="maxlength-textarea"  maxlength="800" rows="8" placeholder="Description de la tache .." required>{{old('description',$t->description)}}</textarea>
              @error('description')
                  <span class="invalid-feedback" role="alert">
                      <strong>{{ $message }}</strong>

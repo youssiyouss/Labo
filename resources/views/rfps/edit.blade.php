@@ -36,19 +36,18 @@
             <div class="input-group col-xs-12">
               <select class="form-control  @error('maitreOuvrage') is-invalid @enderror"  name="maitreOuvrage" value="{{old('maitreOuvrage', $appeldoffre->maitreOuvrage)}}" required>
                 @foreach($mo as $l)
-                  @if (old('maitreOuvrage')==$l->id)
+                    @if (old('maitreOuvrage')==$l->id)
                         <option value={{$l->id}} selected>{{$l->id}}-{{ $l->ets }}</option>
                     @else
                         <option value={{$l->id}} >{{$l->id}}-{{ $l->ets }}</option>
                     @endif
-
+                @endforeach
+              </select>
                  @error('maitreOuvrage')
                      <span class="invalid-feedback" role="alert">
                          <strong>{{ $message }}</strong>
                      </span>
                  @enderror
-                @endforeach
-              </select>
               <span class="input-group-append">
                 <a href="{{ url('clients/create')}}" class="btn btn-outline-info" target="_blank" onsubmit="return confirm('Voulez-vous ajouter un nouveau maitre d'ouvrage dans le laboratoire!')"> Ajouter </a>
               </span>

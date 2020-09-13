@@ -106,7 +106,8 @@
                               $lien=$rfp->id;
                            if ($rfp->fichier!=null) {
                             echo " <a href='rfps/dowlaodRfp/".$lien."' style=cursor:pointer; class='btn btn-outline-primary' type='button' data-toggle='tooltip' data-placement='bottom' title='Cliquez ici pour télécharger cet RFP!' >Télécharger RFP</a>";
-                          }else{
+                            echo " <a href='rfps/voir/".$lien."' style=cursor:pointer; class='btn btn-outline-info' type='button' data-toggle='tooltip' data-placement='bottom' title='Voir le fichier attaché!' >Voir</a>";
+                        }else{
                             echo "<button class='btn btn-primary' data-dismiss='modal' aria-label='Close' type='button'  data-toggle='tooltip' data-placement='bottom' title='Aucun fichier a télécharger!'>OK</a>";
                           }
                           ?>
