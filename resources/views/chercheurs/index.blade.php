@@ -67,7 +67,7 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                           <a class="dropdown-item d-flex align-items-center" href="{{ url('chercheurs/'.$ch->id)}}"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
-                          <!-- <a class="dropdown-item d-flex align-items-center" href="{{ url('chercheurs/'.$ch->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>-->
+                          @if($ch->grade === 'Directeur') <a class="dropdown-item d-flex align-items-center" href="{{ url('chercheurs/'.$ch->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>  @endif
                           <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
                         </form>
                         </div>

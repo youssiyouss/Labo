@@ -56,6 +56,17 @@ class RfpController extends Controller
    	      return view('rfps.index', ['appeldoffre' =>$listeM]);
       }
 
+
+    public function show($id)
+    {
+        $appeldoffre = DB::table('rfps')
+            ->join('clients', 'clients.id', '=', 'rfps.maitreOuvrage')
+            ->select('rfps.*', 'clients.ets')
+            ->first();
+        return view('rfps.show', ['rfp' => $appeldoffre ]);
+    }
+
+
       public function create(){
         $maitreOuvrages = DB::table('clients')
             ->select('clients.id','clients.ets')
@@ -147,6 +158,16 @@ class RfpController extends Controller
         return redirect('rfps');
     }
   }
+    public function fileViewer($rfp)
+    {
+        $file = Rfp::find($rfp)->fichier;
+
+        if (Storage::disk('local')->exists($file)) {
+            return response()->file('storage/' . $file);
+        } else {
+            session()->flash('error', "le fichier n'existe pas ");
+        }
+    }
 
 
 

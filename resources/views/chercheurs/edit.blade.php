@@ -104,7 +104,7 @@
               @if (old('grade')==$chrch->grade)
                   <option value="$chrch->grade" selected>{{$chrch->grade}}</option>
               @else
-              <option value="Directeur">Directeur</option>
+@if($chrch->grade === 'Directeur') <option value="Directeur">Directeur</option>@endif
               <option value="Chercheur">Chercheur</option>
               <option value="Enseignant-Chercheur">Enseignant-Chercheur</option>
               <option value="Chercheur post-doctorants">Chercheur post-doctorants</option>

@@ -75,9 +75,11 @@
                  <td class="py-1">
                     <img type="button" data-toggle='popover' title='{{$s->name}} {{ $s->prenom}}' src="{{ asset('storage/'.$s->photo) }}" alt="image">
                 </td>
-                 <td><b>{{$s->id}}</b>_{{$s->nom}}
-                <div class="text-muted" align="right"> <br>{{$s->created_at}}</div>  </td>
-                 <td><a href="{{ url('rfps')}}" data-toggle="popover" title="Voir l'appel d'offre de cette soumission" target="_blank">{{$s->ID_rfp}}</a></td>
+                 <td>
+                     <b>{{$s->id}}</b>_{{$s->nom}}
+                     <div class="text-muted" align="right"> <br>{{$s->created_at}}</div>
+                </td>
+                 <td>#<a href="{{ url('rfps/'.$s->ID_rfp)}}" data-toggle="popover" title="Voir l'appel d'offre de cette soumission" target="_blank">{{$s->ID_rfp}}</a></td>
                  <td>
                    <?php $lien= $s->plateForme;
                     if (!filter_var($lien, FILTER_VALIDATE_URL) === false) {

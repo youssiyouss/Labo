@@ -20,7 +20,8 @@ class CreateMaitreOuvrageTable extends Migration
             $table->string('tel')->nullable();
             $table->string('adresse')->nullable();
             $table->string('site');
-            $table->string('pays');
+            $table->string('pays')->nullable();
+            $table->string('ville')->nullable();
             $table->timestamps();
         });
     }

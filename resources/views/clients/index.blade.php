@@ -46,6 +46,9 @@
                   Nom maitre ouvrage
                 </th>
                 <th>
+                  Emplacement
+                </th>
+                <th>
                  Nombre d'appels
                 </th>
                 <th>
@@ -76,6 +79,9 @@
                 <td>
                 <h6>{{$c->id}}- {{$c->ets}}</h6>
                    <footer align="right" class="blockquote-footer"> rejoint le :<cite>{{$c->created_at}}</cite></footer>
+                </td>
+                <td>
+                    {{$c->ville}}/{{$c->pays}}
                 </td>
                 <td style="font-weight:italic;">
                    {{$c->NmbrContrat}}

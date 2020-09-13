@@ -25,10 +25,12 @@ Route::resource('chercheurs','UserController');
 //rfps
 Route::resource('rfps','RfpController');
 Route::get('rfps/dowlaodRfp/{id}','RfpController@fileDownloader');
+Route::get('rfps/voir/{id}', 'RfpController@fileViewer');
 
 //soumissions
 Route::resource('projets','ProjetController');
 Route::get('projets/dowlaodProjet/{id}','ProjetController@fileDownloader');
+Route::get('projets/voir/{id}', 'ProjetController@fileViewer');
 
 //Maitre ouvrages
 Route::resource('clients','ClientController');
@@ -43,16 +45,28 @@ Route::get('taches/{id}/edit','TacheController@edit');
 Route::put('taches/{id}','TacheController@update');
 Route::delete('taches/{id}','TacheController@destroy');
 
-//Route::resource('taches','TacheController');
-
 Route::get('taches/downloadTache/{id}','TacheController@fileDownloader');
+Route::get('taches/voir/{id}', 'TacheController@fileViewer');
 Route::get('taches/{id}','TacheController@index');
 Route::get('taches/MesTaches/{id}','TacheController@mesTaches');
 
 
-Route::resource('livrables','livrableController');
+//Livrables
+Route::get('livrables/{id}', 'livrableController@show');
+Route::get('livrables/{id}/show', 'livrableController@show');
+Route::get('livrables', 'livrableController@index');
+Route::get('livrables/create/{id}', 'livrableController@create');
+Route::post('livrables', 'livrableController@store');
+Route::get('livrables/{id}/edit/{projet}', 'livrableController@edit');
+Route::put('livrables/{id}', 'livrableController@update');
+Route::delete('livrables/{id}', 'livrableController@destroy');
 
-Route::get('livrables/create/{id}','livrableController@create');
+Route::get('livrables/downloadLivrables/{id}', 'livrableController@fileDownloader');
+Route::get('livrables/voir/{id}', 'livrableController@fileViewer');
+
+Route::get('livrables/{id}', 'livrableController@index');
+Route::get('livrables/MesLivrables/{id}', 'livrableController@mesLivrables');
+
 
 
 // Route::group(['prefix' => 'email'], function(){

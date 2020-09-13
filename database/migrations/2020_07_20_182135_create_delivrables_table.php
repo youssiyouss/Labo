@@ -14,6 +14,7 @@ class CreateDelivrablesTable extends Migration
     public function up()
     {
         Schema::create('delivrables', function (Blueprint $table) {
+            $table->string('type')->nullable();
             $table->string('contenu')->nullable();
             $table->string('avancement')->nullable()->default('non entamé');
             $table->text('commentaire')->nullable();

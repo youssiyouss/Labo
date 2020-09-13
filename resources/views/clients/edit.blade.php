@@ -44,6 +44,29 @@
                  </span>
              @enderror
           </div>
+          <div class="form-group row">
+            <div class="col-sm-6">
+              <label>Pays</label>
+              <input type="text" class="form-control @error('pays') is-invalid @enderror" placeholder="Pays du maitre d'ouvrage"
+               name="pays" value="{{ $client->pays }}" required autocomplete="pays" autofocus>
+               @error('pays')
+                   <span class="invalid-feedback" role="alert">
+                       <strong>{{ $message }}</strong>
+                   </span>
+               @enderror
+            </div>
+            <div class="col-sm-6">
+
+           <label>Ville</label>
+           <input type="text" class="form-control @error('ville') is-invalid @enderror" placeholder="Ville du maitre d'ouvrage"
+            name="ville" value="{{ $client->ville }}" required autocomplete="ville" autofocus>
+            @error('ville')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            </div>
+          </div>
           <div class="form-group">
             <label>Numèro telephone</label>
             <input type="tel" class="form-control @error('tel') is-invalid @enderror" placeholder="(+231)-- -- -- --"

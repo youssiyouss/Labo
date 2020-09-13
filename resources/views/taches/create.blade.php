@@ -43,7 +43,7 @@
 
            <div class="form-group">
              <label>Nom de la tache*</label>
-             <input type="text" class="form-control @error('nom') is-invalid @enderror" name="titreTache" value="{{ old('titreTache') }}" required unique autocomplete="titreTache" autofocus>
+             <input type="text" class="form-control @error('titreTache') is-invalid @enderror" name="titreTache" value="{{ old('titreTache') }}" required unique autocomplete="titreTache" autofocus>
               @error('titreTache')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -51,15 +51,15 @@
               @enderror
            </div>
            <div class="form-group">
-             <label>Membre responssable*</label>
+             <label>Membre responssable</label>
              <div class="input-group col-xs-12">
-               <select class="form-control  @error('ID_chercheur') is-invalid @enderror js-example-basic-multiple w-100" multiple="multiple" name="ID_chercheur[]" required>
+               <select class="form-control  @error('ID_chercheur') is-invalid @enderror js-example-basic-multiple w-100" multiple="multiple" name="ID_chercheur[]">
                  <option value="">---------Selectionner pour---------</option>
                  @foreach($ch as $user)
                  <option value="{{$user->id}}"  {{(old('ID_chercheur') ==$user->id) ? 'selected' : '' }}>{{ $user->id }}-{{ $user->name }} {{ $user->prenom }} </option>
                  @endforeach
                </select>
-           </div>
+             </div>
              @error('ID_chercheur')
                  <span class="invalid-feedback" role="alert">
                      <strong>{{ $message }}</strong>
