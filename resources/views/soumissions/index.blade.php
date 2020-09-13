@@ -63,12 +63,17 @@
                           <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('projets/'.$s->id)}}"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                            @if (Auth::user()->can('voir',[App\Projet::class,$s->chefDeGroupe]))
                             <form  action="{{ url('projets/'.$s->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce projet définitivement?')">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
-                          <a class="dropdown-item d-flex align-items-center" href="{{ url('projets/'.$s->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
-                          <button type="submit" class="dropdown-item d-flex align-items-center" href="#"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ url('projets/'.$s->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+                                <button type="submit" class="dropdown-item d-flex align-items-center" href="#"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
                             </form>
+                        @endif
+
                         </div>
                     </div>
                 </td>

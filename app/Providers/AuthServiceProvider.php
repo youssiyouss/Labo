@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Tache' => 'App\Policies\TachePolicy',
         'App\Projet' => 'App\Policies\ProjetPolicy',
          Tache::class => TachePolicy::class,
+         Projet::class => ProjetPolicy::class,
 
     ];
 
