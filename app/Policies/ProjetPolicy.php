@@ -18,7 +18,7 @@ class ProjetPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class ProjetPolicy
      */
     public function view(User $user, Projet $projet)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class ProjetPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,8 +53,14 @@ class ProjetPolicy
      */
     public function update(User $user, Projet $projet)
     {
-        //
+        return  $user->id === $projet->chefDeGroupe;
     }
+
+    public function voir(User $user, int $chefDeGroupe)
+    {
+        return  $user->id === $chefDeGroupe;
+    }
+
 
     /**
      * Determine whether the user can delete the model.
@@ -65,7 +71,7 @@ class ProjetPolicy
      */
     public function delete(User $user, Projet $projet)
     {
-        //
+        return  $user->id === $projet->chefDeGroupe || $user->grade ==='Directeur';
     }
 
     /**
@@ -77,7 +83,7 @@ class ProjetPolicy
      */
     public function restore(User $user, Projet $projet)
     {
-        //
+        return  $user->id === $projet->chefDeGroupe || $user->grade === 'Directeur';
     }
 
     /**

@@ -76,7 +76,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
               @if($l->contenu != Null)
-              <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/voir/'.$l->id_tache)}}"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+              <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/voir/'.$l->id_tache)}}" target=_blank><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
               <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/downloadLivrables/'.$l->id_tache)}}"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Download</span></a>
             @endif
              <form  action="{{ url('livrables/'.$l->id_tache)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce livrable définitivement?')">

@@ -29,9 +29,11 @@ Route::get('rfps/voir/{id}', 'RfpController@fileViewer');
 
 //soumissions
 Route::resource('projets','ProjetController');
-Route::get('projets/dowlaodProjet/{id}','ProjetController@fileDownloader');
-Route::get('projets/voir/{id}', 'ProjetController@fileViewer');
-
+Route::get('projets/dowlaodProjet/{id}', 'ProjetController@fileDownloader');
+Route::get('projets/dowlaodProjet1/{id}','ProjetController@fileDownloader1');
+Route::get('projets/voir1/{id}', 'ProjetController@fileViewer1');
+Route::get('projets/voir2/{id}', 'ProjetController@fileViewer2');
+Route::get('projets/voir3/{id}', 'ProjetController@fileViewer3');
 //Maitre ouvrages
 Route::resource('clients','ClientController');
 

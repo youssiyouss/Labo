@@ -25,9 +25,23 @@ class ProjetController extends Controller
          $liste = DB::table('projets')
             ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
             ->select('projets.*', 'users.name', 'users.prenom', 'users.photo')
+            ->orderBy('projets.chefDeGroupe')
             ->get();
 	      return view('soumissions.index', ['soumission' =>$liste]);
      }
+
+    public function show($id)
+    {
+        $projet= DB::table('projets')
+        ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
+        ->join('rfps', 'rfps.id', '=', 'projets.ID_rfp')
+        ->leftjoin('clients', 'clients.id', '=', 'rfps.maitreOuvrage')
+        ->select('projets.*', 'users.name', 'users.prenom','rfps.titre','clients.ets')
+        ->where('projets.id','=',$id)
+        ->orderBy('projets.chefDeGroupe')
+        ->first();
+        return view('soumissions.show', ['projet' => $projet]);
+    }
 
      public function create(){
           $rfps = DB::table('rfps')
@@ -75,8 +89,10 @@ class ProjetController extends Controller
 
  }
   public function edit($id){
-     	$soumission = Projet::find($id);
-      $first = DB::table('rfps')->select('rfps.id','rfps.titre','rfps.type')->get();
+
+        $soumission = Projet::find($id);
+        $this->authorize('update', $soumission);
+        $first = DB::table('rfps')->select('rfps.id','rfps.titre','rfps.type')->get();
      		return view('soumissions.edit', ['soumission' => $soumission,'rfps'=>$first ]);
      }
 
@@ -134,7 +150,20 @@ class ProjetController extends Controller
   }
  }
 
-    public function fileViewer($id)
+
+    public function fileDownloader1($id)
+    {
+        $file = Projet::find($id);
+        $name = Str::afterLast($file->rapportFinal, 'file/');
+        if (Storage::disk('local')->exists($file->rapportFinal)) {
+            return response()->download(storage_path("app/public/{$file->rapportFinal}"), $name);
+            session()->flash('success', "Téléchargement du rapport final..")->redirect('projets');
+        } else {
+            Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
+            return redirect('projets');
+        }
+    }
+    public function fileViewer1($id)
     {
         $file = Projet::find($id)->fichierDoffre;
 
@@ -144,6 +173,25 @@ class ProjetController extends Controller
             session()->flash('error', "le fichier n'existe pas ");
         }
     }
+    public function fileViewer2($id)
+    {
+        $file = Projet::find($id)->lettreReponse;
 
+        if (Storage::disk('local')->exists($file)) {
+            return response()->file('storage/' . $file);
+        } else {
+            session()->flash('error', "le fichier n'existe pas ");
+        }
+    }
+    public function fileViewer3($id)
+    {
+        $file = Projet::find($id)->rapportFinal;
+
+        if (Storage::disk('local')->exists($file)) {
+            return response()->file('storage/' . $file);
+        } else {
+            session()->flash('error', "le fichier n'existe pas ");
+        }
+    }
 
 }

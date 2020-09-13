@@ -65,7 +65,7 @@
               <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
-             @if($l->contenu != Null)  <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/voir/'.$l->id_tache)}}"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>@endif
+             @if($l->contenu != Null)  <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/voir/'.$l->id_tache)}}" target=_blank><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>@endif
               <a class="dropdown-item d-flex align-items-center" href="{{url('livrables/'.$l->id_tache.'/edit/'.$Projectid)}}" ><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
             </div>
           </div>

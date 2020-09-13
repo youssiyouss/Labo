@@ -28,7 +28,7 @@
         <li class="nav-item">
           <a href="{{ url('taches/'.$Projectid)}}" class="nav-link active" aria-selected="false">Tous les taches</a>
         </li>
-        @endcan
+        @endif
         <li class="nav-item">
           <a href="{{ url('livrables/MesLivrables/'.$Projectid)}}" class="nav-link" aria-selected="false">Mes livrables</a>
         </li>
@@ -132,7 +132,7 @@
                   @if( $t->fichierDetail )
                   <div align="center">
                       <a href="{{ url('taches/downloadTache/'.$t->id)}}" style=cursor:pointer; class='btn btn-outline-light' type='button' data-toggle='tooltip' data-placement='bottom' title='Télécharger ce fichier pour plus de detail!' >Télécharger</a>
-                      <a href="{{ url('taches/voir/'.$t->id)}}" style=cursor:pointer; class='btn btn-outline-info' type='button' data-toggle='tooltip' data-placement='bottom' title='Voir le fichier attaché!' >Voir</a>
+                      <a href="{{ url('taches/voir/'.$t->id)}}" target=_blank style=cursor:pointer; class='btn btn-outline-info' type='button' data-toggle='tooltip' data-placement='bottom' title='Voir le fichier attaché!' >Voir</a>
                   </div>
                   @endif
                     <div class="modal-footer">

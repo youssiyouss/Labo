@@ -103,7 +103,7 @@
                                                <option value="Accepté avec reserve"  {{ old('reponse') == 'Accepté avec reserve' ? 'selected' : '' }}>Accepté avec reserve</option>
                                             </select>
                                             <span class="input-group-append">
-                                               <input name="lettreReponse" type="file" accept=".jpg,.png,.jpeg,.doc,.docx,application/msword,application/pdf,text/plain,application/vnd.ms-powerpoint,text/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                               <input name="lettreReponse" type="file" accept=".jpg,.png,.jpeg,application/pdf,application/vnd.ms-powerpoint"
                                                 class="btn btn-outline-warning form-group  @error('lettreReponse') is-invalid @enderror" value="{{old('lettreReponse', $soumission->lettreReponse)}}" />  -Veuillez Joinder la lettre de reponse
                                              </span>
                                              @error('lettreReponse')
