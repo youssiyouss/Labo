@@ -50,8 +50,8 @@
                  <th>Chef de projet</th>
                  <th>Titre du projet</th>
                  <th>RFP du projet</th>
-                 <th>Endroit de soumission</th>
-                 <th>Fichier de presentation</th>
+                 <th>Réponse</th>
+                 <th>Présentation</th>
                </tr>
              </thead>
              <tbody>
@@ -80,28 +80,21 @@
                  <td class="py-1">
                     <img type="button" data-toggle='popover' title='{{$s->name}} {{ $s->prenom}}' src="{{ asset('storage/'.$s->photo) }}" alt="image">
                 </td>
-                 <td>
+                 <td data-toggle='popover' title="{{$s->created_at}}">
                      <b>{{$s->id}}</b>_{{$s->nom}}
-                     <div class="text-muted" align="right"> <br>{{$s->created_at}}</div>
+                     <div class="text-muted" align="right"> <br>{{(new Carbon\Carbon($s->created_at))->locale('fr')->diffForHumans()}}</div>
                 </td>
                  <td>#<a href="{{ url('rfps/'.$s->ID_rfp)}}" data-toggle="popover" title="Voir l'appel d'offre de cette soumission" target="_blank">{{$s->ID_rfp}}</a></td>
                  <td>
-                   <?php $lien= $s->plateForme;
-                    if (!filter_var($lien, FILTER_VALIDATE_URL) === false) {
-                      echo " <a href='".$lien."' target=_blank>$lien</a>";
-
-                   }else {
-                    echo "$lien";
-                   }
-                   ?>
-
+                   @if($s->reponse) {{$s->reponse}} @else <p class="text-muted">Aucune réponse</p>  @endif
                  </td>
                  <td>
                     <?php
-                         $lien=$s->id;
+                        $lien=$s->id;
                       if ($s->fichierDoffre!=null) {
                         $name=substr($s->fichierDoffre, 5);
-                       echo "<a href='projets/dowlaodProjet/".$lien."' style=cursor:pointer; data-toggle='popover' title='Télécharger fichier!'>".$name."</a>";
+
+                       echo "<a href='projets/dowlaodProjet/".$lien."' style=cursor:pointer; data-toggle='popover' title='Télécharger fichier!'>".Str::limit($name, 20,'..."')."</a>";
                      }else {
                        echo "Aucun fichier";
                      }

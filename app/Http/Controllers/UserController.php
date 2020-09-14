@@ -78,7 +78,7 @@ class UserController extends Controller
           }
        $x->save();
       session()->flash('success',"{$x->name} {$x->prenom} a été modifié avec succés!");
-      return redirect('chercheurs');
+      return redirect('/home');
       }
 
       public function destroy(Request $request , $id) {

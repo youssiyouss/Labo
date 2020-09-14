@@ -125,6 +125,12 @@ class LivrableController extends Controller
     {
         $projet = Projet::find($id)->id;
         $p = Projet::find($id)->nom;
+        $policy = DB::table('delivrables')
+                    ->select('delivrables.*')
+                    ->where([['delivrables.id_respo', '=', Auth::user()->id],['delivrables.id_tache', '=',$livrable]])
+                    ->first();
+
+        $this->authorize('update', [Auth::user(),$policy]);
         $tache = DB::table('delivrables')
                 ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
                 ->select('taches.titreTache')
@@ -191,7 +197,14 @@ class LivrableController extends Controller
         $ll=DB::table('taches')
             ->select('taches.titreTache', 'taches.ID_projet')
             ->where('taches.id', '=', $livrable)
-            ->get();
+            ->first();
+
+        $policy = DB::table('projets')
+            ->select('projets.chefDeGroupe')
+            ->where('projets.id', '=', $ll->ID_projet)
+            ->first();
+
+        $this->authorize('update', [Auth::user(), $policy]);
 
         $l= DB::table('delivrables')
             ->select('delivrables.*')
@@ -200,13 +213,13 @@ class LivrableController extends Controller
 
         if($l){
 
-            session()->flash('success', 'le livrable de la tache' . $ll->titreTache . 'a été supprimer avec succés');
+            session()->flash('success', 'le livrable de la tache :' . $ll->titreTache . 'a été supprimer avec succés');
         }
         else{
-            session()->flash('error', 'le livrable de la tache' .  $ll->titreTache . "n'a pas été supprimer!");
+            session()->flash('error', 'le livrable de la tache :' .  $ll->titreTache . "n'a pas été supprimer!");
 
         }
-        return redirect('livrables/MesLivrables/' . $ll->ID_projet);
+        return redirect('livrables/' . $ll->ID_projet);
     }
 
 

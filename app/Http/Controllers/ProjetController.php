@@ -57,6 +57,7 @@ class ProjetController extends Controller
      $soumission = new Projet();
      $soumission->nom = $request->input('nom');
      $soumission->ID_rfp = $request->input('ID_rfp');
+     $soumission->descriptionProjet = $request->input('descriptionProjet');
      $soumission->plateForme = $request->input('plateForme');
      $soumission->reponse = $request->input('reponse');
       if($request->input('lancement')){
@@ -100,6 +101,7 @@ class ProjetController extends Controller
   	$soumission = Projet::find($id);
  		 $soumission->nom = $request->input('nom');
      $soumission->ID_rfp = $request->input('ID_rfp');
+     $soumission->descriptionProjet = $request->input('descriptionProjet');
      $soumission->plateForme = $request->input('plateForme');
      $soumission->nmbrParticipants = $request->input('nmbrParticipants');
      $soumission->reponse = $request->input('reponse');
@@ -192,6 +194,26 @@ class ProjetController extends Controller
         } else {
             session()->flash('error', "le fichier n'existe pas ");
         }
+    }
+    public function about($idd)
+    {
+        $id = Projet::find($idd);
+        $groupe = DB::table('delivrables')
+                     ->join('users', 'users.id', '=', 'delivrables.id_respo')
+                     ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+                     ->join('projets', 'projets.id', '=', 'taches.ID_projet')
+                     ->select('users.name', 'users.prenom', 'users.photo')
+                     ->where('taches.ID_projet', '=', $idd)
+                     ->get();
+
+        $chefDeGroupe = DB::table('users')
+                        ->join('projets','projets.chefDeGroupe','=','users.id')
+                        ->select('users.name', 'users.prenom', 'users.photo','users.about')
+                        ->where('projets.id','=',$idd)
+                        ->first();
+
+
+        return view('soumissions.about',['membres' => $groupe, 'chefDeGroupe' => $chefDeGroupe,'Projectid' => $id ]);
     }
 
 }

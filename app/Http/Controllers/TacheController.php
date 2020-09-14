@@ -35,10 +35,6 @@ class TacheController extends Controller
       ->where('projets.id','=', $id)
       ->get();
 
-
-  //      $unique = $liste->unique('delivrables.id_tache');
-//        $unique->values()->all();
-
         return view('taches.index', ['taches' => $liste, 'respo' => $respos, 'liv' => $livrables, 'Projectid' =>$id,'Projectname' =>$name ]);
     }
 
@@ -210,7 +206,7 @@ class TacheController extends Controller
     {
       $tache = Tache::find($tache);
       $tache->delete();
-      session()->flash('success', 'la tache'.$tache->titreTache. 'a été supprimer définitivement');
+      session()->flash('success', 'la tache '.$tache->titreTache. ' a été supprimer définitivement');
       return redirect('taches/'.$tache->ID_projet);
     }
 

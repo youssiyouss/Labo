@@ -34,6 +34,9 @@ Route::get('projets/dowlaodProjet1/{id}','ProjetController@fileDownloader1');
 Route::get('projets/voir1/{id}', 'ProjetController@fileViewer1');
 Route::get('projets/voir2/{id}', 'ProjetController@fileViewer2');
 Route::get('projets/voir3/{id}', 'ProjetController@fileViewer3');
+Route::get('projets/about/{id}', 'ProjetController@about');
+
+
 //Maitre ouvrages
 Route::resource('clients','ClientController');
 

@@ -15,7 +15,7 @@
 <nav class="sidebar">
   <div class="sidebar-header">
     <div class="dropdown-header d-flex align-items-center justify-content-between">
-    <a href="/" class="sidebar-brand">
+    <a href="/home" class="sidebar-brand">
       LRI <span>T</span>
       <img src="\assets\images\logo_dark.png" alt="" height="55" width="59">
     </a>
@@ -29,7 +29,7 @@
   <div class="sidebar-body ps ps--active-y">
     <ul class="nav">
       <li class="nav-item {{ active_class(['/']) }}">
-        <a href="{{ url('/') }}" class="nav-link">
+        <a href="{{ url('/home') }}" class="nav-link">
           <i class="link-icon" data-feather="home"></i>
           <span class="link-title">Accueil</span>
         </a>

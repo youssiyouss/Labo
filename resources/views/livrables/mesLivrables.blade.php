@@ -38,13 +38,13 @@
         </li>
         @endif
         <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">À propos du projet</a>
+            <a href="{{ url('projets/about/'.$Projectid)}}" class="nav-link" aria-selected="false">À propos du projet</a>
         </li>
-        @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
+       <!-- @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
         <li class="nav-item">
             <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
         </li>
-        @endif
+        @endif-->
       </ul>
     </div>
     <div class="card-title" align="center">

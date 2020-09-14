@@ -139,6 +139,7 @@ class RfpController extends Controller
 
   public function destroy ($id){
     $appeldoffre = Rfp::find($id);
+        $this->authorize('delete', $appeldoffre);
     $appeldoffre->delete();
        session()->flash('success', 'le projet : '.$appeldoffre->titre.'a été supprimer définitivement');
     return redirect('rfps');

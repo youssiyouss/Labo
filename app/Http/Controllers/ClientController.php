@@ -65,6 +65,7 @@ class ClientController extends Controller
 
   public function destroy(Request $request , $id) {
     $x = Client::find($id);
+        $this->authorize('delete', $x);
     $x->delete();
     session()->flash('success',"{$x->ets} a été supprimer avec succés");
     return redirect('clients');

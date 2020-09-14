@@ -17,6 +17,7 @@ class CreateProjetsTable extends Migration
         Schema::create('projets', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->string('nom')->unique();
+          $table->longText('descriptionProjet')->nullable();
           $table->string('fichierDoffre')->required();
           $table->text('plateForme');
           $table->string('reponse')->nullable();
