@@ -212,7 +212,7 @@
 </div> <!-- row -->
 
 <div class="row">
-  <div class="col-lg-6 col-xl-5 grid-margin stretch-card">
+  <div class="col-lg-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-baseline mb-2">
@@ -334,14 +334,25 @@ var ctx = document.getElementById("rfpsChart").getContext('2d');
 });
 
 </script>
-  <div class="col-lg-6 col-xl-7 grid-margin stretch-card">
+  <div class="col-lg-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-baseline mb-2">
           <h6 class="card-title mb-0">Clients and Partners</h6>
         </div>
-
            <canvas id="clients" width="533" height="266"></canvas>
+           <div class="col-6">
+            <div>
+              <label class="d-flex align-items-center tx-10 text-uppercase font-weight-medium text-info">Total number of clients :</label>
+              <h5 class="font-weight-bold mb-0">
+                @php
+                     $c=DB::table('clients')
+                            ->select(DB::raw('count(*) as count'))
+                            ->count();
+                        echo $c;
+                @endphp </h5>
+            </div>
+          </div>
        </div>
     </div>
   </div>
@@ -425,7 +436,7 @@ $mysqli = new mysqli($host,$user,$pass,$db) or die($mysqli->error);
         <div class="card-body">
       <form method="GET">
         <div class="col-sm-3">
-        <div class="form-group" align="right">
+        <div class="form-group" >
             <div class="input-group date" id="datetimepicker10" data-target-input="nearest">
                 <input name="year" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker10" placeholder="Enter a year"/>
                 <div class="input-group-append" data-target="#datetimepicker10" data-toggle="datetimepicker">
