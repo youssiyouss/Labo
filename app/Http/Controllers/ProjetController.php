@@ -57,6 +57,7 @@ class ProjetController extends Controller
      $soumission = new Projet();
      $soumission->nom = $request->input('nom');
      $soumission->ID_rfp = $request->input('ID_rfp');
+     $soumission->chefDeGroupe = Auth::user()->id;
      $soumission->descriptionProjet = $request->input('descriptionProjet');
      $soumission->plateForme = $request->input('plateForme');
      $soumission->reponse = $request->input('reponse');
@@ -99,7 +100,7 @@ class ProjetController extends Controller
 
  public function update(Request $request, $id){
   	$soumission = Projet::find($id);
- 		 $soumission->nom = $request->input('nom');
+ 	$soumission->nom = $request->input('nom');
      $soumission->ID_rfp = $request->input('ID_rfp');
      $soumission->descriptionProjet = $request->input('descriptionProjet');
      $soumission->plateForme = $request->input('plateForme');

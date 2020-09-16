@@ -15,9 +15,20 @@ class Controller extends BaseController
     {
         $this->middleware('auth');
     }
-    
-    public function home(){
+
+    /*public function home(){
       return view('dashboard');
+    }*/
+    public function home(){
+
+        $projects= DB::table('projets')
+                ->join('users','users.id','=','projets.chefDeGroupe')
+                ->join('rfps', 'rfps.id', '=', 'projets.ID_rfp')
+                ->select('projets.*','users.name','users.prenom','rfps.titre')
+                ->where('projets.reponse','=','Accepté')
+                ->orWhere('projets.reponse', '=', 'Accepté avec reserve')
+                ->get();
+        return view('dashboard',['projet' => $projects]);
     }
 
 

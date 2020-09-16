@@ -46,11 +46,6 @@
         <li class="nav-item">
         <a href="{{ url('projets/about/'.$Projectid->id)}}" class="nav-link active" aria-selected="false">À propos du projet</a>
         </li>
-        @if (Auth::user()->can('access',[App\Tache::class,$Projectid->id]))
-        <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
-        </li>
-        @endif
       </ul>
     </div>
     <div class="card-title" align="center">
@@ -104,15 +99,19 @@
             <div class="card">
             <div class="card-body">
                 <h6 class="card-title text-success">Membres de l'équipe:</h6>
-                <div class="owl-carousel owl-theme owl-basic" style="items:2">
+                <div >
+                    <div class="d-flex justify-content-between ">
                 @foreach($membres as $ch)
                         @if($ch->name != $chefDeGroupe->name &&  $ch->prenom != $chefDeGroupe->prenom)
-                        <div class="item"  data-merge='{{$ch->photo}}'>
-                        <img src="{{ asset('storage/'.$ch->photo) }}" alt="item-image">
-                        <h3 class="block-38-heading h4">{{ $ch->name}} {{ $ch->prenom}}</h3>
+                        <div class="card">
+                            <img src="{{ asset('storage/'.$ch->photo) }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title">{{ $ch->name}} {{ $ch->prenom}}</h5>
+                            </div>
                         </div>
                         @endif
                 @endforeach
+                 </div>
                 </div>
             </div>
             </div>
@@ -120,6 +119,28 @@
 </div>
 
 @endsection
+<script>
+  'use strict';
+
+  if($('.owl-basic').length) {
+    $('.owl-basic').owlCarousel({
+      loop:true,
+      margin:10,
+      nav:false,
+      responsive:{
+          0:{
+              items:2
+          },
+          600:{
+              items:3
+          },
+          1000:{
+              items:4
+          }
+      }
+    });
+  }
+</script>
 @push('plugin-scripts')
   <script src="{{ asset('assets/plugins/datatables-net/jquery.dataTables.js') }}"></script>
   <script src="{{ asset('assets/plugins/datatables-net-bs4/dataTables.bootstrap4.js') }}"></script>

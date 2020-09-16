@@ -20,6 +20,16 @@ class Rfp extends Model
     public function getDateEcheanceAttribute($value){
       return Carbon::parse($value)->format('Y-m-d');
     }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('m/d/Y');
+    }
+
+    public function getupdatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('m/d/Y');
+    }
     // public function getHeureAppelAttribute($value){
     //   return Carbon::parse($value)->format('H:m');
     // }

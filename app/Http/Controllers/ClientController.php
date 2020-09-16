@@ -32,6 +32,8 @@ class ClientController extends Controller
   public function store(ClientRequest $request) {
       $x = new Client();
       $x->ets= $request->input('ets');
+      $x->pays = $request->input('pays');
+      $x->ville = $request->input('ville');
       $x->tel = $request->input('tel');
       $x->adresse = $request->input('adresse');
       $x->site = $request->input('site');
@@ -52,6 +54,8 @@ class ClientController extends Controller
     $x->ets= $request->input('ets');
     $x->tel = $request->input('tel');
     $x->adresse = $request->input('adresse');
+    $x->pays = $request->input('pays');
+    $x->ville = $request->input('ville');
     $x->site = $request->input('site');
     $x->email = $request->input('email');
     if ($x->save()) {

@@ -4,7 +4,6 @@
         ->join('delivrables',  'taches.id', '=' ,'delivrables.id_tache')
         ->select('projets.nom', 'projets.id')
         ->where('delivrables.id_respo','=',Auth::user()->id);
-
   $projets=DB::table('projets')
        ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
        ->select('projets.nom', 'projets.id')
@@ -88,7 +87,7 @@
       @endforeach
  @elseif(count($projets)==0)
        <li class="nav-item">
-          <p class="text-muted">Aucun projet active</p>
+          <p class="text-muted">Vous n'avez aucun projet active</p>
        </li>
  @endif
 

@@ -13,9 +13,8 @@
 //Authentification :
 Auth::routes(['register' => false]);
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'Controller@home');
+   // return view('auth.login');
 
 Route::get('/home','Controller@home');
 
