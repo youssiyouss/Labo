@@ -4,7 +4,6 @@
         ->join('delivrables',  'taches.id', '=' ,'delivrables.id_tache')
         ->select('projets.nom', 'projets.id')
         ->where('delivrables.id_respo','=',Auth::user()->id);
-
   $projets=DB::table('projets')
        ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
        ->select('projets.nom', 'projets.id')
@@ -15,7 +14,7 @@
 <nav class="sidebar">
   <div class="sidebar-header">
     <div class="dropdown-header d-flex align-items-center justify-content-between">
-    <a href="/" class="sidebar-brand">
+    <a href="/home" class="sidebar-brand">
       LRI <span>T</span>
       <img src="\assets\images\logo_dark.png" alt="" height="55" width="59">
     </a>
@@ -29,7 +28,7 @@
   <div class="sidebar-body ps ps--active-y">
     <ul class="nav">
       <li class="nav-item {{ active_class(['/']) }}">
-        <a href="{{ url('/') }}" class="nav-link">
+        <a href="{{ url('/home') }}" class="nav-link">
           <i class="link-icon" data-feather="home"></i>
           <span class="link-title">Accueil</span>
         </a>
@@ -88,7 +87,7 @@
       @endforeach
  @elseif(count($projets)==0)
        <li class="nav-item">
-          <p class="text-muted">Aucun projet active</p>
+          <p class="text-muted">Vous n'avez aucun projet active</p>
        </li>
  @endif
 
@@ -114,9 +113,13 @@
         </div>
       </li>
       <li class="nav-item {{ active_class(['apps/chat']) }}">
-        <a href="{{ url('/apps/chat') }}" class="nav-link">
-          <i class="link-icon" data-feather="message-square"></i>
-          <span class="link-title">Chat</span>
+        <a href="{{ url('alerte') }}" class="nav-link">
+          <i class="link-icon" data-feather="bell"></i>
+          <span class="link-title">Notifications
+              @if (auth()->user()->unreadNotifications->count() >=1)
+                  <span class="badge badge-pill badge-warning">{{auth()->user()->unreadNotifications->count()}}</span>
+              @endif
+          </span>
         </a>
       </li>
       <li class="nav-item {{ active_class(['apps/calendar']) }}">

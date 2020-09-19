@@ -6,20 +6,20 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Rfp;
 
-class InvoicePaid extends Notification implements ShouldQueue
+class InvoicePaid extends Notification
 {
     use Queueable;
 
+    public $alert;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Rfp $rfp)
+    public function __construct($alert)
     {
-       $this->rfp = $rfp;
+        $this->alert = $alert;
     }
 
     /**
@@ -30,7 +30,7 @@ class InvoicePaid extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['database'];
     }
 
     /**
@@ -39,28 +39,13 @@ class InvoicePaid extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-     public function toMail($notifiable)
-     {
-       return (new MailMessage)->view('emails.view', ['rfp' => $this->rfp])
-                               ->from('LRIT@gmail.com', 'Laboratoire de Recherche Informatique -Tlemcen');
-                               ->subject('Date échenace expirée!')
-     }
-
-     public function toDatabase()
-     {
-           return[
-              'amount' => 48,
-              'invoice_action' => 'Pay now..!',
-           ];
-     }
-     public function viaQueues()
-     {
-          return [
-              'mail' => 'mail-queue',
-              'database' => 'database-queue',
-          ];
-      }
-
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
+    }
 
     /**
      * Get the array representation of the notification.
@@ -68,10 +53,19 @@ class InvoicePaid extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    /*public function toArray($notifiable)
     {
         return [
-            //
+            'id' => $this->alert->id,
+            'name' => $this->alert->name,
+            'prenom' => $this->alert->prenom,
+
+        ];
+    }*/
+    public function toDatabase($notifiable)
+    {
+        return [
+            'alert' => $this->alert
         ];
     }
 }

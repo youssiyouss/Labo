@@ -10,8 +10,8 @@ use App\Livrable;
 use Illuminate\Support\Facades\DB;
 use auth;
 use Illuminate\Http\Request;
+use App\Notifications\InvoicePaid;
 
-use function GuzzleHttp\Promise\all;
 
 class LivrableController extends Controller
 {
@@ -125,6 +125,12 @@ class LivrableController extends Controller
     {
         $projet = Projet::find($id)->id;
         $p = Projet::find($id)->nom;
+        $policy = DB::table('delivrables')
+                    ->select('delivrables.*')
+                    ->where([['delivrables.id_respo', '=', Auth::user()->id],['delivrables.id_tache', '=',$livrable]])
+                    ->first();
+
+        $this->authorize('update', [Auth::user(),$policy]);
         $tache = DB::table('delivrables')
                 ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
                 ->select('taches.titreTache')
@@ -191,7 +197,14 @@ class LivrableController extends Controller
         $ll=DB::table('taches')
             ->select('taches.titreTache', 'taches.ID_projet')
             ->where('taches.id', '=', $livrable)
-            ->get();
+            ->first();
+
+        $policy = DB::table('projets')
+            ->select('projets.chefDeGroupe')
+            ->where('projets.id', '=', $ll->ID_projet)
+            ->first();
+
+        $this->authorize('update', [Auth::user(), $policy]);
 
         $l= DB::table('delivrables')
             ->select('delivrables.*')
@@ -200,13 +213,13 @@ class LivrableController extends Controller
 
         if($l){
 
-            session()->flash('success', 'le livrable de la tache' . $ll->titreTache . 'a été supprimer avec succés');
+            session()->flash('success', 'le livrable de la tache :' . $ll->titreTache . 'a été supprimer avec succés');
         }
         else{
-            session()->flash('error', 'le livrable de la tache' .  $ll->titreTache . "n'a pas été supprimer!");
+            session()->flash('error', 'le livrable de la tache :' .  $ll->titreTache . "n'a pas été supprimer!");
 
         }
-        return redirect('livrables/MesLivrables/' . $ll->ID_projet);
+        return redirect('livrables/' . $ll->ID_projet);
     }
 
 
@@ -252,4 +265,32 @@ class LivrableController extends Controller
             return redirect('livrables/' . $x->ID_projet);
         }
     }
+
+    public function poke($tache){
+        $respos = DB::table('delivrables')
+            ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+            ->join('projets', 'projets.id', 'taches.ID_projet')
+            ->select('delivrables.id_respo', 'taches.ID_projet', 'taches.titreTache', 'projets.nom')
+            ->where('delivrables.id_tache', '=', $tache)
+            ->get();
+            foreach($respos as $respo){
+        $projet =DB::table('delivrables')
+            ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+            ->select('taches.ID_projet')
+            ->where('delivrables.id_tache', '=', $tache)
+            ->first();
+
+        $alerte = collect([
+            'type' => 'Poke',
+            'title' => "Besoin de votre livrable pour la tache :" . $respo->titreTache . "Le plus tot possible",
+            'id' => $respo->ID_respo,
+            'par' => Auth::user()->name.'  '.Auth::user()->prenom ,
+            'voir' => 'livrables/MesLivrables/'. $respo->ID_projet
+        ]);
+        Notification::send($respo, new InvoicePaid($alerte));
+            }
+
+     return redirect('livrables/' . $projet->ID_projet);
+    }
+
 }

@@ -11,11 +11,14 @@
 */
 
 //Authentification :
+
+use App\User;
+
 Auth::routes(['register' => false]);
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'Controller@home');
+// return view('auth.login');
+
 
 Route::get('/home','Controller@home');
 
@@ -34,6 +37,9 @@ Route::get('projets/dowlaodProjet1/{id}','ProjetController@fileDownloader1');
 Route::get('projets/voir1/{id}', 'ProjetController@fileViewer1');
 Route::get('projets/voir2/{id}', 'ProjetController@fileViewer2');
 Route::get('projets/voir3/{id}', 'ProjetController@fileViewer3');
+Route::get('projets/about/{id}', 'ProjetController@about');
+
+
 //Maitre ouvrages
 Route::resource('clients','ClientController');
 
@@ -69,6 +75,38 @@ Route::get('livrables/voir/{id}', 'livrableController@fileViewer');
 Route::get('livrables/{id}', 'livrableController@index');
 Route::get('livrables/MesLivrables/{id}', 'livrableController@mesLivrables');
 
+//Notifications
+Route::get('readNotification/{id}', 'NotificationController@readNotification');
+Route::get('alerte/{id}', 'NotificationController@displaytNotif');
+Route::get('alerte', 'NotificationController@index');
+Route::delete('alert', 'NotificationController@destroyAll');
+
+//Marquer tous comme lu
+Route::get('clearAll',function(){
+    $user = Auth::user();
+     foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+        return redirect()->back();
+ });
+
+Route::get('/x',function(){
+    $user = Auth::user();
+    $user->notify(new InvoicePaid(User::findOrFail(3)));
+
+    return redirect('home');
+
+});
+
+
+
+//Envoyer un poke
+Route::get('livrables/poke/{$tache}', 'LivrableController@poke');
+
+
+
+
+
 
 
 // Route::group(['prefix' => 'email'], function(){
@@ -77,9 +115,9 @@ Route::get('livrables/MesLivrables/{id}', 'livrableController@mesLivrables');
 //     Route::get('compose', function () { return view('pages.email.compose'); });
 // });
 //
-// Route::group(['prefix' => 'apps'], function(){
-//     Route::get('chat', function () { return view('pages.apps.chat'); });
-//     Route::get('calendar', function () { return view('pages.apps.calendar'); });
+//Route::group(['prefix' => 'apps'], function(){
+    // Route::get('chat', function () { return view('pages.apps.chat'); });
+  //   Route::get('calendar', function () { return view('pages.apps.calendar'); });
 // });
 //
 // Route::group(['prefix' => 'ui-components'], function(){

@@ -72,19 +72,19 @@
              </div>
 
              <div class="custom-control custom-radio custom-control-inline">
-               <input type="radio" id="customRadioInline1" name="priorite" value="très élevé" value="{{ old('priorite') }}" class="form-check-input custom-control-input">
+               <input type="radio" id="customRadioInline1" name="priorite" value="très élevé" value="{{ old('priorite') }}" class="form-check-input custom-control-input" required>
                <label class="custom-control-label" for="customRadioInline1">très élevé</label>
              </div>
              <div class="custom-control custom-radio custom-control-inline">
-               <input type="radio" id="customRadioInline2" name="priorite" value="élevé" value="{{ old('priorite') }}" class="custom-control-input">
+               <input type="radio" id="customRadioInline2" name="priorite" value="élevé" value="{{ old('priorite') }}" class="custom-control-input" required>
                <label class="custom-control-label" for="customRadioInline2">élevé</label>
              </div>
              <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="customRadioInline3" name="priorite" value="moyenne" value="{{ old('priorite') }}" class="custom-control-input">
+              <input type="radio" id="customRadioInline3" name="priorite" value="moyenne" value="{{ old('priorite') }}" class="custom-control-input" required>
               <label class="custom-control-label" for="customRadioInline3">moyenne</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-              <input type="radio" id="customRadioInline4" name="priorite" value="bas" value="{{ old('priorite') }}" class="custom-control-input">
+              <input type="radio" id="customRadioInline4" name="priorite" value="bas" value="{{ old('priorite') }}" class="custom-control-input" required>
               <label class="custom-control-label" for="customRadioInline4">bas</label>
             </div>
 

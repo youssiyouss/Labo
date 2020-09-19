@@ -14,16 +14,7 @@
       </div>
     </form>
     <ul class="navbar-nav">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="flag-icon flag-icon-fr" title="fr"></i><span class="font-weight-medium ml-1 mr-1">Francais</span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="languageDropdown">
-          <a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-fr  mt-1" title="fr" id="fr"></i> <span class="ml-1"> Francais </span></a>
-          <a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-us mt-1" title="us" id="us"></i> <span class="ml-1"> Anglais </span></a>
-          <a href="javascript:;" class="dropdown-item py-2"><i class="flag-icon flag-icon-dz mt-1" title="dz" id="dz"></i> <span class="ml-1"> Arabe </span></a>
-        </div>
-      </li>
+
       <li class="nav-item dropdown nav-apps">
         <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i data-feather="grid"></i>
@@ -125,64 +116,101 @@
       <li class="nav-item dropdown nav-notifications">
         <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i data-feather="bell"></i>
+          @if(auth()->user()->unreadNotifications->count() != 0)
           <div class="indicator">
             <div class="circle"></div>
           </div>
+          @endif
         </a>
         <div class="dropdown-menu" aria-labelledby="notificationDropdown">
           <div class="dropdown-header d-flex align-items-center justify-content-between">
-            <p class="mb-0 font-weight-medium">6 New Notifications</p>
-            <a href="javascript:;" class="text-muted">Clear all</a>
+            <p class="mb-0 font-weight-medium">{{ auth()->user()->unreadNotifications->count() }}  nouvelles notifications !</p>
+         @if (auth()->user()->unreadNotifications->count()>= 1 )
+            <a href="{{url('clearAll')}}" class="text-muted">Clear all</a>
+         @endif
+
           </div>
           <div class="dropdown-body">
-            <a href="javascript:;" class="dropdown-item">
-              <div class="icon">
-                <i data-feather="user-plus"></i>
-              </div>
-              <div class="content">
-                <p>New customer registered</p>
-                <p class="sub-text text-muted">2 sec ago</p>
-              </div>
+         @foreach (auth()->user()->unreadNotifications as $notification)
+            <a href="{{ url('readNotification/'.$notification->id) }}" class="dropdown-item">
+
+                @if ($notification->data['alert']['type'] ==="Modifier RFP")
+                   <div class="icon"> <i class="mdi mdi-table-edit"></i></div>
+                    <div class="content">
+                        <p>L'RFP numero {{ $notification->data['alert']['id'] }} a été modifier</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Nouveau RFP')
+                   <div class="icon"> <i data-feather="gift"></i></div>
+                    <div class="content">
+                        <p>Un nouveau RFP a été soumis !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif ($notification->data['alert']['type'] ==="Supprimer RFP")
+                   <div class="icon"> <i data-feather="alert-triangle"></i></div>
+                    <div class="content">
+                        <p>L'RFP numero {{ $notification->data['alert']['id'] }} a été supprimer</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='echeance')
+                  <div class="icon"> <i data-feather="alert-circle"></i></div>
+                  <div class="content">
+                        <p>La date d'echeance pour l'RFP numero {{ $notification->data['alert']['id'] }} s'approche !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='weekend')
+                   <div class="icon"> <i class="mdi mdi-emoticon-cool"></i></div>
+                   <div class="content">
+                        <p>LRIT vous souhaite un bon week-end!</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+
+                @elseif($notification->data['alert']['type'] ==='Nouveau membre')
+                   <div class="icon"> <i data-feather="user-plus"></i></div>
+                   <div class="content">
+                        <p>Un nouveau membre a rejoint LRIT!</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+
+                @elseif($notification->data['alert']['type'] ==='Nouvelle tache')
+                   <div class="icon"> <i data-feather="trello"></i></div>
+                   <div class="content">
+                        <p>Une nouvelle tâche vous a été attribuée !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Modifier tache')
+                   <div class="icon"> <i data-feather="trello"></i></div>
+                   <div class="content">
+                        <p>Une de vos tâches assignées a subi une modification !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Supprimer tache')
+                   <div class="icon"> <i data-feather="trello"></i></div>
+                   <div class="content">
+                        <p>Une de vos tâches assignées a été supprimer !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Equipe')
+                   <div class="icon"> <i data-feather="plus"></i></div>
+                   <div class="content">
+                        <p>Vous avez été ajouter a une équipe de recherche</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Poke')
+                   <div class="icon"> <i data-feather="alert-octagon"></i></div>
+                   <div class="content">
+                        <p>Vous avez recu un Poke apropos du projet numero {{$notification->data['alert']['id']}} </p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+
+                    @endif
             </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="icon">
-                <i data-feather="gift"></i>
-              </div>
-              <div class="content">
-                <p>New Order Recieved</p>
-                <p class="sub-text text-muted">30 min ago</p>
-              </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="icon">
-                <i data-feather="alert-circle"></i>
-              </div>
-              <div class="content">
-                <p>Server Limit Reached!</p>
-                <p class="sub-text text-muted">1 hrs ago</p>
-              </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="icon">
-                <i data-feather="layers"></i>
-              </div>
-              <div class="content">
-                <p>Apps are ready for update</p>
-                <p class="sub-text text-muted">5 hrs ago</p>
-              </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="icon">
-                <i data-feather="download"></i>
-              </div>
-              <div class="content">
-                <p>Download completed</p>
-                <p class="sub-text text-muted">6 hrs ago</p>
-              </div>
-            </a>
+         @endforeach
+
+
           </div>
           <div class="dropdown-footer d-flex align-items-center justify-content-center">
-            <a href="javascript:;">View all</a>
+            <a href="{{ url( 'alerte' ) }}">Voir tout</a>
           </div>
         </div>
       </li>

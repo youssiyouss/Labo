@@ -38,13 +38,9 @@
         </li>
         @endif
         <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">À propos du projet</a>
+            <a href="{{ url('projets/about/'.$Projectid)}}" class="nav-link" aria-selected="false">À propos du projet</a>
         </li>
-        @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
-        <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
-        </li>
-        @endif
+
       </ul>
     </div>
     <div class="card-title" align="center">
@@ -72,7 +68,7 @@
             </tr>
           </thead>
           <tbody>
-             @foreach($taches as $t)
+        @foreach($taches as $t)
             <tr>
                 <td>
                     <div class="dropdown mb-2">
@@ -86,6 +82,7 @@
                           <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#element-<?php echo $t->id;?>"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
                           <a class="dropdown-item d-flex align-items-center" href="{{ url('taches/'.$t->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
                           <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                        </form>
                         </div>
                       </div>
 
@@ -115,9 +112,8 @@
                 </td>
               <td>{{$t->dateDebut}}</td>
               <td>{{$t->dateFin}}</td>
-               <!--<i>"{{Str::limit($t->description, 30,'..."')}}   </i>-->
-
-              <div class="modal fade bd-example-modal-lg" id="element-<?php echo $t->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+            </tr>
+            <div class="modal fade bd-example-modal-lg" id="element-<?php echo $t->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -137,15 +133,14 @@
                   @endif
                     <div class="modal-footer">
                       <a href="{{ url('livrables/create/'.$Projectid)}}" class="btn btn-primary" type='button'  data-toggle='tooltip' data-placement='bottom' title="soumettre pour cette tâche">Délivrer</a>
-                     <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+
                     </div>
                   </div>
                 </div>
-              </div>
-
-            </tr>
+            </div>
             @endforeach
-          </tbody>
+
+        </tbody>
         </table>
       </div>
     </div>

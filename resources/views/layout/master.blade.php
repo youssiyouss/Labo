@@ -10,27 +10,27 @@
   <meta name="_token" content="{{ csrf_token() }}">
 
   <link rel="shortcut icon" href="{{ asset('/favicon_dark.ico') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 
   <!-- plugin css -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
   <link href="{{ asset('assets/fonts/feather-font/css/iconfont.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/plugins/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" />
-  <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
-
   <!-- end plugin css -->
 
   @stack('plugin-styles')
-
   <!-- common css -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
   <!-- end common css -->
-
   @stack('style')
 </head>
+
 <body data-base-url="{{url('/')}}">
 
   <script src="{{ asset('assets/js/spinner.js') }}"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+
 
   <div class="main-wrapper" id="app">
     @include('layout.sidebar')
@@ -49,19 +49,13 @@
     <script src="{{ asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <!-- end base js -->
 
-    <script src="sweetalert2.all.min.js"></script>
-    <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/promise-polyfill/polyfill.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweet-alert.js') }}"></script>
 
-    <!-- plugin js -->
     @stack('plugin-scripts')
-    <!-- end plugin js -->
-
-    <!-- common js -->
     <script src="{{ asset('assets/js/template.js') }}"></script>
-    <!-- end common js -->
 
     @stack('custom-scripts')
 </body>
 </html>
+

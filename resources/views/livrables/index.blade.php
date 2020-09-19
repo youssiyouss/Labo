@@ -38,13 +38,8 @@
         </li>
         @endif
         <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">À propos du projet</a>
+            <a href="{{ url('projets/about/'.$Projectid)}}" class="nav-link" aria-selected="false">À propos du projet</a>
         </li>
-        @if (Auth::user()->can('access',[App\Tache::class,$Projectid]))
-        <li class="nav-item">
-            <a href="#" class="nav-link" aria-selected="false">Génerer le rapport final</a>
-        </li>
-        @endif
       </ul>
     </div>
     <div class="card-title" align="center">
@@ -79,10 +74,12 @@
               <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/voir/'.$l->id_tache)}}" target=_blank><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
               <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/downloadLivrables/'.$l->id_tache)}}"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Download</span></a>
             @endif
+              <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/poke/'.$l->id_tache)}}" data-toggle='tooltip' data-placement='right' title="Signaler le responsable de la tache "><i class="mdi mdi-cursor-pointer" class="icon-sm mr-2"></i> <span class="">Poke</span></a>
              <form  action="{{ url('livrables/'.$l->id_tache)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce livrable définitivement?')">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
               <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+              </form>
             </div>
           </div>
         </div>

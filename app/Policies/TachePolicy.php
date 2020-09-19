@@ -17,7 +17,8 @@ class TachePolicy
 
     public function access(User $user ,int $projet)
     {
-        return $user->id === $projet;
+        $chef = Projet::find($projet)->chefDeGroupe;
+        return $user->id === $chef;
     }
 
     /**
