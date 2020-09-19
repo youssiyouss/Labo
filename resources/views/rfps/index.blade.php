@@ -34,7 +34,7 @@
            <div align="right">
               <a href="{{ url('rfps/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau RFP"><i data-feather="plus-circle"></i></a>
            </div>
-            Liste des RFPs
+            Liste des RFPs (Request For Proposals)
           </h4>
 
           <div class="table-responsive">
@@ -62,8 +62,10 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                           <a class="dropdown-item d-flex align-items-center" href="#" title="Voir plus de details" data-toggle="modal" data-target="#element-<?php echo $rfp->id;?>" name="button"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                         @if(Auth::user()->grade === 'Directeur')
                           <a class="dropdown-item d-flex align-items-center" href="{{ url('rfps/'.$rfp->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
                           <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                         @endif
                         </form>
                         </div>
                       </div>

@@ -11,10 +11,15 @@
 */
 
 //Authentification :
+
+use App\Notifications\InvoicePaid;
+use App\User;
+
 Auth::routes(['register' => false]);
 
 Route::get('/', 'Controller@home');
-   // return view('auth.login');
+// return view('auth.login');
+
 
 Route::get('/home','Controller@home');
 
@@ -71,7 +76,28 @@ Route::get('livrables/voir/{id}', 'livrableController@fileViewer');
 Route::get('livrables/{id}', 'livrableController@index');
 Route::get('livrables/MesLivrables/{id}', 'livrableController@mesLivrables');
 
+//Notifications
+Route::get('readNotification/{id}', 'NotificationController@readNotification');
+Route::get('alerte/{id}', 'NotificationController@displaytNotif');
+Route::get('alerte', 'NotificationController@index');
+Route::delete('alert', 'NotificationController@destroyAll');
 
+//Marquer tous comme lu
+Route::get('clearAll',function(){
+    $user = Auth::user();
+     foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+        return redirect()->back();
+ });
+
+Route::get('/x',function(){
+    $user = Auth::user();
+    $user->notify(new InvoicePaid(User::findOrFail(3)));
+
+    return redirect('home');
+
+});
 
 // Route::group(['prefix' => 'email'], function(){
 //     Route::get('inbox', function () { return view('pages.email.inbox'); });
@@ -79,9 +105,9 @@ Route::get('livrables/MesLivrables/{id}', 'livrableController@mesLivrables');
 //     Route::get('compose', function () { return view('pages.email.compose'); });
 // });
 //
-// Route::group(['prefix' => 'apps'], function(){
-//     Route::get('chat', function () { return view('pages.apps.chat'); });
-//     Route::get('calendar', function () { return view('pages.apps.calendar'); });
+//Route::group(['prefix' => 'apps'], function(){
+    // Route::get('chat', function () { return view('pages.apps.chat'); });
+  //   Route::get('calendar', function () { return view('pages.apps.calendar'); });
 // });
 //
 // Route::group(['prefix' => 'ui-components'], function(){

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller as BaseController;
 
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -16,9 +17,6 @@ class Controller extends BaseController
         $this->middleware('auth');
     }
 
-    /*public function home(){
-      return view('dashboard');
-    }*/
     public function home(){
 
         $projects= DB::table('projets')
@@ -28,6 +26,7 @@ class Controller extends BaseController
                 ->where('projets.reponse','=','Accepté')
                 ->orWhere('projets.reponse', '=', 'Accepté avec reserve')
                 ->get();
+
         return view('dashboard',['projet' => $projects]);
     }
 

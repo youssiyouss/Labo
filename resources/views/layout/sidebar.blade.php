@@ -113,9 +113,13 @@
         </div>
       </li>
       <li class="nav-item {{ active_class(['apps/chat']) }}">
-        <a href="{{ url('/apps/chat') }}" class="nav-link">
-          <i class="link-icon" data-feather="message-square"></i>
-          <span class="link-title">Chat</span>
+        <a href="{{ url('alerte') }}" class="nav-link">
+          <i class="link-icon" data-feather="bell"></i>
+          <span class="link-title">Notifications
+              @if (auth()->user()->unreadNotifications->count() >=1)
+                  <span class="badge badge-pill badge-warning">{{auth()->user()->unreadNotifications->count()}}</span>
+              @endif
+          </span>
         </a>
       </li>
       <li class="nav-item {{ active_class(['apps/calendar']) }}">

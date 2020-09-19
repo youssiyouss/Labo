@@ -51,9 +51,20 @@ class UserController extends Controller
           $user= $request->input('nom').'_'. $request->input('prenom').'.'.$request->photo->getClientOriginalExtenSion();
            $x->photo = $request->photo->storeAs('avatars',$user);
         }
-        $x->save();
+        if($x->save()){
+            $user = auth()->User()->all();
+            $alerte = collect([
+                'type' => 'Nouveau membre',
+                'title' => "Un nouveau membre a rejoint LRIT !",
+                'id' => $x->id,
+                'nom' => $x->name.' '.$x->prenom,
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => ''
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
+        }else{
 
-        session()->flash('success',"{$x->name} {$x->prenom} a été ajoutés avec succés!");
+        }
         return redirect('chercheurs');
       }
 

@@ -113,7 +113,6 @@
               <td>{{$t->dateDebut}}</td>
               <td>{{$t->dateFin}}</td>
             </tr>
-            @endforeach
             <div class="modal fade bd-example-modal-lg" id="element-<?php echo $t->id;?>" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -139,6 +138,8 @@
                   </div>
                 </div>
             </div>
+            @endforeach
+
         </tbody>
         </table>
       </div>

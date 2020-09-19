@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Rfp;
-use App\User;
+use Notification;
+use App\Notifications\InvoicePaid;
 use Illuminate\Http\Request;
 use App\Http\Requests\RfpRequest;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\File;
 use Carbon\carbon;
-use App\Notifications;
-use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class RfpController extends Controller
 {
@@ -23,36 +22,66 @@ class RfpController extends Controller
           $listeM = DB::table('rfps')
                 ->join('clients', 'clients.id', '=', 'rfps.maitreOuvrage')
                 ->select('rfps.*', 'clients.ets')
+                ->orderBy('rfps.created_at','desc')
                 ->get();
-        // foreach ($listeM as $rfp) {
-        //   $today = Carbon::now('Africa/Algiers');
-        //   $dateEnd = Carbon::parse($rfp->echeance);
-        //
-        //   $date_diff1=$dateEnd->diffInHours($today);
-        //   $date_diff2=$dateEnd->diffInDays($today);
-        //   $date_diff3=$today->diffInMinutes($dateEnd);
-        //   if ($date_diff3==0) {
-        //     Session()->flash('error', "la date d'échéance pour l'RFP :".$rfp->titre." est passée! Cet RFP va etre supprimer définitivment");
-        //     $appeldoffre = Rfp::find($rfp);
-        //   	$appeldoffre->delete();
-        //   }
-        //   else if ($date_diff1 == 1) {
-        //     Session()->flash('error', "Il reste 1h avant la fin de l'écheance pour l'RFP ".$rfp->titre);
-        //   }
-        //   else if ($date_diff1 == 24) {
-        //     Session()->flash('error', "la date d'écheance pour l'RFP :".$rfp->titre." est pour demain!");
-        //   }
-        //   else if ($date_diff2 == 7) {
-        //     Session()->flash('error', "Il reste 1 semaine avant que l'RFP :".$rfp->titre." expire!");
-        //   }
-        //   else if ($date_diff2 == 14) {
-        //     Session()->flash('error', "Il reste 2 semaine avant que l'RFP :".$rfp->titre." expire!");
-        //   }
-        //   else if ($date_diff2 == 30) {
-        //     Session()->flash('error', "Il reste 1 mois avant que l'RFP :".$rfp->titre." expire!");
-        //   }
-        //
-        // }
+         foreach ($listeM as $rfp) {
+           $today = Carbon::now('Africa/Algiers');
+           $dateEnd = Carbon::parse($rfp->dateEcheance, 'Africa/Algiers');
+           $x= Carbon::parse(now()->timestamp);
+           $user = auth()->User()->all();
+
+           //Quand la date d'écheance arrive
+           if ($dateEnd->diffInDays($today)==0 && $x->diffInMinutes($rfp->heureEcheance) ==60) {
+                $alerte = collect([
+                    'type' => 'echeance',
+                    'title' => "L'RFP :". $rfp->titre. "  est supprimer définitivement !",
+                    'id' => $rfp->id,
+                    'nom' => $rfp->titre,
+                    'par' => 'LRIT',
+                    'voir' => ''
+                ]);
+             Notification::send($user, new InvoicePaid($alerte));
+           	RFP::find($rfp->id)->delete();
+           }
+            //Quand il reste 2h avant la date d'écheance
+            else if ($dateEnd->diffInDays($today) == 0 && $x->diffInHours($rfp->heureEcheance) == 2) {
+                $alerte = collect([
+                    'type' => 'echeance',
+                    'title' => "Il reste 2h avant que l'RFP :" . $rfp->titre . "va etre supprimer définitivement !",
+                    'id' => $rfp->id,
+                    'nom' => $rfp->titre,
+                    'par' => 'LRIT',
+                    'voir' => 'rfps/' . $rfp->id
+                ]);
+                Notification::send($user, new InvoicePaid($alerte));
+           }
+          //Quand il reste 1 jour avant la date d'écheance
+            else if ($dateEnd->diffInDays($today) == 1) {
+                $alerte = collect([
+                    'type' => 'echeance',
+                    'title' => "Il reste 1 jour avant que l'RFP :" . $rfp->titre . "va etre supprimer définitivement !",
+                    'id' => $rfp->id,
+                    'nom' => $rfp->titre,
+                    'par' => 'LRIT',
+                    'voir' => 'rfps / ' . $rfp->id
+                ]);
+                Notification::send($user, new InvoicePaid($alerte));
+           }
+            //Quand il reste 7 jours avant la date d'écheance
+            else if ($dateEnd->diffInDays($today) == 7) {
+                $alerte = collect([
+                    'type' => 'echeance',
+                    'title' => "Il reste 1 semaine avant que l'RFP :" . $rfp->titre . "va etre supprimer définitivement !",
+                    'id' => $rfp->id,
+                    'nom' => $rfp->titre,
+                    'par' => 'LRIT',
+                    'voir' => 'rfps/' . $rfp->id
+                ]);
+                Notification::send($user, new InvoicePaid($alerte));
+           }
+
+         }
+
    	      return view('rfps.index', ['appeldoffre' =>$listeM]);
       }
 
@@ -94,6 +123,16 @@ class RfpController extends Controller
 
       if ($appeldoffre->save()) {
         Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été enregistrer avec succées!!");
+            $user = auth()->User()->all();
+            $alerte = collect([
+                               'type' => 'Nouveau RFP',
+                               'title' => 'Nouveau RfP soumis :' . $appeldoffre->titre,
+                               'id' => $appeldoffre->id,
+                               'nom' => $appeldoffre->titre,
+                               'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                               'voir' => 'rfps/'. $appeldoffre->id]);
+            Notification::send($user, new InvoicePaid($alerte));
+
     } else {
         Session()->flash('error', 'Enregistrement echouée!!');
     }
@@ -130,6 +169,16 @@ class RfpController extends Controller
          }
       if ($appeldoffre->save()) {
           Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été modifié avec succées!!");
+            $user = auth()->User()->all();
+            $alerte = collect([
+                'type' => 'Modifier RFP',
+                'title' => "Modification de l'RFP : ".$appeldoffre->titre,
+                'id' => $appeldoffre->id,
+                'nom' => $appeldoffre->titre,
+                'par' =>  Auth::user()->name."  ".Auth::user()->prenom ,
+                'voir' => 'rfps/' . $appeldoffre->id
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
       } else {
           Session()->flash('error', 'Modification échouée!!');
       }
@@ -142,6 +191,16 @@ class RfpController extends Controller
         $this->authorize('delete', $appeldoffre);
     $appeldoffre->delete();
        session()->flash('success', 'le projet : '.$appeldoffre->titre.'a été supprimer définitivement');
+        $user = auth()->User()->all();
+        $alerte = collect([
+            'type' => 'Supprimer RFP',
+            'title' => "Suppression de l'RFP : " . $appeldoffre->titre,
+            'id' => $appeldoffre->id,
+            'nom' => $appeldoffre->titre,
+            'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+            'voir' => ''
+        ]);
+        Notification::send($user, new InvoicePaid($alerte));
     return redirect('rfps');
   }
 
