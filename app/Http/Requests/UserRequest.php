@@ -31,8 +31,8 @@ class UserRequest extends FormRequest
               'prenom'=>'required|string|max:100',
               'tel' => 'required|digits_between:9,10',
               'grade' => 'required|String',
-              'about' => 'String|max:600',
-              'photo'=>'mimes:jpeg,bmp,png,jpg|image|filled',
+              'about' => 'nullable|String|max:600',
+              'photo'=> 'mimes:jpeg,bmp,png,jpg|image|filled|max:2048',
         ];
     }
 
@@ -50,6 +50,7 @@ class UserRequest extends FormRequest
             'tel.digits_between' => "Numéro téléphone trop long/court",
             'grade.required' => "Veuillez indiquer le grade !",
             'photo.mimes' => "format photo non prise en charge !",
+            'photo.max' => "taille de l'image trop grande !",
             'email.required' => "l'adresse mail est obligatoire !",
             'email.email' => "format mail non valide !",
             'email.unique' => "l'adresse mail doit etre unique, pour ne pas avoir une confusion au moment d'authentification !",

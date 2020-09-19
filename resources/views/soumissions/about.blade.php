@@ -52,7 +52,7 @@
         <a class="navbar-brand" href="/home"  data-toggle='tooltip' data-placement='bottom' title="home" style="align-content: right;">
                 <img src="\assets\images\logo_dark.png" width="30" height="30" alt="">
         </a>
-        {{$Projectid->nom}}
+        #{{$Projectid->id}}-{{$Projectid->nom}}
     </div>
     <div class="card-body">
 
@@ -97,50 +97,24 @@
 
         <div class="col-md-12">
             <div class="card">
-            <div class="card-body">
-                <h6 class="card-title text-success">Membres de l'équipe:</h6>
-                <div >
-                    <div class="d-flex justify-content-between ">
-                @foreach($membres as $ch)
-                        @if($ch->name != $chefDeGroupe->name &&  $ch->prenom != $chefDeGroupe->prenom)
-                        <div class="card">
-                            <img src="{{ asset('storage/'.$ch->photo) }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">{{ $ch->name}} {{ $ch->prenom}}</h5>
-                            </div>
-                        </div>
-                        @endif
-                @endforeach
-                 </div>
+                <div class="card-body">
+                    <h6 class="card-title text-success">Membres de l'équipe:</h6>
+                    <div class="wrapper"  style=" display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 10px; grid-auto-rows: minmax(100px, auto); grid-row-gap: 20px;">
+                        @foreach($membres as $ch)
+                              @if($ch->name != $chefDeGroupe->name &&  $ch->prenom != $chefDeGroupe->prenom)
+                                    <div style="height: 200px; width: 200px;" >
+                                        <img src="{{ asset('storage/'.$ch->photo) }}" title="{{ $ch->name}} {{ $ch->prenom}}" style="height: 200px width:200px; " class="img-thumbnail img-responsive img-circle card-img-top" alt="...">
+
+                                    </div>
+                              @endif
+                        @endforeach
+                    </div>
                 </div>
             </div>
-            </div>
         </div>
-</div>
 
 @endsection
-<script>
-  'use strict';
 
-  if($('.owl-basic').length) {
-    $('.owl-basic').owlCarousel({
-      loop:true,
-      margin:10,
-      nav:false,
-      responsive:{
-          0:{
-              items:2
-          },
-          600:{
-              items:3
-          },
-          1000:{
-              items:4
-          }
-      }
-    });
-  }
-</script>
 @push('plugin-scripts')
   <script src="{{ asset('assets/plugins/datatables-net/jquery.dataTables.js') }}"></script>
   <script src="{{ asset('assets/plugins/datatables-net-bs4/dataTables.bootstrap4.js') }}"></script>

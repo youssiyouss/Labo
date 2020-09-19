@@ -203,7 +203,7 @@ class ProjetController extends Controller
                      ->join('users', 'users.id', '=', 'delivrables.id_respo')
                      ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
                      ->join('projets', 'projets.id', '=', 'taches.ID_projet')
-                     ->select('users.name', 'users.prenom', 'users.photo')
+                     ->select('users.name', 'users.prenom', 'users.photo','users.id')
                      ->where('taches.ID_projet', '=', $idd)
                      ->get();
 

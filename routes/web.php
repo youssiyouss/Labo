@@ -12,7 +12,6 @@
 
 //Authentification :
 
-use App\Notifications\InvoicePaid;
 use App\User;
 
 Auth::routes(['register' => false]);
@@ -98,6 +97,17 @@ Route::get('/x',function(){
     return redirect('home');
 
 });
+
+
+
+//Envoyer un poke
+Route::get('livrables/poke/{$tache}', 'LivrableController@poke');
+
+
+
+
+
+
 
 // Route::group(['prefix' => 'email'], function(){
 //     Route::get('inbox', function () { return view('pages.email.inbox'); });

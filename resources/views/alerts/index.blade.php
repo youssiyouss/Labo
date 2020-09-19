@@ -24,35 +24,26 @@
 </div>
 @endif
 
-
-
-<div class="row chat-wrapper">
-  <div class="col-md-12">
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <div class="row position-relative">
-          <div class="col-lg-12 chat-content">
-            <div class="chat-header border-bottom pb-2">
-                  <div class="d-flex justify-content-between align-items-center pb-2 mb-2">
-                    <div class="d-flex align-items-center">
-                    <p>Tout les notifications</p>
-                    </div>
-                    <p align="right">
-                     @if(auth()->user()->notifications->count()!=0)
+        <h4 class="card-title text-warning" align="center">
+        <div align="right">
+                @if(auth()->user()->notifications->count()!=0)
 
-                        <form  action="{{ url('alert/')}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer tous les notifications définitivement?')">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <a href="{{ url('clearAll')}}" class="btn btn-outline-info" type="button">Tout lu <i data-feather="check-square"></i></a>
-                        <button type="submit"  class="btn btn-outline-danger">Tout effacer  <i data-feather="delete"></i></button>
-                        </form>
+                            <form  action="{{ url('alert/')}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer tous les notifications définitivement?')">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <a href="{{ url('clearAll')}}" class="btn btn-success" type="button">Tout lu <i data-feather="check-square"></i></a>
+                            <button type="submit"  class="btn btn-danger">Tout effacer  <i data-feather="delete"></i></button>
+                            </form>
 
-                     @endif
-                    </p>
-                    </div>
-            </div>
+                @endif
 
-            <div class="chat-body">
+        </div> Tout les notifications</h4>
+
+        <div class="table-responsive">
                       @if(auth()->user()->notifications->count()==0)
                             <div class="text-center">
                                 <h5 class="alert alert-warning">Pas de notifications</h5>
@@ -63,28 +54,135 @@
                         @foreach(auth()->user()->notifications as $notification)
     {{--Notifications Non Lu--}}
 
-              <a href="@if($notification->data['alert']['voir'] ){{ url($notification->data['alert']['voir'])}} @endif"data-toggle="tooltip" title="Par : {{ $notification->data['alert']['par'] }}" name="button">
+              <a style=" color: #fff;" href="@if($notification->data['alert']['voir'] ){{ url($notification->data['alert']['voir'])}} @endif" name="button">
                     <tr >
                         @if($notification->read_at === NULL)
-                                <div class="alert alert-fill-light alert-dismissible fade show" role="alert">
-                                  <strong>{{ $notification->data['alert']['title'] }}</strong>
+                            <div class="alert alert-fill-primary alert-dismissible fade show" role="alert">
+                                @if ($notification->data['alert']['type'] ==="Modifier RFP")
+                                <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-table-edit"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" a été modifier! allez voir il y a quoi de nouveau</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='Nouveau RFP')
+                                <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-gift"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" a été ajouter, allez le découvrir !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif ($notification->data['alert']['type'] ==="Supprimer RFP")
+                                <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i data-feather="alert-triangle"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" Va été supprimer vu l'expiration de l'appel d'offre !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='echeance')
+                                <div class="content" data-toggle="tooltip" title="Notifié par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i data-feather="alert-circle"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" Va bientot expiré !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='weekend')
+                                <div class="content">
+                                    <span class="icon"> <i class="mdi mdi-emoticon-cool"></i></span>
+                                        <strong>LRIT vous souhaite un bon week-end!</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+
+                                @elseif($notification->data['alert']['type'] ==='Nouveau membre')
+                                <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-account-plus"></i></span>
+                                    <strong>{{ $notification->data['alert']['nom'] }} A rejoint LRIT !</strong>
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                   </button>
                                     <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @endif
                                 </div>
     {{--Notifications Lu--}}
 
                         @elseif($notification->read_at <> NULL)
+                            <div class="alert alert-fill-dark alert-dismissible fade show" role="alert">
+                               @if ($notification->data['alert']['type'] ==="Modifier RFP")
+                                    <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-table-edit"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" a été modifier! allez voir il y a quoi de nouveau</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                       <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='Nouveau RFP')
+                                    <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-gift"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" a été ajouter, allez le découvrir !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                 <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                                 <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif ($notification->data['alert']['type'] ==="Supprimer RFP")
+                                    <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i data-feather="alert-triangle"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" Va été supprimer vu l'expiration de l'appel d'offre !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='echeance')
+                                    <div class="content" data-toggle="tooltip" title="Notifié par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i data-feather="alert-circle"></i></span>
+                                    <strong>L'RFP "{{$notification->data['alert']['nom']}}" Va bientot expiré !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='weekend')
+                                    <div class="content">
+                                    <span class="icon"> <i class="mdi mdi-emoticon-cool"></i></span>
+                                        <strong>LRIT vous souhaite un bon week-end!</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
 
-                                <div class="alert alert-fill-info alert-dismissible fade show" role="alert">
-                                  <strong>{{ $notification->data['alert']['title'] }}</strong>
-                                <p style="float: right;font-size: 0.9rem; font-weight: 500;line-height: 1; color: cornflowerblue; text-shadow: 0 1px 0 #fff; opacity: .5;"> Lu  à: {{ $notification->read_at}}</p>
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                  </button>
+                                @elseif($notification->data['alert']['type'] ==='Nouveau membre')
+                                    <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-account-plus"></i></span>
+                                    <strong>{{ $notification->data['alert']['nom'] }} A rejoint LRIT !</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
                                     <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
-                                </div>
+                                    </div>
+                                @endif
+                            </div>
+
                         @endif
                     </tr>
                 </a>

@@ -7,8 +7,8 @@ use App\Http\Requests\UserRequest;
 use App\User;
 use Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\UploadedFile;
-use  Illuminate\Support\Facades\Validator;
+use Notification;
+use App\Notifications\InvoicePaid;
 
 class UserController extends Controller
 {

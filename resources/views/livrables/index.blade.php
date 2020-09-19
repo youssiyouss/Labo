@@ -74,6 +74,7 @@
               <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/voir/'.$l->id_tache)}}" target=_blank><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
               <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/downloadLivrables/'.$l->id_tache)}}"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Download</span></a>
             @endif
+              <a class="dropdown-item d-flex align-items-center" href="{{ url('livrables/poke/'.$l->id_tache)}}" data-toggle='tooltip' data-placement='right' title="Signaler le responsable de la tache "><i class="mdi mdi-cursor-pointer" class="icon-sm mr-2"></i> <span class="">Poke</span></a>
              <form  action="{{ url('livrables/'.$l->id_tache)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce livrable définitivement?')">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}

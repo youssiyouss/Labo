@@ -33,7 +33,7 @@ class RfpController extends Controller
            //Quand la date d'écheance arrive
            if ($dateEnd->diffInDays($today)==0 && $x->diffInMinutes($rfp->heureEcheance) ==60) {
                 $alerte = collect([
-                    'type' => 'echeance',
+                    'type' => 'Supprimer RFP',
                     'title' => "L'RFP :". $rfp->titre. "  est supprimer définitivement !",
                     'id' => $rfp->id,
                     'nom' => $rfp->titre,

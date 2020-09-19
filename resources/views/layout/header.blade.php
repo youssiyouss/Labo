@@ -134,7 +134,7 @@
          @foreach (auth()->user()->unreadNotifications as $notification)
             <a href="{{ url('readNotification/'.$notification->id) }}" class="dropdown-item">
 
-                @if ($notification->data['alert']['type'] ==="Modification de l'RFP")
+                @if ($notification->data['alert']['type'] ==="Modifier RFP")
                    <div class="icon"> <i class="mdi mdi-table-edit"></i></div>
                     <div class="content">
                         <p>L'RFP numero {{ $notification->data['alert']['id'] }} a été modifier</p>
@@ -171,8 +171,39 @@
                         <p>Un nouveau membre a rejoint LRIT!</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
-                @endif
 
+                @elseif($notification->data['alert']['type'] ==='Nouvelle tache')
+                   <div class="icon"> <i data-feather="trello"></i></div>
+                   <div class="content">
+                        <p>Une nouvelle tâche vous a été attribuée !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Modifier tache')
+                   <div class="icon"> <i data-feather="trello"></i></div>
+                   <div class="content">
+                        <p>Une de vos tâches assignées a subi une modification !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Supprimer tache')
+                   <div class="icon"> <i data-feather="trello"></i></div>
+                   <div class="content">
+                        <p>Une de vos tâches assignées a été supprimer !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Equipe')
+                   <div class="icon"> <i data-feather="plus"></i></div>
+                   <div class="content">
+                        <p>Vous avez été ajouter a une équipe de recherche</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Poke')
+                   <div class="icon"> <i data-feather="alert-octagon"></i></div>
+                   <div class="content">
+                        <p>Vous avez recu un Poke apropos du projet numero {{$notification->data['alert']['id']}} </p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+
+                    @endif
             </a>
          @endforeach
 
