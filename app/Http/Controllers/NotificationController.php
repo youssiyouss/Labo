@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+
+use Auth;
 
 class NotificationController extends Controller
 {
@@ -11,38 +11,44 @@ class NotificationController extends Controller
 
     public function readNotification($id)
     {
-        $url = auth()->user()->notifications->find($id);
-        if ($url->read_at == NULL) {
-            auth()->user()->unreadNotifications->find($id)->markAsRead();
+        auth()->user()->unreadNotifications->find($id)->markAsRead();
+        if(auth()->user()->unreadNotifications->find($id)->data['alert']['voir'] ){
+            return redirect(auth()->user()->unreadNotifications->find($id)->data['alert']['voir']);
         }
-        return redirect('alerte/'.$id);
+        else{
+
+            return redirect('alerte');
+        }
     }
 
 
     //Display notification details
-    public function displaytNotif($id)
-    {
-        $url = auth()->user()->readNotifications->find($id);
-
-        $date = $url->created_at;
-        return view('alerts.index', ['notif' => $url, 'date' => $date]);
-    }
-
-    // Return Alertes Page
     public function index()
     {
-        $alerts = DB::table('notifications')->get();
-
-        return view('Alerts.index',['notification'=> $alerts]);
+        return view('alerts.index');
     }
 
+    public function delete($id)
+    {
+        Auth::user()->notifications()->find($id)->delete();
 
+        Session()->flash('successs', 'Notification supprimée !');
+        return redirect('alerte');
+    }
     public function destroyAll()
     {
-        DB::table('notifications')->delete();
-
-        return view('Alerts.index')->with('danger', 'Notifications Supprimées!');
+        Auth::user()->notifications()->delete();
+        Session()->flash('successs', 'Toutes les notifications ont été supprimé avec succées !');
+        return redirect('alerte');
     }
-
+    public function clearAll()
+    {
+        $user = Auth::user();
+        foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+        Session()->flash('successs', 'Toutes les notifications ont été marquée comme lu !');
+        return redirect('alerte');
+    }
 
 }

@@ -131,8 +131,8 @@
 
           </div>
           <div class="dropdown-body">
-         @foreach (auth()->user()->unreadNotifications as $notification)
-            <a href="{{ url('readNotification/'.$notification->id) }}" class="dropdown-item">
+         @foreach (auth()->user()->unreadNotifications->take(4) as $notification)
+            <a href="{{ url('alerte')}}" class="dropdown-item">
 
                 @if ($notification->data['alert']['type'] ==="Modifier RFP")
                    <div class="icon"> <i class="mdi mdi-table-edit"></i></div>
@@ -158,13 +158,6 @@
                         <p>La date d'echeance pour l'RFP numero {{ $notification->data['alert']['id'] }} s'approche !</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
-                @elseif($notification->data['alert']['type'] ==='weekend')
-                   <div class="icon"> <i class="mdi mdi-emoticon-cool"></i></div>
-                   <div class="content">
-                        <p>LRIT vous souhaite un bon week-end!</p>
-                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
-                    </div>
-
                 @elseif($notification->data['alert']['type'] ==='Nouveau membre')
                    <div class="icon"> <i data-feather="user-plus"></i></div>
                    <div class="content">
@@ -199,11 +192,22 @@
                 @elseif($notification->data['alert']['type'] ==='Poke')
                    <div class="icon"> <i data-feather="alert-octagon"></i></div>
                    <div class="content">
-                        <p>Vous avez recu un Poke apropos du projet numero {{$notification->data['alert']['id']}} </p>
+                        <p>Vous avez recu un Poke à propos du projet numero : {{$notification->data['alert']['id']}} </p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
-
-                    @endif
+                @elseif($notification->data['alert']['type'] ==='weekend')
+                   <div class="icon"> <i class="mdi mdi-emoticon-cool"></i></div>
+                   <div class="content">
+                        <p>LRIT vous souhaite un bon week-end!</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Welcome')
+                   <div class="icon"> <i data-feather="smile"></i></div>
+                   <div class="content">
+                        <p>{{$notification->data['alert']['title']}} </p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @endif
             </a>
          @endforeach
 

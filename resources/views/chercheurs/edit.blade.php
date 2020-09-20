@@ -73,7 +73,7 @@
           <div class="form-group">
             <label for="password">Mot de passe*</label>
             <input type="password" class="form-control  @error('password') is-invalid @enderror" id="password"
-             name="password"  required autocomplete="new-password" value="{{old('password', $chrch->password)}}" placeholder="--------">
+             name="password"  required autocomplete="new-password" value="{{old('password')}}" placeholder="--------">
             @error('password')
             <div class="invalid-feedback">
               {{ $message }}
@@ -82,7 +82,7 @@
           </div>
           <div class="form-group">
             <label for="password-confirm">Confirmer mot de passe*</label>
-            <input type="password" class="form-control" value="{{old('password', $chrch->password)}}" placeholder="--------" id="password-confirm" name="password_confirmation" autocomplete="new-password" required confirmed>
+            <input type="password" class="form-control" value="{{old('password',)}}" placeholder="--------" id="password-confirm" name="password_confirmation" autocomplete="new-password" required confirmed>
              <div class="col-md-12">
                <input type="checkbox" onchange="ShowPsw(this);"  style="cursor:pointer;">
                <span id="checkbox">Afficher le mot de passe</span>

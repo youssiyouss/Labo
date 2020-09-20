@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use auth;
 use Illuminate\Http\Request;
 use App\Notifications\InvoicePaid;
+use Notification;
 
 
 class LivrableController extends Controller
@@ -200,11 +201,30 @@ class LivrableController extends Controller
             ->first();
 
         $policy = DB::table('projets')
-            ->select('projets.chefDeGroupe')
+            ->select('projets.chefDeGroupe','projets.nom')
             ->where('projets.id', '=', $ll->ID_projet)
             ->first();
-
         $this->authorize('update', [Auth::user(), $policy]);
+
+
+        $alerte = collect([
+            'type' => 'Supprimer tache',
+            'title' => "La tache : '" . $ll->titreTache . " ' dont vous avez été assigné a été annuller",
+            'id' => $ll->ID_projet,
+            'nom' => $policy->nom,
+            'par' => Auth::user()->name .'  '. Auth::user()->prenom,
+            'voir' => ''
+        ]);
+        $respos = DB::table('users')
+            ->join('delivrables', 'delivrables.id_respo', '=', 'users.id')
+            ->select('users.id')
+            ->where('delivrables.id_tache', '=', $livrable)
+            ->get();
+            foreach ($respos as $key => $r) {
+
+            $user = User::find($r->id);
+            Notification::send($user, new InvoicePaid($alerte));
+            }
 
         $l= DB::table('delivrables')
             ->select('delivrables.*')
@@ -212,11 +232,10 @@ class LivrableController extends Controller
             ->delete();
 
         if($l){
-
-            session()->flash('success', 'le livrable de la tache :' . $ll->titreTache . 'a été supprimer avec succés');
+            session()->flash('success', 'le livrable de la tache :' . $ll->titreTache . ' a été supprimer avec succés');
         }
         else{
-            session()->flash('error', 'le livrable de la tache :' .  $ll->titreTache . "n'a pas été supprimer!");
+            session()->flash('error', 'le livrable de la tache :' .  $ll->titreTache . " n'a pas été supprimer!");
 
         }
         return redirect('livrables/' . $ll->ID_projet);
@@ -252,8 +271,6 @@ class LivrableController extends Controller
                 ->select('taches.ID_projet')
                 ->where('taches.id', '=', $livrable)
                 ->first();
-        $infoPath = pathinfo($file->contenu);
-        $extension = $infoPath['extension'];
         $name = Str::afterLast($file->contenu, 'file/');
 
         if (Storage::disk('local')->exists($file->contenu)) {
@@ -267,28 +284,26 @@ class LivrableController extends Controller
     }
 
     public function poke($tache){
-        $respos = DB::table('delivrables')
-            ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
-            ->join('projets', 'projets.id', 'taches.ID_projet')
-            ->select('delivrables.id_respo', 'taches.ID_projet', 'taches.titreTache', 'projets.nom')
-            ->where('delivrables.id_tache', '=', $tache)
-            ->get();
-            foreach($respos as $respo){
+        $respos =  User::join('delivrables', 'users.id', '=', 'delivrables.id_respo')
+                ->where('delivrables.id_tache', '=', $tache)
+                ->get();
         $projet =DB::table('delivrables')
-            ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
-            ->select('taches.ID_projet')
-            ->where('delivrables.id_tache', '=', $tache)
-            ->first();
+                    ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+                    ->join('projets', 'projets.id', '=', 'taches.ID_projet')
+                    ->select('taches.ID_projet','taches.titreTache','projets.nom')
+                    ->where('delivrables.id_tache', '=', $tache)
+                    ->first();
 
-        $alerte = collect([
-            'type' => 'Poke',
-            'title' => "Besoin de votre livrable pour la tache :" . $respo->titreTache . "Le plus tot possible",
-            'id' => $respo->ID_respo,
-            'par' => Auth::user()->name.'  '.Auth::user()->prenom ,
-            'voir' => 'livrables/MesLivrables/'. $respo->ID_projet
-        ]);
-        Notification::send($respo, new InvoicePaid($alerte));
-            }
+                $alerte = collect([
+                    'type' => 'Poke',
+                    'title' => "Besoin de votre livrable pour la tache : '". $projet->titreTache ."' Le plus tot possible",
+                    'id' => $projet->ID_projet,
+                    'nom' => $projet->nom,
+                    'par' => Auth::user()->name.'  '.Auth::user()->prenom ,
+                    'voir' => 'livrables/MesLivrables/'. $projet->ID_projet
+                ]);
+
+        Notification::send($respos, new InvoicePaid($alerte));
 
      return redirect('livrables/' . $projet->ID_projet);
     }

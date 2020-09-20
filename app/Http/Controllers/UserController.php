@@ -102,7 +102,7 @@ class UserController extends Controller
 
       public function show($id) {
         $x = User::find($id);
-        $this->authorize('view',$x);
+      //  $this->authorize('view',$x);
         return view('chercheurs.show',['chrch'=>$x]);
       }
 

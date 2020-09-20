@@ -4,6 +4,10 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Auth;
+use App\Notifications\InvoicePaid;
+use Notification;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +17,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\RfpEcheance',
+        'App\Console\Commands\NewYear',
+        'App\Console\Commands\WeekEnd',
+        'App\Console\Commands\CleanNot',
     ];
 
     /**
@@ -24,8 +31,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+
+        //Weekend
+            $schedule->call('command:weekEnd')->weekly()->fridays()->at('8:00')->timezone('Africa/Algiers');
+        //New year
+        $schedule->call('command:newYear')->yearly()->timezone('Africa/Algiers');
+        ///RFPS date echeance :
+        $schedule->command('hour:update')->dailyAt('18:33')->timezone('Africa/Algiers');
+
+        //Supprimer les notification qui date plus qu'un mois
+        $schedule->call('Notification:cleanDB')->monthly()->timezone('Africa/Algiers');
     }
 
     /**
