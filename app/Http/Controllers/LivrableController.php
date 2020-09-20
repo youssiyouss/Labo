@@ -12,6 +12,7 @@ use auth;
 use Illuminate\Http\Request;
 use App\Notifications\InvoicePaid;
 use Notification;
+use carbon\Carbon;
 
 
 class LivrableController extends Controller
@@ -100,17 +101,26 @@ class LivrableController extends Controller
             $fn= $request->centenu->getClientOriginalName();
               $deli->centenu = $request->centenu->storeAs('file',$fn);
          }
-
+        $projet = DB::table('delivrables')
+            ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+            ->select('taches.ID_projet', 'taches.titreTache')
+            ->where('taches.id', '=', $request->input('id_tache'))
+            ->first();
          if ($deli->save()) {
+            $alerte = collect([
+                'type' => 'Nouveau livrable',
+                'title' => "Vous avez un livrable a rendre pour la tache : '" . $projet->titreTache ."'",
+                'id' => $projet->ID_projet,
+                'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+                'voir' => 'livrables/MesLivrables/' . $projet->ID_projet
+            ]);
+
+            Notification::send($deli->id_respo, new InvoicePaid($alerte));
             Session()->flash('success', "Livrable ajoutée avec success!!");
         } else {
             Session()->flash('error', 'Enregistrement echouée!!');
         }
-    $projet = DB::table('delivrables')
-        ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
-        ->select('taches.ID_projet')
-        ->where('taches.id', '=',$request->input('id_tache'))
-        ->first();
+
 
         return redirect('livrables/'.$projet->ID_projet);
     }
@@ -154,35 +164,57 @@ class LivrableController extends Controller
      */
     public function update(Request $request,$livrable)
     {
+        $redirect =  DB::table('delivrables')
+                ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+                ->select('taches.titreTache', 'taches.ID_projet')
+                ->where('delivrables.id_tache', '=', $livrable)
+                ->first();
+        $alerte = collect([
+            'type' => 'Modifier livrable',
+            'title' => "Le livrable de la tache : '" . $redirect->titreTache . "' a été mise a jour! allez le voir",
+            'id' => $redirect->ID_projet,
+            'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+            'voir' => 'livrables/MesLivrables/' . $redirect->ID_projet
+        ]);
         $user = DB::table('delivrables')
-        ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
-        ->select('delivrables.id_respo', 'delivrables.id_tache')
-        ->where('delivrables.id_tache', '=', $livrable)
-        ->get();
+            ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
+            ->select('delivrables.id_respo', 'delivrables.id_tache')
+            ->where('delivrables.id_tache', '=', $livrable)
+            ->get();
 
-            $redirect =  DB::table('delivrables')
-                        ->join('taches', 'taches.id', '=', 'delivrables.id_tache')
-                        ->select('taches.titreTache', 'taches.ID_projet')
-                        ->where('delivrables.id_tache', '=', $livrable)
-                        ->first();
+
         foreach ($user as $user) {
             $enrg = DB::table('delivrables')->where([['id_respo', $user->id_respo], ['id_tache', $livrable]])
                 ->update(
-                    ['type' => $request->input('type'),'avancement' => $request->input('avancement'),'commentaire' => $request->input('commentaire')]
+                    ['type' => $request->input('type'),'avancement' => $request->input('avancement'),'commentaire' => $request->input('commentaire'),'updated_at' =>Carbon::now('Africa\Algiers')]
                 );
             if ($request->hasFile('contenu')) {
                 $fn = $request->contenu->getClientOriginalName();
                 $file = $request->contenu->storeAs('file', $fn);
                 DB::table('delivrables')->where([['id_respo', $user->id_respo], ['id_tache', $livrable]])->update(['contenu' => $file]);
             }
+
         }
+
+        $respos = DB::table('users')
+            ->join('delivrables', 'users.id', '=', 'delivrables.id_respo')
+            ->select('users.*')
+            ->where('delivrables.id_tache', '=', $livrable)
+            ->get();
+        $chef = User::where('id', '=', $redirect->ID_projet)->first();
+
+            foreach ($respos as $respo) {
+                if ($respo->id != Auth::user()->id && $respo->id != $chef->id) {
+                    $u = User::get()->where('id', '=', $respo->id);
+                    Notification::send($u, new InvoicePaid($alerte));
+                }
+            }
+            Notification::send($chef, new InvoicePaid($alerte));
             if ($enrg) {
                 Session()->flash('success', "le livrable de la tache : '" . $redirect->titreTache . "' a été modifiée avec succées!!");
             } else {
                 Session()->flash('error', 'Modification echouée!!');
             }
-
-
         return redirect('livrables/MesLivrables/'. $redirect->ID_projet);
 
     }
@@ -221,9 +253,8 @@ class LivrableController extends Controller
             ->where('delivrables.id_tache', '=', $livrable)
             ->get();
             foreach ($respos as $key => $r) {
-
-            $user = User::find($r->id);
-            Notification::send($user, new InvoicePaid($alerte));
+                $user = User::find($r->id);
+                Notification::send($user, new InvoicePaid($alerte));
             }
 
         $l= DB::table('delivrables')
@@ -304,6 +335,7 @@ class LivrableController extends Controller
                 ]);
 
         Notification::send($respos, new InvoicePaid($alerte));
+        Session()->flash('success', "Un alerte a été envoyer aux responsable(s)");
 
      return redirect('livrables/' . $projet->ID_projet);
     }
