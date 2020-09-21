@@ -219,7 +219,48 @@
                                   </button>
                                   <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
                                 </div>
-
+                                {{--Projets--}}
+                                 @elseif($notification->data['alert']['type'] ==='Nouveau Projet')
+                                    <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
+                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='Modifier Projet')
+                                <div class="content" data-toggle="tooltip" title="MAJ par : {{ $notification->data['alert']['par'] }}">
+                                    <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
+                                    <span class="icon"> <i class=mdi-gift-outline"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='Supprimer Projet')
+                                    <div class="content" data-toggle="tooltip" title="Supprimer par : {{ $notification->data['alert']['par'] }}">
+                                    <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
+                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                     {{--Fichiers--}}
+                                    @elseif($notification->data['alert']['type'] ==='Download')
+                                    <div class="content" data-toggle="tooltip" title="Télécharger par : {{ $notification->data['alert']['par'] }}">
+                                    <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
+                                    <span class="icon"> <i class="mdi-download"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
 
                             </a>
                         @endif
@@ -387,7 +428,51 @@
                                     </button>
                                     <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
                                     </div>
+
+                                {{--Projets--}}
+                                 @elseif($notification->data['alert']['type'] ==='Nouveau Projet')
+                                    <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='Modifier Projet')
+                                <div class="content" data-toggle="tooltip" title="MAJ par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class=mdi-gift-outline"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                @elseif($notification->data['alert']['type'] ==='Supprimer Projet')
+                                    <div class="content" data-toggle="tooltip" title="Supprimer par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                    {{--Fichiers--}}
+                                    @elseif($notification->data['alert']['type'] ==='Download')
+                                    <div class="content" data-toggle="tooltip" title="Télécharger par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi-download"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
                                 @endif
+
 
                             </a>
                         </div>

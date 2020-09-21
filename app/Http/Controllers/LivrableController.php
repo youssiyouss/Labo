@@ -299,15 +299,24 @@ class LivrableController extends Controller
                 ->first();
         $x=DB::table('delivrables')
                 ->join('taches','taches.id' ,'=','delivrables.id_tache')
-                ->select('taches.ID_projet')
+                ->select('taches.ID_projet','taches.titreTache')
                 ->where('taches.id', '=', $livrable)
                 ->first();
         $name = Str::afterLast($file->contenu, 'file/');
 
         if (Storage::disk('local')->exists($file->contenu)) {
+            $user = Auth::user();
+            $alerte = collect([
+                'type' => 'Download',
+                'title' => "Le fichier details : '" . $name . "' du livrable " . $x->titreTache . " a été télécharger avec succés",
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => ''
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
+            Session()->flash('success', "le fichier a été télécharger dans votre ordinateur avec succées!!");
+            return redirect('livrables/' . $x->ID_projet);
             return response()->file('storage/'. $file->contenu);
             return response()->download(storage_path("app/public/{$file->contenu}"), $name);
-            Session()->flash('success', "le fichier a été télécharger dans votre ordinateur avec succées!!")->redirect('livrables/' . $x->ID_projet);
         } else {
             Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
             return redirect('livrables/' . $x->ID_projet);

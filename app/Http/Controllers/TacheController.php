@@ -273,8 +273,17 @@ class TacheController extends Controller
     //   print_r($extension);
 
        if (Storage::disk('local')->exists($file->fichierDetail)){
-          return response()->download(storage_path("app/public/{$file->fichierDetail}"),$name );
-          Session()->flash('success', "le fichier a été télécharger dans votre ordinateur avec succées!!")->redirect('taches/' . $file->ID_projet);
+           $user = Auth::user();
+           $alerte = collect([
+               'type' => 'Download',
+               'title' => "Le fichier details : '".$name . "' de la tache  " . $file->titreTache . " a été télécharger avec succés",
+               'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+               'voir' => ''
+           ]);
+           Notification::send($user, new InvoicePaid($alerte));
+           Session()->flash('success', "le fichier a été télécharger dans votre ordinateur avec succées!!");
+           return redirect('taches/' . $file->ID_projet);
+           return response()->download(storage_path("app/public/{$file->fichierDetail}"),$name );
       } else {
         Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
         return redirect('taches/' . $file->ID_projet);

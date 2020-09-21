@@ -126,7 +126,7 @@
           <div class="dropdown-header d-flex align-items-center justify-content-between">
             <p class="mb-0 font-weight-medium">{{ auth()->user()->unreadNotifications->count() }}  nouvelles notifications !</p>
          @if (auth()->user()->unreadNotifications->count()>= 1 )
-            <a href="{{url('clearAll')}}" class="text-muted">Clear all</a>
+            <a href="{{url('alerte/clearAll')}}" class="text-muted">Clear all</a>
          @endif
 
           </div>
@@ -137,7 +137,7 @@
                 @if ($notification->data['alert']['type'] ==="Modifier RFP")
                    <div class="icon"> <i class="mdi mdi-table-edit"></i></div>
                     <div class="content">
-                        <p>L'RFP numero {{ $notification->data['alert']['id'] }} a été modifier</p>
+                        <p>L'RFP N°{{ $notification->data['alert']['id'] }} a été modifier</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
                 @elseif($notification->data['alert']['type'] ==='Nouveau RFP')
@@ -149,14 +149,14 @@
                 @elseif ($notification->data['alert']['type'] ==="Supprimer RFP")
                    <div class="icon"> <i data-feather="alert-triangle"></i></div>
                     <div class="content">
-                        <p>L'RFP numero {{ $notification->data['alert']['id'] }} a été supprimer</p>
+                        <p>L'RFP N°{{ $notification->data['alert']['id'] }} a été supprimer</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
                     {{--RFP expiré--}}
                 @elseif($notification->data['alert']['type'] ==='echeance')
                   <div class="icon"> <i data-feather="alert-circle"></i></div>
                   <div class="content">
-                        <p>La date d'echeance pour l'RFP numero {{ $notification->data['alert']['id'] }} s'approche !</p>
+                        <p>La date d'echeance pour l'RFP N°{{ $notification->data['alert']['id'] }} s'approche !</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
                     {{--membres--}}
@@ -236,12 +236,39 @@
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
                     {{--Alerts Tache par le chef d'equipe--}}
-                 @elseif($notification->data['alert']['type'] ==='Poke')
+
+                   @elseif($notification->data['alert']['type'] ==='Poke')
                    <div class="icon"> <i data-feather="alert-octagon"></i></div>
                    <div class="content">
-                        <p>Vous avez recu un Poke à propos du projet numero : {{$notification->data['alert']['id']}} </p>
+                        <p>Vous avez recu un Poke à propos du projet N°{{$notification->data['alert']['id']}} </p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
-                    </div>
+                   </div>
+                   {{--Projets--}}
+                 @elseif($notification->data['alert']['type'] ==='Nouveau Projet')
+                   <div class="icon"> <i data-feather="star"></i></div>
+                   <div class="content">
+                        <p>Soumission d'un nouvea projet pour l'RFP N°{{$notification->data['alert']['id']}} </p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                   </div>
+                   @elseif($notification->data['alert']['type'] ==='Modifier Projet')
+                   <div class="icon"> <i data-feather="star"></i></div>
+                   <div class="content">
+                        <p>le projet N°{{$notification->data['alert']['id']}}  a été modifier</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                   </div>
+                   @elseif($notification->data['alert']['type'] ==='Supprimer Projet')
+                   <div class="icon"> <i data-feather="star"></i></div>
+                   <div class="content">
+                        <p>Suppression du projet N°{{$notification->data['alert']['id']}} !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                   </div>
+                   {{--Téléchargement Fichiers--}}
+                    @elseif($notification->data['alert']['type'] ==='Download')
+                   <div class="icon"> <i data-feather="download"></i></div>
+                   <div class="content">
+                        <p>Téléchargement terminé !</p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                   </div>
                 @endif
             </a>
          @endforeach

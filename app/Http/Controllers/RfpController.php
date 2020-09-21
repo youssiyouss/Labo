@@ -151,9 +151,18 @@ class RfpController extends Controller
      $extension = $infoPath['extension'];
      $name= "$file->titre".'.'."$extension";
      if (Storage::disk('local')->exists($file->fichier)){
+            $user = Auth::user();
+            $alerte = collect([
+                'type' => 'Download',
+                'title' => "L'RFP : '" . $name . "' du projet " . $file->titre . " a été télécharger avec succés",
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => ''
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
 
-        return response()->download(storage_path("app/public/{$file->fichier}"),$name );
-        Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!")->redirect('rfps');
+            Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!");
+            return redirect('rfps');
+            return response()->download(storage_path("app/public/{$file->fichier}"),$name );
     } else {
          Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
         return redirect('rfps');
