@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Notifications\InvoicePaid;
+use Notification;
 
 class TacheController extends Controller
 {
@@ -100,13 +102,25 @@ class TacheController extends Controller
           if( $request->input('ID_chercheur', array()))
           {
             $respos =  $request->input('ID_chercheur', array());
+            $alerte = collect([
+                    'type' => 'Nouveau livrable',
+                    'title' => "Vous avez une nouvelle tache assignée : '" . $projet->titreTache . "'",
+                    'id' => $projet,
+                    'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+                    'voir' => 'taches/MesTaches/'.$projet
+                ]);
+                Notification::send($request->input('ID_chercheur', array()), new InvoicePaid($alerte));
             foreach ($respos as $key => $ch) {
                 $deli = new Livrable();
                 $deli->id_respo  =$ch;
                 $deli->id_tache =$tache->id;
                 $deli->avancement ="Non entamé";
                 $deli->save();
+
             }
+
+
+
           }
         Session()->flash('success', "la tache : ".$tache->titreTache." a été crée avec succées!!");
     } else {
@@ -156,8 +170,14 @@ class TacheController extends Controller
         if($request->hasFile('fichierDetail')){
          $fn= $request->fichierDetail->getClientOriginalName();
       	 $tache->fichierDetail = $request->fichierDetail->storeAs('file',$fn);
-      }
-        if ($tache->save()){
+        }
+        $p = DB::table('users')
+            ->join('delivrables', 'delivrables.id_respo', 'users.id')
+            ->select('users.*')
+            ->where('id_tache', '=', $tache->id)
+            ->get();
+
+            if ($tache->save()){
              $xx=DB::table('delivrables')
                             ->select('delivrables.*')
                             ->where('id_tache','=',$tache->id)
@@ -166,9 +186,27 @@ class TacheController extends Controller
             $user = $xx->first();
 
             $xx=count($xx);
+            $alerte2 = collect([
+                'type' => 'Nouveau livrable',
+                'title' => "La tache : '" . $tache->titreTache . "' a été réassignée !",
+                'id' => $tache->ID_projet,
+                'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+                'voir' => 'taches/MesTaches/' . $tache->ID_projet
+            ]);
+
+            foreach ($p as $oldRespos) {
+                Notification::send(User::find($oldRespos->id), new InvoicePaid($alerte2));
+            }
             DB::table('delivrables')->where('id_tache', '=', $tache->id)->delete(); // supprimer tous les livrable pour cette tache
 
             $respos =  $request->input('ID_chercheur', array());
+            $alerte = collect([
+                'type' => 'Nouveau livrable',
+                'title' => "Vous avez une nouvelle tache assignée : '" . $tache->titreTache . "'",
+                'id' => $tache->ID_projet,
+                'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+                'voir' => 'taches/MesTaches/'.$tache->ID_projet
+            ]);
 
             foreach ($respos as $key => $ch) { //pour chaque membre sellectionner :
               if($xx <> 0){
@@ -177,7 +215,9 @@ class TacheController extends Controller
                         'type' => $user->type,'avancement' => $user->avancement,
                         'commentaire' => $user->commentaire,'contenu' =>$user->contenu
                         ]);
-              }
+                    Notification::send(User::find($ch), new InvoicePaid($alerte));
+
+                    }
 
 
               else{
@@ -186,6 +226,7 @@ class TacheController extends Controller
                           $deli->id_tache = $tache->id;
                           $deli->avancement = "Non entamé";
                           $deli->save();
+                    Notification::send(User::find($ch), new InvoicePaid($alerte));
               }
             }
 

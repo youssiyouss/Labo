@@ -22,6 +22,7 @@
   @stack('plugin-styles')
   <!-- common css -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/materialdesignicons.min.css') }}" rel="stylesheet" />
   <!-- end common css -->
   @stack('style')
 </head>

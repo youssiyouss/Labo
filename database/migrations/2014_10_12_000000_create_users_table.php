@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->required();
             $table->string('prenom')->required();
+            $table->date('dateNaissance')->nullable();
             $table->string('tel');
             $table->string('grade')->required();
             $table->string('about')->nullable();

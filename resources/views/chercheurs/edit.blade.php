@@ -59,7 +59,17 @@
                 </span>
             @enderror
           </div>
-
+         <div class="form-group">
+            <label for="exampleInputText1">Date de naissance</label>
+            <div class="input-group date datepicker" id="datePickerExample">
+                <input type="text" class="form-control @error('dateNaissance') is-invalid @enderror" name="dateNaissance" value="{{old('dateNaissance', $chrch->dateNaissance)}}"  autocomplete="dateNaissance"><span class="input-group-addon"><i data-feather="calendar"></i></span>
+            </div>
+            @error('dateNaissance')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
           <div class="form-group">
             <label for="exampleInputEmail3">Email* </label>
             <input type="email" class="form-control  @error('email') is-invalid @enderror" id="email" placeholder="Enter Email"

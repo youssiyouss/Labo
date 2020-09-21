@@ -45,6 +45,7 @@ class WeekEnd extends Command
         $alerte = collect([
             'type' => 'weekend',
             'title' => "LRIT vous souhaite un bon week-end !",
+            'par' => 'LRIT',
             'voir' => ''
         ]);
         Notification::send($user, new InvoicePaid($alerte));

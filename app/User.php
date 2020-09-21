@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Auth;
+use carbon\Carbon;
 use App\Notifications\InvoicePaid;
 
 class User extends Authenticatable
@@ -42,4 +42,8 @@ class User extends Authenticatable
     protected $dates = ['created_at', 'updated_at'  ];
     protected $files = ['photo',];
 
+    public function getDateNaissanceAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
 }

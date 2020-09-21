@@ -182,7 +182,7 @@
                 @elseif($notification->data['alert']['type'] ==='Supprimer tache')
                    <div class="icon"> <i data-feather="type"></i></div>
                    <div class="content">
-                        <p>Une de vos tâches assignées a été supprimer !</p>
+                        <p>Une de vos tâches assignées a été  annulée !</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
                 @elseif($notification->data['alert']['type'] ==='Equipe')
@@ -202,6 +202,12 @@
                    <div class="icon"> <i data-feather="smile"></i></div>
                    <div class="content">
                         <p>{{$notification->data['alert']['title']}} </p>
+                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
+                    </div>
+                @elseif($notification->data['alert']['type'] ==='Birthday')
+                   <div class="icon"> <i data-feather="heart-on"></i></div>
+                   <div class="content">
+                        <p>C'est votre anniverssaire aujourd'hui !</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                     </div>
                     {{--Livrables--}}

@@ -45,6 +45,7 @@ class NewYear extends Command
         $alerte = collect([
             'type' => 'weekend',
             'title' => "LRIT vous souhaite une bonne année !",
+            'par' => 'LRIT',
             'voir' => ''
         ]);
         Notification::send($user, new InvoicePaid($alerte));

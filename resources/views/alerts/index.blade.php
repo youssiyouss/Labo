@@ -125,6 +125,16 @@
                                     </button>
                                         <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
                                     </div>
+                                @elseif($notification->data['alert']['type'] ==='Birthday')
+                                    <div class="content">
+                                    <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
+                                    <span class="icon"> <i class="mdi-cake-variant"></i></span>
+                                    <strong>{{$notification->data['alert']['title']}} </strong>
+                                    <button type="submit" class="close" aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
                                 {{--Members--}}
                                 @elseif($notification->data['alert']['type'] ==='Nouveau membre')
                                 <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
@@ -202,7 +212,7 @@
                                 @elseif($notification->data['alert']['type'] ==='Poke')
                                 <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
                                     <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
-                                    <span class="icon"> <i class="mdi mdi-cursor-pointer"></i></span>
+                                    <span class="icon"> <i class="mdi-bell-alert-outline"></i></span>
                                     <strong>{{ $notification->data['alert']['title'] }} !  (projet :{{ $notification->data['alert']['nom'] }})</strong>
                                   <button type="submit" class="close"  aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -284,6 +294,15 @@
                                     </button>
                                         <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
                                     </div>
+                                @elseif($notification->data['alert']['type'] ==='Birthday')
+                                    <div class="content">
+                                    <span class="icon"> <i class="mdi-cake-variant"></i></span>
+                                    <strong>{{$notification->data['alert']['title']}} </strong>
+                                    <button type="submit" class="close" aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
                                     {{--membres--}}
                                 @elseif($notification->data['alert']['type'] ==='Nouveau membre')
                                     <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
@@ -360,7 +379,7 @@
                                    {{--Alerts Tache par le chef d'equipe--}}
                                 @elseif($notification->data['alert']['type'] ==='Poke')
                                     <div class="content" data-toggle="tooltip" title="Envoyé par : {{ $notification->data['alert']['par'] }}">
-                                    <span class="icon"><i class="mdi mdi-alarm-check"></i></span>
+                                    <span class="icon"><i class="mdi-bell-alert-outline"></i></span>
                                     <strong>{{ $notification->data['alert']['title'] }} !  (projet :{{ $notification->data['alert']['nom'] }})</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
