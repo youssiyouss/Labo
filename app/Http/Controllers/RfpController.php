@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Support\Facades\DB;
 use App\Rfp;
 use Notification;
@@ -9,7 +8,7 @@ use App\Notifications\InvoicePaid;
 use Illuminate\Http\Request;
 use App\Http\Requests\RfpRequest;
 use Illuminate\Support\Facades\Storage;
-use Carbon\carbon;
+
 use Auth;
 
 class RfpController extends Controller
@@ -24,65 +23,7 @@ class RfpController extends Controller
                 ->select('rfps.*', 'clients.ets')
                 ->orderBy('rfps.created_at','desc')
                 ->get();
-         foreach ($listeM as $rfp) {
-           $today = Carbon::now('Africa/Algiers');
-           $dateEnd = Carbon::parse($rfp->dateEcheance, 'Africa/Algiers');
-           $x= Carbon::parse(now()->timestamp);
-           $user = auth()->User()->all();
-
-           //Quand la date d'écheance arrive
-           if ($dateEnd->diffInDays($today)==0 && $x->diffInMinutes($rfp->heureEcheance) ==60) {
-                $alerte = collect([
-                    'type' => 'Supprimer RFP',
-                    'title' => "L'RFP :". $rfp->titre. "  est supprimer définitivement !",
-                    'id' => $rfp->id,
-                    'nom' => $rfp->titre,
-                    'par' => 'LRIT',
-                    'voir' => ''
-                ]);
-             Notification::send($user, new InvoicePaid($alerte));
-           	RFP::find($rfp->id)->delete();
-           }
-            //Quand il reste 2h avant la date d'écheance
-            else if ($dateEnd->diffInDays($today) == 0 && $x->diffInHours($rfp->heureEcheance) == 2) {
-                $alerte = collect([
-                    'type' => 'echeance',
-                    'title' => "Il reste 2h avant que l'RFP :" . $rfp->titre . "va etre supprimer définitivement !",
-                    'id' => $rfp->id,
-                    'nom' => $rfp->titre,
-                    'par' => 'LRIT',
-                    'voir' => 'rfps/' . $rfp->id
-                ]);
-                Notification::send($user, new InvoicePaid($alerte));
-           }
-          //Quand il reste 1 jour avant la date d'écheance
-            else if ($dateEnd->diffInDays($today) == 1) {
-                $alerte = collect([
-                    'type' => 'echeance',
-                    'title' => "Il reste 1 jour avant que l'RFP :" . $rfp->titre . "va etre supprimer définitivement !",
-                    'id' => $rfp->id,
-                    'nom' => $rfp->titre,
-                    'par' => 'LRIT',
-                    'voir' => 'rfps / ' . $rfp->id
-                ]);
-                Notification::send($user, new InvoicePaid($alerte));
-           }
-            //Quand il reste 7 jours avant la date d'écheance
-            else if ($dateEnd->diffInDays($today) == 7) {
-                $alerte = collect([
-                    'type' => 'echeance',
-                    'title' => "Il reste 1 semaine avant que l'RFP :" . $rfp->titre . "va etre supprimer définitivement !",
-                    'id' => $rfp->id,
-                    'nom' => $rfp->titre,
-                    'par' => 'LRIT',
-                    'voir' => 'rfps/' . $rfp->id
-                ]);
-                Notification::send($user, new InvoicePaid($alerte));
-           }
-
-         }
-
-   	      return view('rfps.index', ['appeldoffre' =>$listeM]);
+          return view('rfps.index', ['appeldoffre' =>$listeM]);
       }
 
 
@@ -210,9 +151,18 @@ class RfpController extends Controller
      $extension = $infoPath['extension'];
      $name= "$file->titre".'.'."$extension";
      if (Storage::disk('local')->exists($file->fichier)){
+            $user = Auth::user();
+            $alerte = collect([
+                'type' => 'Download',
+                'title' => "L'RFP : '" . $name . "' du projet " . $file->titre . " a été télécharger avec succés",
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => ''
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
 
-        return response()->download(storage_path("app/public/{$file->fichier}"),$name );
-        Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!")->redirect('rfps');
+            Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!");
+            return redirect('rfps');
+            return response()->download(storage_path("app/public/{$file->fichier}"),$name );
     } else {
          Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
         return redirect('rfps');

@@ -102,10 +102,12 @@
                     <div class="wrapper"  style=" display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 10px; grid-auto-rows: minmax(100px, auto); grid-row-gap: 20px;">
                         @foreach($membres as $ch)
                               @if($ch->name != $chefDeGroupe->name &&  $ch->prenom != $chefDeGroupe->prenom)
+                                    <a href="{{ url('chercheurs/'.$ch->id)}}">
                                     <div style="height: 200px; width: 200px;" >
                                         <img src="{{ asset('storage/'.$ch->photo) }}" title="{{ $ch->name}} {{ $ch->prenom}}" style="height: 200px width:200px; " class="img-thumbnail img-responsive img-circle card-img-top" alt="...">
 
                                     </div>
+                                    </a>
                               @endif
                         @endforeach
                     </div>

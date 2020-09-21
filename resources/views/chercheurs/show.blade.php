@@ -31,6 +31,7 @@
                      <li class="list-group-item">id : <span class="pull-right">{{ $chrch->id}}</span></li>
                      <li class="list-group-item">Nom : <span class="pull-right">{{ $chrch->name}}</span></li>
                      <li class="list-group-item">Prénom : <span class="pull-right">{{ $chrch->prenom}}</span></li>
+                     <li class="list-group-item">Date de naissance : <span class="pull-right">{{ $chrch->dateNaissance}}</span></li>
                      <li class="list-group-item">Numero de Téléphone : <span class="pull-right"> {{ $chrch->tel}}</span></li>
                      <li class="list-group-item">Adresse mail : <span class="pull-right">{{ $chrch->email}}</span></li>
                      <li class="list-group-item">Date d'inscription : <span class="pull-right">{{ $chrch->created_at}}</span></li>

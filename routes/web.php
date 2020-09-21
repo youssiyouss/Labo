@@ -76,32 +76,13 @@ Route::get('livrables/{id}', 'livrableController@index');
 Route::get('livrables/MesLivrables/{id}', 'livrableController@mesLivrables');
 
 //Notifications
-Route::get('readNotification/{id}', 'NotificationController@readNotification');
-Route::get('alerte/{id}', 'NotificationController@displaytNotif');
 Route::get('alerte', 'NotificationController@index');
-Route::delete('alert', 'NotificationController@destroyAll');
-
-//Marquer tous comme lu
-Route::get('clearAll',function(){
-    $user = Auth::user();
-     foreach ($user->unreadNotifications as $notification) {
-            $notification->markAsRead();
-        }
-        return redirect()->back();
- });
-
-Route::get('/x',function(){
-    $user = Auth::user();
-    $user->notify(new InvoicePaid(User::findOrFail(3)));
-
-    return redirect('home');
-
-});
-
-
-
+Route::get('readNotification/{id}', 'NotificationController@readNotification');
+Route::get('alerte/clearAll', 'NotificationController@clearAll');
+Route::delete('alerte', 'NotificationController@destroyAll');
+Route::delete('alerte/{id}', 'NotificationController@delete');
 //Envoyer un poke
-Route::get('livrables/poke/{$tache}', 'LivrableController@poke');
+Route::get('livrables/poke/{tache}', 'LivrableController@poke');
 
 
 

@@ -8,6 +8,8 @@ use App\Http\Requests\ProjetRequest;
 use App\Projet;
 use App\User;
 use Auth;
+use App\Notifications\InvoicePaid;
+use Notification;
 use Carbon\carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -82,6 +84,15 @@ class ProjetController extends Controller
      }
 
      if ($soumission->save()) {
+            $user = auth()->User()->all();
+            $alerte = collect([
+                'type' => 'Nouveau Projet',
+                'title' => Auth::user()->name . " " . Auth::user()->prenom." a soumis un nouveau projet pour l'RFP : '". $soumission->ID_rfp."' ! allez voir",
+                'id' => $soumission->ID_rfp,
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => 'projets/' . $soumission->id
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
        Session()->flash('success', "le projet : ".$soumission->nom." a été ajouté avec succées!!");
 
     } else {
@@ -121,7 +132,15 @@ class ProjetController extends Controller
         $soumission->fichierDoffre = $request->fichierDoffre->storeAs('file',$fn);
      }
      if ($soumission->save()) {
-
+            $user = auth()->User()->all();
+            $alerte = collect([
+                'type' => 'Modifier Projet',
+                'title' => "Le projet : '" . $soumission->nom . "' a été modifier ! allez voir il y a quoi de nouveau",
+                'id' => $soumission->id,
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => 'projets/' . $soumission->id
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
      Session()->flash('success', "le projet : ".$soumission->nom." a été modifié avec succées!!");
 
       } else {
@@ -130,9 +149,18 @@ class ProjetController extends Controller
  	return redirect('projets');
      }
 
- public function destroy (Request $request, $id){
+ public function destroy ($id){
      	$soumission = Projet::find($id);
-     	$soumission->delete();
+        $soumission->delete();
+        $user = auth()->User()->all();
+        $alerte = collect([
+            'type' => 'Supprimer Projet',
+            'title' => "Le projet : '".$soumission->nom."' a été supprimer de la liste des soumissions",
+            'id' => $soumission->id,
+            'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+            'voir' => ''
+        ]);
+        Notification::send($user, new InvoicePaid($alerte));
          session()->flash('success', 'le projet : '.$soumission->nom.' est supprimer de la liste avec succées');
      	return redirect('projets');
 
@@ -144,8 +172,17 @@ class ProjetController extends Controller
    $extension = $infoPath['extension'];
    $name = Str::afterLast($file->fichierDoffre, 'file/');
    if (Storage::disk('local')->exists($file->fichierDoffre)){
-     return response()->download(storage_path("app/public/{$file->fichierDoffre}"),$name );        // Storage::download($file->fichier,$file->titre);
-     session()->flash('success', "Téléchargement de l'offre..")->redirect('projets');
+       $user = Auth::user();
+       $alerte = collect([
+           'type' => 'Download',
+           'title' => "Le fichier : '" . $name . "' du projet " . $file->nom . " a été télécharger avec succés",
+           'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+           'voir' => ''
+           ]);
+           Notification::send($user, new InvoicePaid($alerte));
+           session()->flash('success', "Téléchargement de l'offre..");
+           return redirect('projets');
+           return response()->download(storage_path("app/public/{$file->fichierDoffre}"),$name );        // Storage::download($file->fichier,$file->titre);
   }
   else {
     Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
@@ -159,8 +196,17 @@ class ProjetController extends Controller
         $file = Projet::find($id);
         $name = Str::afterLast($file->rapportFinal, 'file/');
         if (Storage::disk('local')->exists($file->rapportFinal)) {
+            $user = Auth::user();
+            $alerte = collect([
+                'type' => 'Download',
+                'title' => "Le fichier : '".$name."' du projet ".$file->nom." a été télécharger avec succés",
+                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
+                'voir' => ''
+            ]);
+            Notification::send($user, new InvoicePaid($alerte));
+            session()->flash('success', "Téléchargement du rapport final..");
             return response()->download(storage_path("app/public/{$file->rapportFinal}"), $name);
-            session()->flash('success', "Téléchargement du rapport final..")->redirect('projets');
+            return redirect('projets');
         } else {
             Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
             return redirect('projets');

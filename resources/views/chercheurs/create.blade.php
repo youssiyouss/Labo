@@ -42,7 +42,15 @@
                 </span>
             @enderror
           </div>
-
+          <div class="form-group">
+            <label for="exampleInputText1">Date de naissance</label>
+            <input type="date" class="form-control @error('dateNaissance') is-invalid @enderror" name="dateNaissance" value="{{old('dateNaissance')}}"  autocomplete="dateNaissance">
+            @error('dateNaissance')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+          </div>
           <div class="form-group">
             <label for="email">Email* </label>
             <input type="email" class="form-control  @error('email') is-invalid @enderror" id="email" value="{{ old('email') }}" placeholder="Enter Email"

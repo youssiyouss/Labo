@@ -117,7 +117,7 @@
           <i class="link-icon" data-feather="bell"></i>
           <span class="link-title">Notifications
               @if (auth()->user()->unreadNotifications->count() >=1)
-                  <span class="badge badge-pill badge-warning">{{auth()->user()->unreadNotifications->count()}}</span>
+                  <span class="badge badge-pill badge-info">+{{auth()->user()->unreadNotifications->count()}}</span>
               @endif
           </span>
         </a>

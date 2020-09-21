@@ -9,6 +9,7 @@ use Auth;
 use Illuminate\Support\Facades\Hash;
 use Notification;
 use App\Notifications\InvoicePaid;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -42,6 +43,7 @@ class UserController extends Controller
         $x = new User();
         $x->name= $request->input('name');
         $x->prenom = $request->input('prenom');
+        $x->dateNaissance = Carbon::createFromFormat('m/d/Y', $request->input('dateNaissance'))->format('Y-m-d');
         $x->tel = $request->input('tel');
         $x->grade = $request->input('grade');
         $x->about = $request->input('about');
@@ -78,6 +80,7 @@ class UserController extends Controller
         $x = User::find($id);
         $x->name= $request->input('name');
         $x->prenom = $request->input('prenom');
+        $x->dateNaissance =  Carbon::createFromFormat('m/d/Y', $request->input('dateNaissance'))->format('Y-m-d');
         $x->tel = $request->input('tel');
         $x->grade = $request->input('grade');
         $x->about = $request->input('about');
@@ -102,7 +105,7 @@ class UserController extends Controller
 
       public function show($id) {
         $x = User::find($id);
-        $this->authorize('view',$x);
+      //  $this->authorize('view',$x);
         return view('chercheurs.show',['chrch'=>$x]);
       }
 
