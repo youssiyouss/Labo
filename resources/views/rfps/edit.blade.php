@@ -168,7 +168,7 @@
         <label> Veuillez télécharger le fichier du rfp</label><i data-feather="file"></i>
         <div class="input-group">
           <input type="file" accept=".doc,.docx,application/msword,application/pdf,text/plain,application/vnd.ms-powerpoint,text/*,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-           name="fichier" class="form-group  @error('fichier') is-invalid @enderror" id="myDropify" data-errors-position="outside" value="{{$appeldoffre->photo}}" class="border" unique/>
+           name="fichier" class="form-group  @error('fichier') is-invalid @enderror" id="myDropify" data-errors-position="outside" value="{{$appeldoffre->fichier}}" class="border" unique/>
           @error('fichier')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>

@@ -52,28 +52,28 @@
         </a>
       </li>
 
-      <li class="nav-item {{ active_class(['apps/calendar']) }}">
-        <a href="{{ url('rfps') }}" class="nav-link">
-          <i class="link-icon" data-feather="clipboard"></i>
-          <span class="link-title">Appels d'offres</span>
-        </a>
-      </li>
       <li class="nav-item {{ active_class(['advanced-ui/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#advanced-ui" role="button" aria-expanded="{{ is_active_route(['advanced-ui/*']) }}" aria-controls="advanced-ui">
-          <i class="link-icon" data-feather="upload"></i>
-          <span class="link-title">Soumissions</span>
+          <i class="link-icon" data-feather="clipboard"></i>
+          <span class="link-title">Appels d'offres</span>
           <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse {{ show_class(['advanced-ui/*']) }}" id="advanced-ui">
           <ul class="nav sub-menu">
             <li class="nav-item">
-              <a href="{{ url('projets') }}" class="nav-link {{ active_class(['advanced-ui/cropper']) }}">Liste des projets</a>
+              <a href="{{ url('rfps') }}" class="nav-link {{ active_class(['advanced-ui/cropper']) }}">Liste des RFPs</a>
             </li>
             <li class="nav-item">
-              <a href="{{ url('') }}" class="nav-link {{ active_class(['advanced-ui/sweet-alert']) }}">Canvas standards</a>
+              <a href="{{ url('canvas') }}" class="nav-link {{ active_class(['advanced-ui/sweet-alert']) }}">Canvas standards</a>
             </li>
           </ul>
         </div>
+      </li>
+      <li class="nav-item {{ active_class(['apps/calendar']) }}">
+        <a href="{{ url('projets') }}" class="nav-link">
+          <i class="link-icon" data-feather="upload"></i>
+          <span class="link-title">Soumissions</span>
+        </a>
       </li>
 
       <li class="nav-item nav-category">Gestion des Projets</li>
@@ -91,7 +91,7 @@
        </li>
  @endif
 
-      <li class="nav-item nav-category">web apps</li>
+      <li class="nav-item nav-category">Communications</li>
       <li class="nav-item {{ active_class(['email/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#email" role="button" aria-expanded="{{ is_active_route(['email/*']) }}" aria-controls="email">
           <i class="link-icon" data-feather="mail"></i>
@@ -122,12 +122,12 @@
           </span>
         </a>
       </li>
-      <li class="nav-item {{ active_class(['apps/calendar']) }}">
+      {{--<li class="nav-item {{ active_class(['apps/calendar']) }}">
         <a href="{{ url('/apps/calendar') }}" class="nav-link">
           <i class="link-icon" data-feather="calendar"></i>
           <span class="link-title">Calendar</span>
         </a>
-      </li>
+      </li>--}}
 
     </ul>
   </div>
