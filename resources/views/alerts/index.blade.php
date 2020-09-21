@@ -223,7 +223,7 @@
                                  @elseif($notification->data['alert']['type'] ==='Nouveau Projet')
                                     <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
                                     <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
-                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-presentation-play"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -233,7 +233,7 @@
                                 @elseif($notification->data['alert']['type'] ==='Modifier Projet')
                                 <div class="content" data-toggle="tooltip" title="MAJ par : {{ $notification->data['alert']['par'] }}">
                                     <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
-                                    <span class="icon"> <i class=mdi-gift-outline"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-presentation-play"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -243,7 +243,7 @@
                                 @elseif($notification->data['alert']['type'] ==='Supprimer Projet')
                                     <div class="content" data-toggle="tooltip" title="Supprimer par : {{ $notification->data['alert']['par'] }}">
                                     <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
-                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-presentation-play"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -254,7 +254,18 @@
                                     @elseif($notification->data['alert']['type'] ==='Download')
                                     <div class="content" data-toggle="tooltip" title="Télécharger par : {{ $notification->data['alert']['par'] }}">
                                     <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
-                                    <span class="icon"> <i class="mdi-download"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-briefcase-download"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                    {{--Canvas--}}
+                                    @elseif($notification->data['alert']['type'] ==='Canvas')
+                                    <div class="content" data-toggle="tooltip" title="Télécharger par : {{ $notification->data['alert']['par'] }}">
+                                    <i data-feather="check" style="color: orange;" title="Marquer comme lu"></i>
+                                    <span class="icon"> <i class="mdi mdi-script"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                <span aria-hidden="true">&times;</span>
@@ -432,7 +443,7 @@
                                 {{--Projets--}}
                                  @elseif($notification->data['alert']['type'] ==='Nouveau Projet')
                                     <div class="content" data-toggle="tooltip" title="Ajouté par : {{ $notification->data['alert']['par'] }}">
-                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <span class="icon"><i class="mdi mdi-presentation-play"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
@@ -442,7 +453,7 @@
                                     </div>
                                 @elseif($notification->data['alert']['type'] ==='Modifier Projet')
                                 <div class="content" data-toggle="tooltip" title="MAJ par : {{ $notification->data['alert']['par'] }}">
-                                    <span class="icon"> <i class=mdi-gift-outline"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-presentation-play"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
@@ -452,7 +463,7 @@
                                     </div>
                                 @elseif($notification->data['alert']['type'] ==='Supprimer Projet')
                                     <div class="content" data-toggle="tooltip" title="Supprimer par : {{ $notification->data['alert']['par'] }}">
-                                    <span class="icon"> <i class="mdi-gift-outline"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-presentation-play"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
@@ -463,7 +474,18 @@
                                     {{--Fichiers--}}
                                     @elseif($notification->data['alert']['type'] ==='Download')
                                     <div class="content" data-toggle="tooltip" title="Télécharger par : {{ $notification->data['alert']['par'] }}">
-                                    <span class="icon"> <i class="mdi-download"></i></span>
+                                    <span class="icon"> <i class="mdi mdi-briefcase-download"></i></span>
+                                    <strong> {{ $notification->data['alert']['title'] }}</strong>
+                                    <button type="submit" class="close"  aria-label="Close">
+                                               <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
+                                               <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <footer class="blockquote-footer">{{ $notification->created_at }}</footer>
+                                    </div>
+                                    {{--Canvas--}}
+                                    @elseif($notification->data['alert']['type'] ==='Canvas')
+                                    <div class="content" data-toggle="tooltip" title="Télécharger par : {{ $notification->data['alert']['par'] }}">
+                                    <span class="icon"> <i class="mdi mdi-script"></i></span>
                                     <strong> {{ $notification->data['alert']['title'] }}</strong>
                                     <button type="submit" class="close"  aria-label="Close">
                                                <span class="text-info" align="right" style="font-size: 0.9rem;font-weight: 400;">Lu à : {{ $notification->read_at }}</span>
