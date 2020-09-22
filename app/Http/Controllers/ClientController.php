@@ -67,7 +67,7 @@ class ClientController extends Controller
         return redirect('clients');
   }
 
-  public function destroy(Request $request , $id) {
+  public function destroy($id) {
     $x = Client::find($id);
         $this->authorize('delete', $x);
     $x->delete();
