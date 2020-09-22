@@ -43,7 +43,7 @@ class UserController extends Controller
         $x = new User();
         $x->name= $request->input('name');
         $x->prenom = $request->input('prenom');
-        $x->dateNaissance = Carbon::createFromFormat('m/d/Y', $request->input('dateNaissance'))->format('Y-m-d');
+        $x->dateNaissance = $request->input('dateNaissance');
         $x->tel = $request->input('tel');
         $x->grade = $request->input('grade');
         $x->about = $request->input('about');
@@ -63,6 +63,7 @@ class UserController extends Controller
                 'par' => Auth::user()->name . "  " . Auth::user()->prenom,
                 'voir' => ''
             ]);
+            if($user)
             Notification::send($user, new InvoicePaid($alerte));
         }else{
 
@@ -80,7 +81,7 @@ class UserController extends Controller
         $x = User::find($id);
         $x->name= $request->input('name');
         $x->prenom = $request->input('prenom');
-        $x->dateNaissance =  Carbon::createFromFormat('m/d/Y', $request->input('dateNaissance'))->format('Y-m-d');
+        $x->dateNaissance =$request->input('dateNaissance');
         $x->tel = $request->input('tel');
         $x->grade = $request->input('grade');
         $x->about = $request->input('about');
@@ -90,6 +91,7 @@ class UserController extends Controller
            $user= $request->input('nom').'_'. $request->input('prenom').'.'.$request->photo->getClientOriginalExtenSion();
            $x->photo = $request->photo->storeAs('avatars',$user);
           }
+
        $x->save();
       session()->flash('success',"{$x->name} {$x->prenom} a été modifié avec succés!");
       return redirect('/home');

@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
      protected $table = 'users';
-     protected $fillable = ['name', 'prenom', 'email', 'password', 'tel', 'grade', 'about', 'photo',];
+     protected $fillable = ['name', 'prenom','dateNaissance', 'email', 'password', 'tel', 'grade', 'about', 'photo',];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,11 +39,11 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'  ];
+    protected $dates = ['created_at', 'updated_at','dateNaissance'  ];
     protected $files = ['photo',];
 
     public function getDateNaissanceAttribute($value)
     {
-        return Carbon::parse($value)->format('d-m-Y');
+        return Carbon::parse($value)->format('m/d/Y');
     }
 }

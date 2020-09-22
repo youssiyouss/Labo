@@ -8,7 +8,7 @@ use App\User;
 use App\Projet;
 use App\Livrable;
 use Illuminate\Support\Facades\DB;
-use auth;
+use Auth;
 use Illuminate\Http\Request;
 use App\Notifications\InvoicePaid;
 use Notification;
@@ -186,7 +186,7 @@ class LivrableController extends Controller
         foreach ($user as $user) {
             $enrg = DB::table('delivrables')->where([['id_respo', $user->id_respo], ['id_tache', $livrable]])
                 ->update(
-                    ['type' => $request->input('type'),'avancement' => $request->input('avancement'),'commentaire' => $request->input('commentaire'),'updated_at' =>Carbon::now('Africa\Algiers')]
+                    ['type' => $request->input('type'),'avancement' => $request->input('avancement'),'commentaire' => $request->input('commentaire'),'updated_at' =>Carbon::now('Africa/Algiers')]
                 );
             if ($request->hasFile('contenu')) {
                 $fn = $request->contenu->getClientOriginalName();
