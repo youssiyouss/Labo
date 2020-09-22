@@ -8,7 +8,7 @@ use App\Notifications\InvoicePaid;
 use Illuminate\Http\Request;
 use App\Http\Requests\RfpRequest;
 use Illuminate\Support\Facades\Storage;
-use App\Canvas;
+
 use Auth;
 
 class RfpController extends Controller
@@ -63,7 +63,7 @@ class RfpController extends Controller
       }
 
       if ($appeldoffre->save()) {
-        Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été enregistrer avec succés!!");
+        Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été enregistrer avec succées!!");
             $user = auth()->User()->all();
             $alerte = collect([
                                'type' => 'Nouveau RFP',
@@ -109,7 +109,7 @@ class RfpController extends Controller
           $appeldoffre->fichier = $request->fichier->storeAs('file',$fn);
          }
       if ($appeldoffre->save()) {
-          Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été modifié avec succés!!");
+          Session()->flash('success', "l'RFP : ".$appeldoffre->titre." a été modifié avec succées!!");
             $user = auth()->User()->all();
             $alerte = collect([
                 'type' => 'Modifier RFP',
@@ -151,19 +151,18 @@ class RfpController extends Controller
      $extension = $infoPath['extension'];
      $name= "$file->titre".'.'."$extension";
      if (Storage::disk('local')->exists($file->fichier)){
-
-         return response()->download(storage_path("app/public/{$file->fichier}"),$name );
-         Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succès!!");
             $user = Auth::user();
             $alerte = collect([
                 'type' => 'Download',
-                'title' => "L'RFP : '" . $name ." a été télécharger avec succés",
+                'title' => "L'RFP : '" . $name . "' du projet " . $file->titre . " a été télécharger avec succés",
                 'par' => Auth::user()->name . "  " . Auth::user()->prenom,
                 'voir' => ''
             ]);
             Notification::send($user, new InvoicePaid($alerte));
 
-         return redirect('rfps');
+            Session()->flash('success', "l'RFP a été télécharger dans votre ordinateur avec succées!!");
+            return redirect('rfps');
+            return response()->download(storage_path("app/public/{$file->fichier}"),$name );
     } else {
          Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
         return redirect('rfps');
@@ -180,37 +179,6 @@ class RfpController extends Controller
         }
     }
 
-    public function CanvasDownloader($type){
-        $file = DB::table('canvases')->select('canvases.*')->where('pour',$type)->first();
-        if($file){
-        $infoPath = pathinfo($file->canvas);
-        $extension = $infoPath['extension'];
-        $name = "$file->pour" . '-Canvas.' . "$extension";
-        if (Storage::disk('local')->exists($file->canvas)) {
-
-            return response()->download(storage_path("app/public/{$file->canvas}"), $name);
-            Session()->flash('success', "le canvas standard a été télécharger dans votre ordinateur avec succés!!");
-            $user = Auth::user();
-            $alerte = collect([
-                'type' => 'Download',
-                'title' => "Le canvas standard du projets: '" . $file->pour . " a été télécharger avec succès",
-                'par' => Auth::user()->name . "  " . Auth::user()->prenom,
-                'voir' => ''
-            ]);
-            Notification::send($user, new InvoicePaid($alerte));
-
-            return redirect('rfps');
-        } else {
-            Session()->flash('error', "Un erreur c'est produit !!veuillez réessayer");
-            return redirect('rfps');
-        }
-        }
-        else{
-            Session()->flash('error', "Désolé, Le canevas pour ce type de projets n'est pas encore enregistrer !");
-            return redirect('rfps');
-        }
-
-    }
 
 
 }

@@ -3,18 +3,40 @@
     <i data-feather="menu"></i>
   </a>
   <div class="navbar-content">
-    <form class="search-form" action="/search" method="get">
+    <form class="search-form">
       <div class="input-group">
         <div class="input-group-prepend">
           <div class="input-group-text">
             <i data-feather="search"></i>
           </div>
         </div>
-        <input type="search" class="form-control" name="search" placeholder="Cherchez ici...">
+        <input type="text" class="form-control" id="navbarForm" placeholder="Cherchez ici...">
       </div>
     </form>
     <ul class="navbar-nav">
 
+      <li class="nav-item dropdown nav-apps">
+        <a class="nav-link dropdown-toggle" href="#" id="appsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i data-feather="grid"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="appsDropdown">
+          <div class="dropdown-header d-flex align-items-center justify-content-between">
+            <p class="mb-0 font-weight-medium">Web Apps</p>
+            <a href="javascript:;" class="text-muted">Edit</a>
+          </div>
+          <div class="dropdown-body">
+            <div class="d-flex align-items-center apps">
+              <a href="{{ url('/apps/chat') }}"><i data-feather="message-square" class="icon-lg"></i><p>Chat</p></a>
+              <a href="{{ url('/apps/calendar') }}"><i data-feather="calendar" class="icon-lg"></i><p>Calendrier</p></a>
+              <a href="{{ url('/email/inbox') }}"><i data-feather="mail" class="icon-lg"></i><p>Email</p></a>
+              <a href="{{ url('/general/profile') }}"><i data-feather="instagram" class="icon-lg"></i><p>Profil</p></a>
+            </div>
+          </div>
+          <div class="dropdown-footer d-flex align-items-center justify-content-center">
+            <a href="javascript:;">View all</a>
+          </div>
+        </div>
+      </li>
       <li class="nav-item dropdown nav-messages">
         <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i data-feather="mail"></i>
@@ -245,13 +267,6 @@
                    <div class="icon"> <i data-feather="download"></i></div>
                    <div class="content">
                         <p>Téléchargement terminé !</p>
-                        <p class="sub-text text-muted"> {{$notification->created_at}}</p>
-                   </div>
-                   {{--Canvas--}}
-                    @elseif($notification->data['alert']['type'] ==='Canvas')
-                   <div class="icon"> <i data-feather="align-justify"></i></div>
-                   <div class="content">
-                        <p>{{$notification->data['alert']['title']}}</p>
                         <p class="sub-text text-muted"> {{$notification->created_at}}</p>
                    </div>
                 @endif

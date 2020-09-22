@@ -12,17 +12,7 @@
 
 //Authentification :
 
-use App\Rfp;
 use App\User;
-use App\Canvas;
-use App\Client;
-use App\Projet;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
 
 Auth::routes(['register' => false]);
 
@@ -39,14 +29,6 @@ Route::resource('chercheurs','UserController');
 Route::resource('rfps','RfpController');
 Route::get('rfps/dowlaodRfp/{id}','RfpController@fileDownloader');
 Route::get('rfps/voir/{id}', 'RfpController@fileViewer');
-
-Route::get('rfps/dowlaodCanvas/{id}', 'RfpController@CanvasDownloader');
-
-
-//canvas
-Route::resource('canvas', 'CanvasController');
-Route::get('canvas/dowlaodCanvas/{id}', 'CanvasController@fileDownloader');
-
 
 //soumissions
 Route::resource('projets','ProjetController');
@@ -102,41 +84,9 @@ Route::delete('alerte/{id}', 'NotificationController@delete');
 //Envoyer un poke
 Route::get('livrables/poke/{tache}', 'LivrableController@poke');
 
-//Search
-Route::any('search', function(Request $request)  {
-    $q = $request->input('search');
 
-    $users = User::where('name', 'LIKE', '%' . $q . '%')->orWhere('prenom', 'LIKE', '%' . $q . '%')->orWhere('grade', 'LIKE', '%' . $q . '%')->orWhere('email', 'LIKE', '%' . $q . '%')->get();
-    $canvas = Canvas::where('pour', 'LIKE', '%' . $q . '%')->get();
-    $rfps = DB::table('rfps')
-                ->join('clients', 'clients.id', '=', 'rfps.maitreOuvrage')
-                ->select('rfps.*', 'clients.ets')
-                ->orderBy('rfps.created_at','desc')
-                ->where('titre', 'LIKE', '%' . $q . '%')->orWhere('dateEcheance', 'LIKE', '%' . $q . '%')->orWhere('type', 'LIKE', '%' . $q . '%')->orWhere('sourceAppel', 'LIKE', '%' . $q . '%')
-                ->get();
-    $projets = DB::table('projets')
-                ->join('users', 'users.id', '=', 'projets.chefDeGroupe')
-                ->select('projets.*', 'users.name', 'users.prenom', 'users.photo')
-                ->orderBy('projets.chefDeGroupe')
-                ->where('nom', 'LIKE', '%' . $q . '%')->orWhere('plateForme', 'LIKE', '%' . $q . '%')->orWhere('reponse', 'LIKE', '%' . $q . '%')
-                ->get();
-    $clients = DB::table('clients')
-                ->leftjoin('rfps', 'clients.id', '=', 'rfps.maitreOuvrage')
-                ->leftjoin('projets', 'rfps.id', '=', 'projets.ID_rfp')
-                ->select(DB::raw('count(projets.ID_rfp)as NmbrContratActives,count(rfps.maitreOuvrage) as NmbrContrat, clients.*'))
-                ->groupBy('clients.id')
-                ->where('ets', 'LIKE', '%' . $q . '%')->orWhere('adresse', 'LIKE', '%' . $q . '%')->orWhere('email', 'LIKE', '%' . $q . '%')->orWhere('ville', 'LIKE', '%' . $q . '%')->orWhere('pays', 'LIKE', '%' . $q . '%')
-                ->get();
 
-    return view('search')->with([
-            'users' => $users,
-            'clients' => $clients,
-            'rfps' => $rfps,
-            'canvas' => $canvas,
-            'projets' => $projets,
 
-        ]);
-});
 
 
 

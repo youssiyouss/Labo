@@ -67,7 +67,6 @@
                           <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
                          @endif
                         </form>
-                        <a class="dropdown-item d-flex align-items-center" href="{{ url('rfps/dowlaodCanvas/'.$rfp->type)}}"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Canvas</span></a>
                         </div>
                       </div>
                   </td>
