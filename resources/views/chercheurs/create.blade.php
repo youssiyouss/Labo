@@ -95,7 +95,9 @@
             <label for="exampleFormControlSelect1">Grade*</label>
             <select class="form-control  @error('grade') is-invalid @enderror"  name="grade" value="{{old('grade')}}" required>
               <option value="">---------Selectionner le grade---------</option>
-              <option value="Directeur" {{ old('grade') == 'Directeur' ? 'selected' : '' }}>Directeur</option>
+             @can('Acces',Auth::user())
+                <option value="Directeur" {{ old('grade') == 'Directeur' ? 'selected' : '' }}>Directeur</option>
+             @endcan
               <option value="Chercheur" {{ old('grade') == 'Chercheur' ? 'selected' : '' }}>Chercheur</option>
               <option value="Enseignant-Chercheur" {{ old('grade') == 'Enseignant-Chercheur' ? 'selected' : '' }}>Enseignant-Chercheur</option>
               <option value="Chercheur post-doctorants" {{ old('Chercheur post-doctorants') == 'Directeur' ? 'selected' : '' }}>Chercheur post-doctorants</option>

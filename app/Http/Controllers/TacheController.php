@@ -10,7 +10,7 @@ use App\Livrable;
 use App\User;
 use App\Http\Requests\TacheRequest;
 use Illuminate\Support\Facades\DB;
-use auth;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Notifications\InvoicePaid;
@@ -81,8 +81,15 @@ class TacheController extends Controller
      */
     public function store(Request $request,$projet)
     {
+        $tache = new Tache();
 
-      $tache = new Tache();
+        $alerte = collect([
+            'type' => 'Nouveau livrable',
+            'title' => "Vous avez une nouvelle tache assignée : '" . $tache->titreTache . "'",
+            'id' => $projet,
+            'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+            'voir' => 'taches/MesTaches/' . $projet
+        ]);
       $tache->ID_projet =$projet;
       $tache->titreTache  = $request->input('titreTache');
       $tache->description = $request->input('description');
@@ -102,21 +109,15 @@ class TacheController extends Controller
           if( $request->input('ID_chercheur', array()))
           {
             $respos =  $request->input('ID_chercheur', array());
-            $alerte = collect([
-                    'type' => 'Nouveau livrable',
-                    'title' => "Vous avez une nouvelle tache assignée : '" . $projet->titreTache . "'",
-                    'id' => $projet,
-                    'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
-                    'voir' => 'taches/MesTaches/'.$projet
-                ]);
-                Notification::send($request->input('ID_chercheur', array()), new InvoicePaid($alerte));
+
             foreach ($respos as $key => $ch) {
                 $deli = new Livrable();
                 $deli->id_respo  =$ch;
                 $deli->id_tache =$tache->id;
                 $deli->avancement ="Non entamé";
                 $deli->save();
-
+                $chr = User::find($ch);
+               Notification::send($chr, new InvoicePaid($alerte));
             }
 
 

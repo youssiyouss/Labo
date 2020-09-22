@@ -108,7 +108,7 @@
                              <div class="modal-body">
                                          <div class="form-group">
                                            <label for="recipient-name" class="col-form-label text-success">Réponse du maitre d'ouvrage*</label>
-                                           <select class="form-control  @error('reponse') is-invalid @enderror"  name="reponse" value="{{old('reponse', $soumission->reponse)}}" required>
+                                           <select class="form-control  @error('reponse') is-invalid @enderror"  name="reponse" required>
                                                <option value="Accepté"  {{ old('reponse') == 'Accepté' ? 'selected' : '' }}>Accepté</option>
                                                <option value="Refusé" {{ old('reponse') == 'Refusé' ? 'selected' : '' }}>Refusé</option>
                                                <option value="Accepté avec reserve"  {{ old('reponse') == 'Accepté avec reserve' ? 'selected' : '' }}>Accepté avec reserve</option>
@@ -126,7 +126,7 @@
 
                                               <div class="form-group ">
                                                 <label class="col-form-label">Nombre de participants dans le groupe</label>
-                                                <input type="number" class="form-control  @error('nmbrParticipants') is-invalid @enderror" id="exampleInputMobile" placeholder="1" name="nmbrParticipants" autocomplete="nmbrParticipants" value="{{old('nmbrParticipants', $soumission->nmbrParticipants)}}">
+                                                <input type="number" class="form-control  @error('nmbrParticipants') is-invalid @enderror" id="exampleInputMobile" placeholder="0" name="nmbrParticipants" autocomplete="nmbrParticipants" value="{{old('nmbrParticipants', $soumission->nmbrParticipants)}}">
                                                 @error('nmbrParticipants')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

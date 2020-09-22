@@ -31,7 +31,7 @@
       <div class="card-body">
          <h4 class="card-title text-warning" align="center">
         <div align="right">
-            <a href="{{ url('clients/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau RFP"><i data-feather="plus-circle"></i></a>
+            <a href="{{ url('clients/create')}}" type="button" class="btn btn-outline-success"  data-toggle="tooltip" data-placement="bottom" title="Ajouter un nouveau Client"><i data-feather="plus-circle"></i></a>
         </div>
          Liste des maitres d'ouvrages
        </h4>
@@ -66,12 +66,12 @@
                           <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
-                            <form  action="{{ url('clients/'.$c->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer cet RFP définitivement?')">
+                            <form  action="{{ url('clients/'.$c->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce client définitivement?')">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                           <a class="dropdown-item d-flex align-items-center" href="#" title="Contacts" data-toggle="modal" data-target="#element-<?php echo $c->id;?>" title="Voir informations contact" name="button"><i data-feather="phone" class="icon-sm mr-2"></i> <span class="">Contact</span></a>
-                         @if(Auth::user()->grade === 'Directeur')
                           <a class="dropdown-item d-flex align-items-center" href="{{ url('clients/'.$c->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
+                         @if(Auth::user()->grade === 'Directeur')
                           <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
                          @endif
                         </form>

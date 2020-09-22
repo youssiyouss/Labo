@@ -61,9 +61,9 @@
           </div>
          <div class="form-group">
             <label for="exampleInputText1">Date de naissance</label>
-            <div class="input-group date datepicker" id="datePickerExample">
-                <input type="text" class="form-control @error('dateNaissance') is-invalid @enderror" name="dateNaissance" value="{{old('dateNaissance', $chrch->dateNaissance)}}"  autocomplete="dateNaissance"><span class="input-group-addon"><i data-feather="calendar"></i></span>
-            </div>
+            <div class="input-group">
+                <input type="date" class="form-control @error('dateNaissance') is-invalid @enderror" name="dateNaissance" value="{{old('dateNaissance', $chrch->dateNaissance)}}">
+           </div>
             @error('dateNaissance')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -114,7 +114,9 @@
               @if (old('grade')==$chrch->grade)
                   <option value="$chrch->grade" selected>{{$chrch->grade}}</option>
               @else
-@if($chrch->grade === 'Directeur') <option value="Directeur">Directeur</option>@endif
+              @can('Acces',Auth::user())
+              <option value="Directeur">Directeur</option>
+              @endcan
               <option value="Chercheur">Chercheur</option>
               <option value="Enseignant-Chercheur">Enseignant-Chercheur</option>
               <option value="Chercheur post-doctorants">Chercheur post-doctorants</option>
@@ -125,7 +127,6 @@
 
               @endif
             </select>
-
             @error('grade')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
