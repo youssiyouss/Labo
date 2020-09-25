@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Auth;
 class EmailController extends Controller
 {
     //Return view of sended messages
-    public function compose($id){
-        $users =User::all();
+    public function compose($id, $receiver){
+        if($receiver==0){
+            $users = User::all();
+
+        }else{
+            $users = DB::table('users')->where('id',$receiver)->get();
+        }
+
         $from = User::find($id);
         $important = DB::table('emails')
             ->select('emails.*')
@@ -81,14 +87,20 @@ class EmailController extends Controller
 
     public function inbox(){
 
-        $emails =Email::where('to', Auth::user()->email)->orderBy('created_at','desc')->get();
+        $emails =DB::table('emails')
+                ->join('users','users.email','emails.from')
+                ->select('users.name','users.prenom','users.photo','emails.*')
+                ->where('to', Auth::user()->email)
+                ->orderBy('created_at','desc')
+                ->get();
         $newMail = Email::where([['read_at', Null],['to',Auth::user()->email]])->get();
         $important = DB::table('emails')
             ->select('emails.*')
             ->where([['tag', 'Important'], ['to', Auth::user()->email]])
             ->count();
 
-    	return view('emails.inbox', ['important' => $important, 'content' => $emails, 'unreadMails' => $newMail]);
+
+    	return view('emails.inbox', [ 'important' => $important, 'content' => $emails, 'unreadMails' => $newMail]);
     }
 
 
@@ -107,9 +119,12 @@ class EmailController extends Controller
 
     public function read($id){
 
-        $content =Email::where('id', $id)->first();
+        $content= DB::table('emails')
+            ->join('users', 'users.email', 'emails.from')
+            ->select(DB::raw('users.id as sender'),'users.email','users.name', 'users.prenom', 'users.photo', 'emails.*')
+            ->where('emails.id',$id)
+            ->first();
         $newMail = Email::where('read_at', Null)->get();
-        $sender = User::where('email',$content->from)->first();
         $important = DB::table('emails')
             ->select('emails.*')
             ->where([['tag', 'Important'], ['to', Auth::user()->email]])
@@ -120,7 +135,7 @@ class EmailController extends Controller
             ->update(
                 ['read_at' => Carbon::now('Africa/Algiers')]
             );
-       return view('emails.read', ['important' => $important, 'content' => $content, 'users' => $users,'sender' =>  $sender ,'unreadMails' => $newMail]);
+       return view('emails.read', ['important' => $important, 'content' => $content, 'users' => $users,'unreadMails' => $newMail]);
 
     }
 
@@ -177,7 +192,8 @@ class EmailController extends Controller
     public function tags($id){
 
         $emails= DB::table('emails')
-            ->select('emails.*')
+            ->join('users', 'users.email', 'emails.from')
+            ->select('users.name', 'users.prenom', 'users.photo', 'emails.*')
             ->where([['tag', $id],['to',Auth::user()->email]])
             ->get();
         $important= DB::table('emails')

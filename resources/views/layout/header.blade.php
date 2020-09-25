@@ -16,78 +16,45 @@
     <ul class="navbar-nav">
 
       <li class="nav-item dropdown nav-messages">
+          @php
+            $messages = DB::table('emails')
+                ->join('users','users.email','emails.from')
+                ->select('users.name','users.prenom','users.photo','emails.*')
+                ->where([['to', Auth::user()->email],['read_at' ,Null]])
+                ->orderBy('created_at','desc')
+                ->get();
+          @endphp
         <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i data-feather="mail"></i>
+          @if(count($messages))
+          <div class="indicator">
+            <div class="circle1"></div>
+          </div>
+          @endif
         </a>
         <div class="dropdown-menu" aria-labelledby="messageDropdown">
           <div class="dropdown-header d-flex align-items-center justify-content-between">
-            <p class="mb-0 font-weight-medium">9 New Messages</p>
-            <a href="javascript:;" class="text-muted">Clear all</a>
+            <p class="mb-0 font-weight-medium">{{count($messages) }}Nouveaux Messages</p>
+            @if(count($messages))<a href="{{url('email/clearAll')}}" class="text-muted">Clear all</a>@endif
           </div>
           <div class="dropdown-body">
-            <a href="javascript:;" class="dropdown-item">
+            @foreach ($messages as $m)
+          <a href="{{url('email/read/'.$m->id)}}" class="dropdown-item">
               <div class="figure">
-                <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="userr">
+                <img src="{{ asset('storage/'.$m->photo) }}" alt="userr">
               </div>
               <div class="content">
                 <div class="d-flex justify-content-between align-items-center">
-                  <p>Leonardo Payne</p>
-                  <p class="sub-text text-muted">2 min ago</p>
+                  <p>{{$m->name}}  {{$m->prenom}}</p>
+                <p class="sub-text text-muted">{{carbon\Carbon::parse($m->created_at)->locale('fr')->diffForHumans()}}</p>
                 </div>
-                <p class="sub-text text-muted">Project status</p>
+                <p class="sub-text text-muted">{{$m->subject}}</p>
               </div>
             </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="figure">
-                <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="userr">
-              </div>
-              <div class="content">
-                <div class="d-flex justify-content-between align-items-center">
-                  <p>Carl Henson</p>
-                  <p class="sub-text text-muted">30 min ago</p>
-                </div>
-                <p class="sub-text text-muted">Client meeting</p>
-              </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="figure">
-                <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="userr">
-              </div>
-              <div class="content">
-                <div class="d-flex justify-content-between align-items-center">
-                  <p>Jensen Combs</p>
-                  <p class="sub-text text-muted">1 hrs ago</p>
-                </div>
-                <p class="sub-text text-muted">Project updates</p>
-              </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="figure">
-                <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="userr">
-              </div>
-              <div class="content">
-                <div class="d-flex justify-content-between align-items-center">
-                  <p>Amiah Burton</p>
-                  <p class="sub-text text-muted">2 hrs ago</p>
-                </div>
-                <p class="sub-text text-muted">Project deadline</p>
-              </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item">
-              <div class="figure">
-                <img src="{{ url('https://via.placeholder.com/30x30') }}" alt="userr">
-              </div>
-              <div class="content">
-                <div class="d-flex justify-content-between align-items-center">
-                  <p>Yaretzi Mayo</p>
-                  <p class="sub-text text-muted">5 hr ago</p>
-                </div>
-                <p class="sub-text text-muted">New record</p>
-              </div>
-            </a>
+            @endforeach
           </div>
           <div class="dropdown-footer d-flex align-items-center justify-content-center">
-            <a href="javascript:;">View all</a>
+          <a href="{{ url('email/inbox')}}">Voir tout</a>
           </div>
         </div>
       </li>

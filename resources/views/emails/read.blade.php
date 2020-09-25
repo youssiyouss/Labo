@@ -27,7 +27,7 @@
                 <button class="navbar-toggle" data-target=".aside-nav" data-toggle="collapse" type="button"><span class="icon"><i data-feather="chevron-down"></i></span></button><span class="title">Boite Mail</span>
                 <p class="description">{{Auth::user()->email}}</p>
               </div>
-              <div class="aside-compose"><a class="btn btn-primary btn-block" href="{{ url('/email/compose/'.Auth::user()->id) }}">Compose Email</a></div>
+              <br> <br>
               <div class="aside-nav collapse">
                 <ul class="nav">
                   <li class="active"><a href="{{ url('/email/inbox') }}"><span class="icon"><i data-feather="inbox"></i></span>Inbox<span class="badge badge-danger-muted text-white font-weight-bold float-right">{{count($unreadMails)}}</span></a></li>
@@ -58,8 +58,9 @@
                     <span>{{$content->subject}}</span>
                   </div>
                   <div class="icons">
-                    <a class="icon" type="button" data-toggle="modal" data-target="#varyingModal"><i data-feather="share" class="text-muted hover-primary-muted" data-toggle="tooltip" title="Forward"></i></a>
-                    <a href="{{url('email/'.$content->id)}} " class="icon"><i data-feather="trash" class="text-muted" data-toggle="tooltip" title="Delete"></i></a>
+                    <a class="icon" data-toggle="modal" data-target="#varyingModal"><i data-feather="share" class="text-muted hover-primary-muted" data-toggle="tooltip" title="Transférer"></i></a>
+                    <a class="icon" href="{{ url('/email/compose/'.Auth::user()->id).'/'.$content->sender }}"><i data-feather="edit-3" class="text-muted hover-primary-muted" data-toggle="tooltip" title="Répondre"></i></a>
+
                     <div class="modal fade" id="varyingModal" tabindex="-1" role="dialog" aria-labelledby="varyingModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -105,18 +106,20 @@
               <div class="email-head-sender d-flex align-items-center justify-content-between flex-wrap">
                 <div class="d-flex align-items-center">
                   <div class="avatar">
-                    <img src="{{ asset('storage/'.$sender->photo) }}" alt="Avatar" class="rounded-circle user-avatar-md">
+                    <img src="{{ asset('storage/'.$content->photo) }}" alt="Avatar" class="rounded-circle user-avatar-md">
                   </div>
                   <div class="sender d-flex align-items-center">
-                  <a href="#" title="{{$sender->email}}">{{$sender->name}}  {{$sender->prenom}}</a> <span>to</span><a href="#" title="{{$content->to}}">me</a>
+                  <a href="#" title="{{$content->email}}">{{$content->name}}  {{$content->prenom}}</a> <span>to</span><a href="#" title="{{$content->to}}">me</a>
                     <div class="actions dropdown">
                       <a class="icon" href="#" data-toggle="dropdown"><i data-feather="chevron-down"></i></a>
                       <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" href="#">Mark as read</a>
-                        <a class="dropdown-item" href="#">Mark as unread</a>
-                        <a class="dropdown-item" href="#">Spam</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                        <div class="dropdown mb-2">
+                          <form  action="{{ url('email/'.$content->id)}}" method="post" onsubmit="return confirm('Etes vous sure de vouloir supprimer ce message?')">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                          <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
+                        </form>
+                      </div>
                       </div>
                     </div>
                   </div>
@@ -126,14 +129,6 @@
             </div>
             <div class="email-body">
               {{$content->message}}
-            </div>
-            <div class="email-attachments">
-              <div class="title">Attachments <span>(3 files, 12,44 KB)</span></div>
-              <ul>
-                <li><a href="#"><span data-feather="file"></span> Reference.zip <span class="text-muted tx-11">(5.10 MB)</span></a></li>
-                <li><a href="#"><span data-feather="file"></span> Instructions.zip <span class="text-muted tx-11">(3.15 MB)</span></a></li>
-                <li><a href="#"><span data-feather="file"></span> Team-list.pdf <span class="text-muted tx-11">(4.5 MB)</span></a></li>
-              </ul>
             </div>
           </div>
         </div>

@@ -80,7 +80,7 @@
             <div class="email-filters d-flex align-items-center justify-content-between flex-wrap">
               <div class="email-filters-left flex-wrap d-none d-md-flex">
                 <div class="btn-group ml-3">
-                   <a class="btn btn-outline-success btn-block" href="{{ url('/email/compose/'.Auth::user()->id) }}"><i data-feather="pen-tool"></i> Rédiger un Email</a>
+                   <a class="btn btn-outline-success btn-block" href="{{ url('/email/compose/'.Auth::user()->id).'/0'}}"><i data-feather="pen-tool"></i> Rédiger un Email</a>
 
                 </div>
               </div>
@@ -122,9 +122,13 @@
                   </div>
                 </div>
                 <a href="{{ url('/email/read/'.$c->id) }}" class="email-list-detail">
-                  <div>
-                    <span class="from">{{$c->from}}</span>
+                  <div  class="mr-3">
+
+                  <span class="from">
+                      <img src="{{ asset('storage/'.$c->photo) }}" alt="sender" title="{{$c->name}}  {{$c->prenom}}" class="rounded-circle  wd-35"> {{$c->from}}
+                  </span>
                     <p class="msg">{{$c->subject}}</p>
+
                   </div>
                   <span class="date">
                     <span class="icon"><i data-feather="paperclip"></i> </span>
@@ -153,13 +157,18 @@
                   </div>
                 </div>
                 <a href="{{ url('/email/read/'.$c->id) }}" class="email-list-detail">
-                  <div>
-                    <span class="from">{{$c->from}}</span>
+                  <div  class="mr-3">
+
+                  <span class="from">
+                      <img src="{{ asset('storage/'.$c->photo) }}" alt="sender" title="{{$c->name}}  {{$c->prenom}}" class="rounded-circle  wd-35"> {{$c->from}}
+                  </span>
                     <p class="msg">{{$c->subject}}</p>
+
                   </div>
                   <span class="date">
                    {{$c->created_at}}
                   </span>
+
                 </a>
               </div>
 

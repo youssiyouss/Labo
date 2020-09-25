@@ -28,6 +28,7 @@ class Controller extends BaseController
                 ->orWhere('projets.reponse', '=', 'Accepté avec reserve')
                 ->get();
 
+
         return view('dashboard',['projet' => $projects]);
     }
 

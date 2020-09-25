@@ -78,7 +78,7 @@
             <div class="email-filters d-flex align-items-center justify-content-between flex-wrap">
               <div class="email-filters-left flex-wrap d-none d-md-flex">
                 <div class="btn-group ml-3">
-                   <a class="btn btn-outline-success btn-block" href="{{ url('/email/compose/'.Auth::user()->id) }}"><i data-feather="pen-tool"></i> Rédiger un Email</a>
+                   <a class="btn btn-outline-success btn-block" href="{{ url('/email/compose/'.Auth::user()->id).'/0' }}"><i data-feather="pen-tool"></i> Rédiger un Email</a>
 
                 </div>
               </div>

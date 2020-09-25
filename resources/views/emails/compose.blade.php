@@ -24,7 +24,7 @@
                 <button class="navbar-toggle" data-target=".aside-nav" data-toggle="collapse" type="button"><span class="icon"><i data-feather="chevron-down"></i></span></button><span class="title">Boite Mail</span>
                 <p class="description">{{Auth::user()->email}}</p>
               </div>
-              <br>
+              <br><br>
               <div class="aside-nav collapse">
                 <ul class="nav">
                   <li class="active"><a href="{{ url('/email/inbox') }}"><span class="icon"><i data-feather="inbox"></i></span>Inbox<span class="badge badge-danger-muted text-white font-weight-bold float-right">{{count($unreadMails)}}</span></a></li>
@@ -67,6 +67,7 @@
                             <option value="{{$l->email}}"  {{(old('email') ==$l->email) ? 'selected' : '' }}>{{ $l->name }} {{ $l->prenom }}</option>
                             @endforeach
                         </select>
+
                       </div>
                   </div>
                    @error('to')

@@ -140,6 +140,7 @@ Route::get('email/inbox','EmailController@inbox');
 Route::get('email/inboxSent', 'EmailController@inboxSent');
 Route::get('email/read/{id}', 'EmailController@read');
 Route::get('email/compose/{id}','EmailController@compose');
+Route::get('email/compose/{id}/{email}', 'EmailController@compose');
 Route::delete('email/{id}','EmailController@destroy');
 Route::post('email', 'EmailController@store');
 Route::post('email/transfer/{id}', 'EmailController@transfer');
@@ -160,7 +161,7 @@ Route::any('mailSearch', function(Request $request)  {
     ->orWhere([['from', Auth::user()->email],['tag', 'LIKE', '%'.$q.'%']])
     ->orderBy('created_at','desc')
     ->get();
-    $newMail = Email::where([['read_at', Null],['to',Auth::user()->email]])->get();   
+    $newMail = Email::where([['read_at', Null],['to',Auth::user()->email]])->get();
 
     return view('emails.inbox')->with([
             'content' => $emails,
