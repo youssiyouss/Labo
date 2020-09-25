@@ -97,19 +97,19 @@
       <li class="nav-item {{ active_class(['email/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#email" role="button" aria-expanded="{{ is_active_route(['email/*']) }}" aria-controls="email">
           <i class="link-icon" data-feather="mail"></i>
-          <span class="link-title">Email</span>
+          <span class="link-title">Emails</span>
           <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse {{ show_class(['email/*']) }}" id="email">
           <ul class="nav sub-menu">
             <li class="nav-item">
-              <a href="{{ url('/email/inbox') }}" class="nav-link {{ active_class(['email/inbox']) }}">Inbox</a>
+              <a href="{{ url('/email/inbox/'.Auth::user()->id) }}" class="nav-link {{ active_class(['email/inbox']) }}">Boîte de réception</a>
             </li>
             <li class="nav-item">
-              <a href="{{ url('/email/read') }}" class="nav-link {{ active_class(['email/read']) }}">Read</a>
+              <a href="{{ url('/email/compose/'.Auth::user()->id) }}" class="nav-link {{ active_class(['email/compose']) }}">Envoyer</a>
             </li>
             <li class="nav-item">
-              <a href="{{ url('/email/compose') }}" class="nav-link {{ active_class(['email/compose']) }}">Compose</a>
+              <a href="{{ url('/email/trash') }}" class="nav-link {{ active_class(['email/read']) }}">Corbeille</a>
             </li>
           </ul>
         </div>

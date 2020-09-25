@@ -11,18 +11,13 @@
 */
 
 //Authentification :
-
-use App\Rfp;
+use App\Email;
 use App\User;
 use App\Canvas;
-use App\Client;
-use App\Projet;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 
 Auth::routes(['register' => false]);
 
@@ -140,12 +135,41 @@ Route::any('search', function(Request $request)  {
 
 
 
-// Route::group(['prefix' => 'email'], function(){
-//     Route::get('inbox', function () { return view('pages.email.inbox'); });
-//     Route::get('read', function () { return view('pages.email.read'); });
-//     Route::get('compose', function () { return view('pages.email.compose'); });
-// });
-//
+
+Route::get('email/inbox','EmailController@inbox');
+Route::get('email/inboxSent', 'EmailController@inboxSent');
+Route::get('email/read/{id}', 'EmailController@read');
+Route::get('email/compose/{id}','EmailController@compose');
+Route::delete('email/{id}','EmailController@destroy');
+Route::post('email', 'EmailController@store');
+Route::post('email/transfer/{id}', 'EmailController@transfer');
+Route::get('email/markAsRead/{id}', 'EmailController@markAsRead');
+Route::get('email/markAsUnread/{id}', 'EmailController@markAsUnread');
+Route::get('email/clearAll/{id}', 'EmailController@clearAll');
+Route::delete('email/deleteAll/{id}', 'EmailController@deleteAll');
+Route::get('email/tags/{id}', 'EmailController@tags');
+
+Route::any('mailSearch', function(Request $request)  {
+    $q = $request->input('MailSearch');
+
+    $emails = Email::where([['to', Auth::user()->email],['message', 'LIKE', '%'.$q.'%']])
+    ->orWhere([['to', Auth::user()->email],['subject', 'LIKE', '%'.$q.'%']])
+    ->orWhere([['to', Auth::user()->email],['tag', 'LIKE', '%'.$q.'%']])
+    ->orWhere([['from', Auth::user()->email],['message', 'LIKE', '%'.$q.'%']])
+    ->orWhere([['from', Auth::user()->email],['subject', 'LIKE', '%'.$q.'%']])
+    ->orWhere([['from', Auth::user()->email],['tag', 'LIKE', '%'.$q.'%']])
+    ->orderBy('created_at','desc')
+    ->get();
+    $newMail = Email::where([['read_at', Null],['to',Auth::user()->email]])->get();   
+
+    return view('emails.inbox')->with([
+            'content' => $emails,
+            'unreadMails' => $newMail
+        ]);
+});
+
+
+
 //Route::group(['prefix' => 'apps'], function(){
     // Route::get('chat', function () { return view('pages.apps.chat'); });
   //   Route::get('calendar', function () { return view('pages.apps.calendar'); });
