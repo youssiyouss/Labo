@@ -110,22 +110,32 @@
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect1">Grade*</label>
-            <select class="form-control  @error('grade') is-invalid @enderror"  name="grade" value="{{old('grade', $chrch->grade)}}" required>
-              @if (old('grade')==$chrch->grade)
-                  <option value="{{old('grade', $chrch->grade)}}" selected>{{$chrch->grade}}</option>
-              @else
-              @can('Acces',Auth::user())
-              <option value="Directeur">Directeur</option>
-              @endcan
-              <option value="Chercheur">Chercheur</option>
-              <option value="Enseignant-Chercheur">Enseignant-Chercheur</option>
-              <option value="Chercheur post-doctorants">Chercheur post-doctorants</option>
-              <option value="Doctorant">Doctorant</option>
-              <option value="Stagiaire">Stagiaire</option>
-              <option value="Membre externe">Membre externe</option>
-              <option value="Autre">Autre</option>
+            <select class="form-control  @error('grade') is-invalid @enderror"  name="grade" required>
+                @if($chrch->grade)
+                <option value="{{$chrch->grade}}" selected>{{$chrch->grade}}</option>
+                @can('Acces',Auth::user())
+                <option value="Directeur">Directeur</option>
+                @endcan
+                <option value="Chercheur">Chercheur</option>
+                <option value="Enseignant-Chercheur">Enseignant-Chercheur</option>
+                <option value="Chercheur post-doctorants">Chercheur post-doctorants</option>
+                <option value="Doctorant">Doctorant</option>
+                <option value="Stagiaire">Stagiaire</option>
+                <option value="Membre externe">Membre externe</option>
+                <option value="Autre">Autre</option>
+                @else
+                @can('Acces',Auth::user())
+                <option value="Directeur">Directeur</option>
+                @endcan
+                <option value="Chercheur">Chercheur</option>
+                <option value="Enseignant-Chercheur">Enseignant-Chercheur</option>
+                <option value="Chercheur post-doctorants">Chercheur post-doctorants</option>
+                <option value="Doctorant">Doctorant</option>
+                <option value="Stagiaire">Stagiaire</option>
+                <option value="Membre externe">Membre externe</option>
+                <option value="Autre">Autre</option>
 
-              @endif
+                @endif
             </select>
             @error('grade')
                 <span class="invalid-feedback" role="alert">
