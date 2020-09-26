@@ -14,10 +14,10 @@ class Projet extends Model
   protected $files = ['fichierDoffre' , 'lettreReponse','rapportFinal'];
 
   public function getLancementAttribute($value){
-    return Carbon::parse($value)->format('m/d/Y');
+    return Carbon::parse($value)->format('d/m/Y');
   }
 
   public function getClotureAttribute($value){
-    return Carbon::parse($value)->format('m/d/Y');
+    return Carbon::parse($value)->format('d/m/Y');
   }
 }

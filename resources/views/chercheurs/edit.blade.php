@@ -112,7 +112,7 @@
             <label for="exampleFormControlSelect1">Grade*</label>
             <select class="form-control  @error('grade') is-invalid @enderror"  name="grade" value="{{old('grade', $chrch->grade)}}" required>
               @if (old('grade')==$chrch->grade)
-                  <option value="$chrch->grade" selected>{{$chrch->grade}}</option>
+                  <option value="{{old('grade', $chrch->grade)}}" selected>{{$chrch->grade}}</option>
               @else
               @can('Acces',Auth::user())
               <option value="Directeur">Directeur</option>

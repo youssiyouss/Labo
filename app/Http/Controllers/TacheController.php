@@ -83,13 +83,6 @@ class TacheController extends Controller
     {
         $tache = new Tache();
 
-        $alerte = collect([
-            'type' => 'Nouveau livrable',
-            'title' => "Vous avez une nouvelle tache assignée : '" . $tache->titreTache . "'",
-            'id' => $projet,
-            'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
-            'voir' => 'taches/MesTaches/' . $projet
-        ]);
       $tache->ID_projet =$projet;
       $tache->titreTache  = $request->input('titreTache');
       $tache->description = $request->input('description');
@@ -104,7 +97,13 @@ class TacheController extends Controller
          $fn= $request->fichierDetail->getClientOriginalName();
       	 $tache->fichierDetail = $request->fichierDetail->storeAs('file',$fn);
       }
-
+ $alerte = collect([
+            'type' => 'Nouveau livrable',
+            'title' => "Vous avez une nouvelle tache assignée : '" . $tache->titreTache . "'",
+            'id' => $projet,
+            'par' => Auth::user()->name . '  ' . Auth::user()->prenom,
+            'voir' => 'taches/MesTaches/' . $projet
+        ]);
       if ($tache->save()) {
           if( $request->input('ID_chercheur', array()))
           {

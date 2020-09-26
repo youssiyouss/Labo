@@ -62,12 +62,12 @@
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                           <a class="dropdown-item d-flex align-items-center" href="#" title="Voir plus de details" data-toggle="modal" data-target="#element-<?php echo $rfp->id;?>" name="button"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
+                          <a class="dropdown-item d-flex align-items-center" href="{{ url('rfps/dowlaodCanvas/'.$rfp->type)}}"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Canvas</span></a>
                          @if(Auth::user()->grade === 'Directeur')
                           <a class="dropdown-item d-flex align-items-center" href="{{ url('rfps/'.$rfp->id.'/edit')}}"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
                           <button class="dropdown-item d-flex align-items-center" type="submit"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></button>
                          @endif
                         </form>
-                        <a class="dropdown-item d-flex align-items-center" href="{{ url('rfps/dowlaodCanvas/'.$rfp->type)}}"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Canvas</span></a>
                         </div>
                       </div>
                   </td>

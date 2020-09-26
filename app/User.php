@@ -39,11 +39,11 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at','dateNaissance'  ];
+    protected $dates = ['created_at', 'updated_at','dateNaissance'];
     protected $files = ['photo',];
 
     public function getDateNaissanceAttribute($value)
     {
-        return Carbon::parse($value)->format('m/d/Y');
+        return Carbon::parse($value)->format('Y-m-d');
     }
 }

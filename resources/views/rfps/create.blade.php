@@ -41,7 +41,7 @@
 
               </select>
               <span class="input-group-append">
-                <a href="{{ url('clients/create')}}" class="btn btn-outline-info" target="_blank" onsubmit="return confirm('Voulez-vous ajouter un nouveau maitre d'ouvrage dans le laboratoire!')"> Ajouter </a>
+                <a href="{{ url('clients/create')}}" class="btn btn-outline-info" onsubmit="return confirm('Voulez-vous ajouter un nouveau maitre d'ouvrage dans le laboratoire!')"> Ajouter </a>
               </span>
               @error('maitreOuvrage')
                   <span class="invalid-feedback" role="alert">
