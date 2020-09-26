@@ -20,7 +20,7 @@ class CreateEmailsTable extends Migration
             $table->string('tag');
             $table->string('subject');
             $table->longText('message');
-            $table->timestamps('read_at');
+            $table->DateTime('read_at');
             $table->timestamps();
 
 
