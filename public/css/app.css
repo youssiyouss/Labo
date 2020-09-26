@@ -14738,7 +14738,16 @@ div.tagsinput div#tags_addTag input {
   -webkit-animation-timing-function: ease-out;
           animation-timing-function: ease-out;
 }
-
+.navbar .navbar-content .navbar-nav .nav-item .nav-link .indicator .circle1::before {
+  -webkit-animation-name: pulse;
+          animation-name: pulse;
+  -webkit-animation-duration: .9s;
+          animation-duration: .9s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+}
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -23578,9 +23587,21 @@ address p {
   height: 7px;
   border-radius: 50%;
 }
-
+.navbar .navbar-content .navbar-nav .nav-item .nav-link .indicator .circle1 {
+  background: rgb(184, 16, 184);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
 .navbar .navbar-content .navbar-nav .nav-item .nav-link .indicator .circle::before {
   background-color: #727cf5;
+  content: "";
+  display: table;
+  border-radius: 50%;
+  position: absolute;
+}
+.navbar .navbar-content .navbar-nav .nav-item .nav-link .indicator .circle1::before {
+  background-color: rgb(184, 16, 184);
   content: "";
   display: table;
   border-radius: 50%;

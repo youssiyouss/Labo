@@ -82,7 +82,7 @@
       @foreach ($projets as $p)
       <li class="nav-item ">
         <a href="{{ url('taches/MesTaches/'.$p->id) }}" class="nav-link {{ active_class(['forms/basic-elements']) }}">
-            <span data-toggle="tooltip" data-placement="left" title="#{{$p->id}} -{{$p->nom}}">{{$p->nom}} </span>
+            <span data-toggle="tooltip" data-placement="left" title="#{{$p->id}} -{{$p->nom}}">{{Str::limit($p->nom, 25,'...')}} </span>
         </a>
       </li>
       @endforeach
@@ -97,19 +97,16 @@
       <li class="nav-item {{ active_class(['email/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#email" role="button" aria-expanded="{{ is_active_route(['email/*']) }}" aria-controls="email">
           <i class="link-icon" data-feather="mail"></i>
-          <span class="link-title">Email</span>
+          <span class="link-title">Emails</span>
           <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse {{ show_class(['email/*']) }}" id="email">
           <ul class="nav sub-menu">
             <li class="nav-item">
-              <a href="{{ url('/email/inbox') }}" class="nav-link {{ active_class(['email/inbox']) }}">Inbox</a>
+              <a href="{{ url('/email/inbox') }}" class="nav-link {{ active_class(['email/inbox']) }}">Boîte de réception</a>
             </li>
             <li class="nav-item">
-              <a href="{{ url('/email/read') }}" class="nav-link {{ active_class(['email/read']) }}">Read</a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ url('/email/compose') }}" class="nav-link {{ active_class(['email/compose']) }}">Compose</a>
+              <a href="{{ url('/email/inboxSent') }}" class="nav-link {{ active_class(['email/compose']) }}">Boîte d'envois</a>
             </li>
           </ul>
         </div>

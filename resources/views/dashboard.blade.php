@@ -7,7 +7,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
   <div>
-    <h4 class="mb-3 mb-md-0">Bienvenue dans LRIT !</h4>
+    <h4 class="mb-3 mb-md-0">Bienvenue au LRIT !</h4>
   </div>
   <div class="d-flex align-items-center flex-wrap text-nowrap">
     <div class="input-group date datepicker dashboard-date mr-2 mb-2 mb-md-0 d-md-none d-xl-flex" id="dashboardDate">
@@ -24,7 +24,7 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0 text-info">New RFPs  : </h6>
+              <h6 class="card-title mb-0 text-info">Nouveaux RFPs  : </h6>
 
             </div>
             <div class="row">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="d-flex align-items-baseline">
                   <p class="text-warning">
-                    <span>For this month</span>
+                    <span>Pour ce mois</span>
                   </p>
                 </div>
               </div>
@@ -57,7 +57,7 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0 text-info">New Submissions  : </h6>
+              <h6 class="card-title mb-0 text-info">Nouvelles sumissions  : </h6>
 
             </div>
             <div class="row">
@@ -70,11 +70,11 @@
                             ->whereMonth('created_at', Carbon\carbon::now()->month)
                             ->count();
                         echo $projets;
-                    @endphp</h3><span class="text-muted"> Projects</span>
+                    @endphp</h3><span class="text-muted"> Projets</span>
                 </div>
                 <div class="d-flex align-items-baseline">
                   <p class="text-warning">
-                    <span>For this month</span>
+                    <span>Pour ce mois</span>
                    </p>
                 </div>
               </div>
@@ -89,7 +89,7 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-baseline">
-              <h6 class="card-title mb-0 text-info">Number of members :</h6>
+              <h6 class="card-title mb-0 text-info">Numéro de membres :</h6>
               <div class="dropdown mb-2">
                 <button class="btn p-0" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
@@ -111,7 +111,7 @@
                 </h3>
                 <div class="d-flex align-items-baseline">
                   <p class="text-warning">
-                    <span >In LRIT</span>
+                    <span >Dans LRIT</span>
 
                   </p>
                 </div>
@@ -131,7 +131,7 @@
     <div class="card overflow-hidden">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Active Projects</h6>
+          <h6 class="card-title mb-0">Projets en cours de travails</h6>
           <div class="dropdown mb-2">
             <button class="btn p-0" type="button" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
@@ -146,11 +146,11 @@
             <thead>
               <tr>
                 <th class="pt-0">#</th>
-                <th class="pt-0">Project Name</th>
-                <th class="pt-0">Start Date</th>
-                <th class="pt-0">Due Date</th>
-                <th class="pt-0">RFP</th>
-                <th class="pt-0">Project Manager</th>
+                <th class="pt-0">Nom Projet</th>
+                <th class="pt-0">Date Debut</th>
+                <th class="pt-0">Date Echeance</th>
+                <th class="pt-0">L'RFP</th>
+                <th class="pt-0">Chef De Projet</th>
               </tr>
             </thead>
             <tbody>
@@ -172,6 +172,46 @@
     </div>
   </div>
 
+
+<div class="row grid-margin stretch-card">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Appel a soumissions pour ce mois </h6>
+
+        </div>
+       <div class="d-flex flex-column">
+       @php
+
+        $rfps = DB::table('rfps')->select('rfps.*')
+        ->where('dateEcheance','<=', carbon\Carbon::parse(now('Africa/Algiers')))
+        ->orderBy('dateEcheance','desc')
+        ->get();
+        $n=0;
+       @endphp
+       @foreach($rfps as $r)
+       @php $n=$n+1; @endphp
+          <a href="{{url('rfps/'.$r->id)}}" class="d-flex align-items-center border-bottom pb-3">
+            <div class="mr-3">
+            #{{$n}}
+            </div>
+            <div class="w-100">
+              <div class="d-flex justify-content-between">
+              <h6 class="text-body mb-2">{{$r->titre}}</h6>
+                <p class="text-muted tx-12">{{$r->dateEcheance}}</p>
+              </div>
+            <p class="text-muted tx-13">{{$r->type}}</p>
+            </div>
+          </a>
+          @endforeach
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div> <!-- row -->
 @can('Acces',Auth::user())
 <div class="row">
   <div class="col-12 col-xl-12 grid-margin stretch-card">
@@ -182,7 +222,7 @@
                 <div class="form-group" >
                     <div class="input-group date" id="datePickerExample" data-target-input="nearest">
                         <div class="input-group date datepicker" id="datePickerExample">
-                            <input  name="year1" type="text" class="form-control atetimepicker-input" placeholder="Enter a year"><span class="input-group-addon"><i data-feather="calendar"></i></span>
+                            <input  name="year1" type="text" class="form-control atetimepicker-input" placeholder="année .."><span class="input-group-addon"><i data-feather="calendar"></i></span>
                         </div>
                     </div>
                 </div>
@@ -190,7 +230,7 @@
             </form>
         </div>
         <div class="flot-wrapper">
-            <div class=" card-title text-center bg-dark">Members Active projects rate per year </div>
+            <div class=" card-title text-center bg-dark">Taux annuelle des projets actifs pour chaque membre </div>
 
           <canvas id="ActiveProjects"></canvas>
         </div>
@@ -204,7 +244,7 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0"  id="members">Members response for the RFPs</h6>
+          <h6 class="card-title mb-0"  id="members"0>Taux de réponses aux appels d'offre</h6>
           <div class="dropdown mb-2">
             <button class="btn p-0" type="button" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
@@ -214,7 +254,7 @@
             </div>
           </div>
         </div>
-        <p class="text-muted mb-4">Number of members submissions for each RFP </p>
+        <p class="text-muted mb-4">Nombre des soumissions pour chaque appel d'offre</p>
         <div>
           <canvas id="rfpsChart"></canvas>
 
@@ -309,12 +349,12 @@ var ctx = document.getElementById("rfpsChart").getContext('2d');
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Clients and Partners</h6>
+          <h6 class="card-title mb-0">Clients et Partenairs</h6>
         </div>
            <canvas id="clients" width="533" height="266"></canvas>
            <div class="col-6">
             <div>
-              <label class="d-flex align-items-center tx-10 text-uppercase font-weight-medium text-info">Total number of clients :</label>
+              <label class="d-flex align-items-center tx-10 text-uppercase font-weight-medium text-info">Nombre Totale des clients :</label>
               <h5 class="font-weight-bold mb-0">
                 @php
                      $c=DB::table('clients')
@@ -409,7 +449,7 @@ $mysqli = new mysqli($host,$user,$pass,$db) or die($mysqli->error);
                 <div class="col-sm-3">
                 <div class="form-group" >
                     <div class="input-group date" id="datetimepicker10" data-target-input="nearest">
-                        <input name="year" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker10" placeholder="Enter a year"/>
+                        <input name="year" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker10" placeholder="année .."/>
                         <div class="input-group-append" data-target="#datetimepicker10" data-toggle="datetimepicker">
                             <div class="form-control input-group-text"> <i data-feather="calendar"></i></div>
                         </div>
@@ -419,7 +459,7 @@ $mysqli = new mysqli($host,$user,$pass,$db) or die($mysqli->error);
                 </div>
             </form>
 
-            <div class=" card-title text-center bg-dark">Members particpations rate per year </div>
+            <div class=" card-title text-center bg-dark">Taux de participation des members par an </div>
             <canvas id="Dailysales"></canvas>
       </div>
       </div>
@@ -463,9 +503,10 @@ else{
             $n = trim($n,",");
             $r = trim($r,",");
             /////////////////Nombre de projets en cours pour chaque chef de groupe
-        $sql1 =  "SELECT users.id,users.name,users.prenom , COUNT(delivrables.id_respo) nbrProjet
-                 FROM delivrables , users
+        $sql1 =  "SELECT users.id,users.name,users.prenom , COUNT(distinct(taches.ID_projet)) nbrProjet
+                 FROM delivrables , users , taches
                  WHERE delivrables.id_respo=users.id
+                 AND delivrables.id_tache=taches.id
                  AND YEAR(delivrables.created_at) = $year
                  group BY delivrables.id_respo";
         $result1 = mysqli_query($mysqli, $sql1);
@@ -487,7 +528,7 @@ var ctx = document.getElementById("Dailysales").getContext('2d');
         labels: [<?php echo $m; ?>],
         datasets:
         [{
-            label: 'Working in a groupe',
+            label: 'Travail en cours',
             data: [<?php echo $l; ?>],
             backgroundColor: '#821752',
             borderColor: '#edc988',
@@ -512,7 +553,7 @@ var ctx = document.getElementById("Dailysales").getContext('2d');
                   display: true,
                   scaleLabel: {
                     display: true,
-                    labelString: 'Members'
+                    labelString: 'Membre'
                   }
                 }],
                 yAxes: [{
@@ -521,7 +562,7 @@ var ctx = document.getElementById("Dailysales").getContext('2d');
                   display: true,
                   scaleLabel: {
                     display: true,
-                    labelString: 'Participation'
+                    labelString: 'Nombre de projet'
                   }
                 }]
               }
@@ -535,7 +576,7 @@ var ctx = document.getElementById("ActiveProjects").getContext('2d');
         labels: [<?php echo $r; ?>],
         datasets:
         [{
-            label: 'Active projects',
+            label: 'Projets Actives',
             data: [<?php echo $n; ?>],
             backgroundColor: '#ffcbcb',
             borderColor: '#407088',
@@ -560,7 +601,7 @@ var ctx = document.getElementById("ActiveProjects").getContext('2d');
                   display: true,
                   scaleLabel: {
                     display: true,
-                    labelString: 'Members'
+                    labelString: 'Membres'
                   }
                 }],
                 yAxes: [{
@@ -569,7 +610,7 @@ var ctx = document.getElementById("ActiveProjects").getContext('2d');
                   display: true,
                   scaleLabel: {
                     display: true,
-                    labelString: 'number of projects'
+                    labelString: 'Nombre de projets'
                   }
                 }]
               }
@@ -580,93 +621,6 @@ var ctx = document.getElementById("ActiveProjects").getContext('2d');
 
 
 @endcan
- <div class="row">
-  <div class="col-lg-12 col-xl-12 grid-margin grid-margin-xl-0 stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-baseline mb-2">
-          <h6 class="card-title mb-0">Inbox</h6>
-          <div class="dropdown mb-2">
-            <button class="btn p-0" type="button" id="dropdownMenuButton6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
-              <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="eye" class="icon-sm mr-2"></i> <span class="">View</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="edit-2" class="icon-sm mr-2"></i> <span class="">Edit</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="trash" class="icon-sm mr-2"></i> <span class="">Delete</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="printer" class="icon-sm mr-2"></i> <span class="">Print</span></a>
-              <a class="dropdown-item d-flex align-items-center" href="#"><i data-feather="download" class="icon-sm mr-2"></i> <span class="">Download</span></a>
-            </div>
-          </div>
-        </div>
-       <div class="d-flex flex-column">
-          <a href="#" class="d-flex align-items-center border-bottom pb-3">
-            <div class="mr-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="text-body mb-2">Leonardo Payne</h6>
-                <p class="text-muted tx-12">12.30 PM</p>
-              </div>
-              <p class="text-muted tx-13">Hey! there I'm available...</p>
-            </div>
-          </a>
-          <a href="#" class="d-flex align-items-center border-bottom py-3">
-            <div class="mr-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="text-body mb-2">Carl Henson</h6>
-                <p class="text-muted tx-12">02.14 AM</p>
-              </div>
-              <p class="text-muted tx-13">I've finished it! See you so..</p>
-            </div>
-          </a>
-          <a href="#" class="d-flex align-items-center border-bottom py-3">
-            <div class="mr-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="text-body mb-2">Jensen Combs</h6>
-                <p class="text-muted tx-12">08.22 PM</p>
-              </div>
-              <p class="text-muted tx-13">This template is awesome!</p>
-            </div>
-          </a>
-          <a href="#" class="d-flex align-items-center border-bottom py-3">
-            <div class="mr-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="text-body mb-2">Amiah Burton</h6>
-                <p class="text-muted tx-12">05.49 AM</p>
-              </div>
-              <p class="text-muted tx-13">Nice to meet you</p>
-            </div>
-          </a>
-          <a href="#" class="d-flex align-items-center border-bottom py-3">
-            <div class="mr-3">
-              <img src="{{ url('https://via.placeholder.com/35x35') }}" class="rounded-circle wd-35" alt="user">
-            </div>
-            <div class="w-100">
-              <div class="d-flex justify-content-between">
-                <h6 class="text-body mb-2">Yaretzi Mayo</h6>
-                <p class="text-muted tx-12">01.19 AM</p>
-              </div>
-              <p class="text-muted tx-13">Hey! there I'm available...</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-</div> <!-- row -->
 @endsection
 
 @push('plugin-scripts')
@@ -681,4 +635,6 @@ var ctx = document.getElementById("ActiveProjects").getContext('2d');
 @push('custom-scripts')
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/datepicker.js') }}"></script>
+  <script src="{{ asset('assets/js/chartjs.js') }}"></script>
 @endpush
+

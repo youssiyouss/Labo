@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
     {
 
         //Weekend
-            $schedule->call('command:weekEnd')->weekly()->fridays()->at('8:00')->timezone('Africa/Algiers');
+            $schedule->call('command:weekEnd')->weekly()->fridays()->at('08:00')->timezone('Africa/Algiers');
         //New year
         $schedule->call('command:newYear')->yearly()->timezone('Africa/Algiers');
         ///RFPS date echeance :
@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
         //Supprimer les notification qui date plus qu'un mois
         $schedule->call('Notification:cleanDB')->monthly()->timezone('Africa/Algiers');
         //Members Birthdays
-        $schedule->call('command:birthday')->dailyAt('01:00')->timezone('Africa/Algiers');
+        $schedule->call('command:birthday')->dailyAt('00:00')->timezone('Africa/Algiers');
     }
 
     /**
