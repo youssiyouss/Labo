@@ -97,7 +97,17 @@
       <li class="nav-item {{ active_class(['email/*']) }}">
         <a class="nav-link" data-toggle="collapse" href="#email" role="button" aria-expanded="{{ is_active_route(['email/*']) }}" aria-controls="email">
           <i class="link-icon" data-feather="mail"></i>
-          <span class="link-title">Emails</span>
+          <span class="link-title">Emails
+              @php
+                  $messages = DB::table('emails')
+                ->select('emails.*')
+                ->where([['to', Auth::user()->email],['read_at' ,Null]])
+                ->count();
+              @endphp
+              @if ($messages >=1)
+                  <span class="badge badge-pill badge-danger-muted font-weight-bold float-right">+{{$messages}}</span>
+              @endif
+          </span>
           <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
         <div class="collapse {{ show_class(['email/*']) }}" id="email">

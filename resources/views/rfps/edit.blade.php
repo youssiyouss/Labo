@@ -34,9 +34,9 @@
           <div class="form-group">
             <label>Maitre d'ouvrage*</label>
             <div class="input-group col-xs-12">
-              <select class="form-control  @error('maitreOuvrage') is-invalid @enderror"  name="maitreOuvrage" value="{{old('maitreOuvrage', $appeldoffre->maitreOuvrage)}}" required>
+              <select class="form-control  @error('maitreOuvrage') is-invalid @enderror"  name="maitreOuvrage" required>
                 @foreach($mo as $l)
-                    @if (old('maitreOuvrage')==$l->id)
+                    @if ($appeldoffre->maitreOuvrage == $l->id)
                         <option value={{$l->id}} selected>{{$l->id}}-{{ $l->ets }}</option>
                     @else
                         <option value={{$l->id}} >{{$l->id}}-{{ $l->ets }}</option>
@@ -72,9 +72,12 @@
 
             <div class="form-group">
               <label>Nature de projet*</label>
-              <select class="form-control  @error('type') is-invalid @enderror"  name="type" value="{{old('type', $appeldoffre->type)}}" required>
-                  @if (old('type')==$appeldoffre->type)
-                      <option value="$appeldoffre->type" selected>{{$appeldoffre->type}}</option>
+              <select class="form-control  @error('type') is-invalid @enderror"  name="type" required>
+                  @if($appeldoffre->type)
+                    <option value="{{$appeldoffre->type}}" selected>{{$appeldoffre->type}}</option>
+                    <option value="PRFU">Projet de Recherches pour la Formation Universitaire</option>
+                    <option value="PNR">Projet National de Recherche</option>
+                    <option value="Projets de coopérations">Projets de coopérations</option>
                   @else
                   <option value="PRFU">Projet de Recherches pour la Formation Universitaire</option>
                   <option value="PNR">Projet National de Recherche</option>

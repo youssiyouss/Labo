@@ -40,9 +40,9 @@
           <div class="form-group">
             <label>RFP concerné*</label>
             <div class="input-group col-xs-12">
-              <select class="form-control  @error('ID_rfp') is-invalid @enderror"  value="{{old('ID_rfp', $soumission->ID_rfp)}}" name="ID_rfp" required>
+              <select class="form-control  @error('ID_rfp') is-invalid @enderror"  name="ID_rfp" required>
                 @foreach($rfps as $l)
-                @if (old('ID_rfp')==$l->id)
+                @if ($soumission->ID_rfp == $l->id)
                       <option value={{$l->id}} selected>{{$l->id}}-{{ $l->titre }}      ({{ $l->type }}) </option>
                   @else
                       <option value={{$l->id}} >{{$l->id}}-{{ $l->titre }}      ({{ $l->type }})</option>
