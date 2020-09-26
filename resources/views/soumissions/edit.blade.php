@@ -59,7 +59,7 @@
               @enderror
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group">fsgvjooerjg
             <label>Context </label>
             <div class="input-group">
             <textarea name="descriptionProjet"  class="form-control @error('descriptionProjet') is-invalid @enderror" cols="30" rows="8" autocomplete="descriptionProjet" >{{old('descriptionProjet', $soumission->descriptionProjet)}}</textarea>
@@ -109,9 +109,17 @@
                                          <div class="form-group">
                                            <label for="recipient-name" class="col-form-label text-success">Réponse du maitre d'ouvrage*</label>
                                            <select class="form-control  @error('reponse') is-invalid @enderror"  name="reponse" required>
-                                               <option value="Accepté"  {{ old('reponse') == 'Accepté' ? 'selected' : '' }}>Accepté</option>
-                                               <option value="Refusé" {{ old('reponse') == 'Refusé' ? 'selected' : '' }}>Refusé</option>
-                                               <option value="Accepté avec reserve"  {{ old('reponse') == 'Accepté avec reserve' ? 'selected' : '' }}>Accepté avec reserve</option>
+                                            @if($soumission->reponse)
+                                               <option value="{{$soumission->reponse}}" selected>{{$soumission->reponse}}</option>
+                                               <option value="Accepté">Accepté</option>
+                                               <option value="Refusé">Refusé</option>
+                                               <option value="Accepté avec reserve">Accepté avec reserve</option>
+                                            @else
+                                            <option value="" selected> Veuillez menttioner la réponse</option>
+                                               <option value="Accepté">Accepté</option>
+                                               <option value="Refusé">Refusé</option>
+                                               <option value="Accepté avec reserve">Accepté avec reserve</option>
+                                            @endif
                                             </select>
                                             <span class="input-group-append">
                                                <input name="lettreReponse" type="file" accept=".jpg,.png,.jpeg,application/pdf,application/vnd.ms-powerpoint"
