@@ -67,10 +67,12 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="email-search">
+                    <form class="search-form" action="/mailSearch" method="get">
                     <div class="input-group input-search">
-                      <input class="form-control" type="text" name="EmailSearch" placeholder="Chercher mail..."><span class="input-group-btn">
-                      <button class="btn btn-outline-secondary" type="button"><i data-feather="search"></i></button></span>
+                      <input class="form-control" name="MailSearch" type="text" placeholder="Chercher mail..."><span class="input-group-btn">
+                      <button class="btn btn-outline-secondary" type="submit"><i data-feather="search"></i></button></span>
                     </div>
+                    </form>
                   </div>
                 </div>
               </div>

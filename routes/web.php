@@ -153,7 +153,10 @@ Route::get('email/tags/{id}', 'EmailController@tags');
 Route::any('mailSearch', function(Request $request)  {
     $q = $request->input('MailSearch');
 
-    $emails = Email::where([['to', Auth::user()->email],['message', 'LIKE', '%'.$q.'%']])
+    $emails = DB::table('emails')
+    ->join('users', 'users.email', 'emails.from')
+    ->select('users.name', 'users.prenom', 'users.photo', 'emails.*')
+    ->where([['to', Auth::user()->email],['message', 'LIKE', '%'.$q.'%']])
     ->orWhere([['to', Auth::user()->email],['subject', 'LIKE', '%'.$q.'%']])
     ->orWhere([['to', Auth::user()->email],['tag', 'LIKE', '%'.$q.'%']])
     ->orWhere([['from', Auth::user()->email],['message', 'LIKE', '%'.$q.'%']])
@@ -162,10 +165,14 @@ Route::any('mailSearch', function(Request $request)  {
     ->orderBy('created_at','desc')
     ->get();
     $newMail = Email::where([['read_at', Null],['to',Auth::user()->email]])->get();
-
+    $important = DB::table('emails')
+    ->select('emails.*')
+    ->where([['tag', 'Important'], ['to', Auth::user()->email]])
+        ->count();
     return view('emails.inbox')->with([
             'content' => $emails,
-            'unreadMails' => $newMail
+            'unreadMails' => $newMail,
+            'important' => $important
         ]);
 });
 
